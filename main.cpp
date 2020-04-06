@@ -165,8 +165,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
-            LPCWSTR wiadomosc = L"Elo";
-            TextOut(hdc, 100, 100, wiadomosc , sizeof(wiadomosc)-1);
+            LPCWSTR wiadomosc = L"Eluwwaaa";
+            TextOut(hdc, 100, 100, wiadomosc , 8);
             EndPaint(hWnd, &ps);
         }
         break;
