@@ -9,12 +9,9 @@
 // Windows Header Files
 #include <windows.h>
 // C RunTime Header Files
-#include <stdlib.h>
+#include <cstdlib>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
-
-
-#include <iostream>
-using namespace std;
+#define SCREEN_WIDTH        800
+#define SCREEN_HEIGHT       600

@@ -1,17 +1,14 @@
-// GameProject.cpp : Defines the entry point for the application.
+// DirectxLesson.cpp : Defines the entry point for the application.
 //
+#include <ctime>
 
 #include "framework.h"
 #include "main.h"
-
-
-
-
+#include "Graphics.h" 
+#include "Level.h"
+#include "GameController.h"
+using namespace std;
 #define MAX_LOADSTRING 100
-
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 600
-
 
 
 
@@ -20,15 +17,13 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
+Graphics* graphics;
+HWND hWnd;
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-
-
-HWND hWnd;
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -39,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
-
+    srand(time(NULL));
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
@@ -52,20 +47,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
-
+   
+    GameLevel::InitGraphics(graphics);          //TO MUSI ISC NAJPIERW
+    GameController::LoadInitialLevel(new Level());
     MSG msg;
+    msg.message = WM_NULL;
 
-    // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
+    while (msg.message != WM_QUIT) {
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             DispatchMessage(&msg);
-           
+        }
+        else {
+            //update!
+
+            GameController::Update();
+
+           //render!
+            graphics->beginDraw();
+            GameController::Render();
+            graphics->endDraw();
+
         }
     }
+    
 
+    delete graphics;
     return (int) msg.wParam;
 }
 
@@ -87,7 +93,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMEPROJECT));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAMEPROJECT);
@@ -110,13 +116,23 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
-
-   RECT rect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
-   AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, true, WS_EX_OVERLAPPEDWINDOW);
- 
-
+   RECT rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
+   AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
    hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, WINDOW_WIDTH, WINDOW_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+
+    
+
+   graphics = new Graphics();
+   if (!graphics->Init(hWnd)) {
+       delete graphics;
+       return false;
+   }
+      
+
+
+   
+
 
    if (!hWnd)
    {
@@ -160,16 +176,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            LPCWSTR wiadomosc = L"Elo";
-            TextOut(hdc, 100, 100, wiadomosc , sizeof(wiadomosc)-1);
-            EndPaint(hWnd, &ps);
-        }
-        break;
+
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
