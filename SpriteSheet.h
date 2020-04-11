@@ -7,7 +7,7 @@ class SpriteSheet {
 public:
 	SpriteSheet(LPCWSTR filename, Graphics* gfx);
 	SpriteSheet(LPCWSTR filename, Graphics* gfx, int spriteWidth, int spriteHeight);
-
+	
 	~SpriteSheet();
 		//draw bitmap to the render target
 	void Draw();
