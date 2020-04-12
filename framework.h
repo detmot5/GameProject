@@ -13,5 +13,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <iostream>
 #define SCREEN_WIDTH        800
 #define SCREEN_HEIGHT       640
+
