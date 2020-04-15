@@ -7,7 +7,7 @@ void Level::Load(){
 	y = 0.0f;
 	ySpeed = 0.0f;
     frame = 0;
-    sprites = new SpriteSheet(L"../source/Graphicss/test.png", gfx,64,64);
+    sprites = new SpriteSheet(L"../GameProject/Graphicss/test.png", gfx,64,64);
 }
 
 void Level::Unload() {

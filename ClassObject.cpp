@@ -3,19 +3,17 @@
 //#include "SpriteSheet.h"
 using namespace std;
 
-class Blok {
+class Block {
 
 public:
 
-	int i;
-	Blok(string str, bool col, char sym, char i) {
+	Block(string str, bool col, char sym) {
 		nameO = str;
 		colisionEnabled = col;
 		symbol = sym;
-		this->i = i;
 	}
-	void render(short wspX, short wspY);
-	friend Blok getObjectBySymbol(char);// getting object by symbol
+	void render(short corX, short corY);
+	friend Block getObjectBySymbol(char);// getting object by symbol
 
 private:
 
@@ -23,17 +21,17 @@ private:
 	bool colisionEnabled;
 	char symbol;                                                 //'#' or '*'
 	short heightO, widthO;                                       //height, width of Object
-	short wysGen, czestGen;                                      //height, width of Generation
-	short wspX, wspY;                                            //co-ordinates of object
+	short heightGen, freqGen;                                      //height, frequency of Generation
+	short corX, corY;                                            //co-ordinates of object
 	//SpriteSheet* sprites;
 
 };
 
 
-Blok blockTypes[] = { {"Air", false, '*', 20 }, {"ground", true, '#', 25}, }; //all types of blocks in game
+Block blockTypes[] = { {"Air", false, '*'}, {"ground", true, '#'}, }; //all types of blocks in game
 
 
-Blok getObjectBySymbol(char a) {
+Block getObjectBySymbol(char a) {
 
 	for (int i = 0; i < SIZE; i++) {
 		if (blockTypes[i].symbol == a) {
@@ -41,9 +39,4 @@ Blok getObjectBySymbol(char a) {
 		}
 	}
 
-}
-
-
-int main(void) {
-	cout << getObjectBySymbol('#').i;
 }
