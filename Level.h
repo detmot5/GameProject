@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GameLevel.h"
-
+#include "Block.h"
+#include "World.h"
 
 
 class Level : public GameLevel
@@ -17,6 +18,7 @@ private:
 	int frame;
 	float y;
 	float ySpeed;
+	Block* block;
 	SpriteSheet* sprites;
 
 };

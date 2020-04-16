@@ -100,7 +100,7 @@ void SpriteSheet::Draw(int index, int x, int y) {
 	D2D_RECT_F src = D2D1::RectF(
 		static_cast<float>((index % spritesAccross) * spriteWidth),		// claculate position of sprite
 		static_cast<float>((index / spritesAccross) * spriteHeight),
-		static_cast<float>((index / spritesAccross) * spriteHeight) + spriteWidth,	//calculate size of sprite
+		static_cast<float>((index % spritesAccross) * spriteHeight) + spriteWidth,	//calculate size of sprite
 		static_cast<float>((index / spritesAccross) * spriteHeight) + spriteHeight
 	);
 		
