@@ -9,7 +9,8 @@ using namespace std;
 
 class World {
 public:
-	friend Block* getObjectBySymbol(char sym);
+	friend Block* GetBlockBySymbol(char symbol);
+	friend Block* GetBlockByIndex(short index);
 
 	static void Init(Graphics *gfx);
 	static void Render();
@@ -25,8 +26,8 @@ private:
 
 
 
-	static inline unsigned short blocksCountX = SCREEN_WIDTH/32;
-	static inline unsigned short blocksCountY = SCREEN_HEIGHT/32;
+	static inline unsigned short blocksCountX = SCREEN_WIDTH/32 - 1 ;	
+	static inline unsigned short blocksCountY = SCREEN_HEIGHT/32 - 1;
 	static inline unsigned short floorLevel = blocksCountY / 2;
 
 	static void (*RandomStructGenerator[])(string&, short, int*);
