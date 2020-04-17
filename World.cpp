@@ -135,7 +135,7 @@ void World::terrainGenerator(string& target, short deepness, int* iterator) {
 
 void World::caveGenerator(string& target, short deepness, int* iterator) {
 	if (!iterator) return;
-	for (int i = 0; i < (rand() % 6) + 2 && *iterator < blocksCountX; i++) {
+	for (int i = 0; i < (rand() % 8) && *iterator < blocksCountX; i++) {
 		target += GetBlockByIndex(Block::air)->GetSymbol();
 		(*iterator)++;
 	}

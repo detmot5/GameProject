@@ -7,6 +7,8 @@
 #include "Graphics.h" 
 #include "Level.h"
 #include "GameController.h"
+
+
 using namespace std;
 #define MAX_LOADSTRING 100
 
@@ -32,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
+   
     // TODO: Place code here.
     srand(time(NULL));
     // Initialize global strings
@@ -48,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
    
-    GameLevel::InitGraphics(graphics);          //TO MUSI ISC NAJPIERW
+    GameLevel::InitGraphics(graphics);          //THIS FIRST
     GameController::LoadInitialLevel(new Level());
     MSG msg;
     msg.message = WM_NULL;
@@ -96,7 +98,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAMEPROJECT);
+    wcex.lpszMenuName   = 0;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -118,8 +120,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
    RECT rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
    AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
-   hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+   hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,szWindowClass, szTitle,WS_OVERLAPPEDWINDOW,
+      100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
 
     
 
