@@ -7,23 +7,27 @@ using namespace std;
 class Block {
 
 public:
+
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(short index);
-	Block(LPCWSTR, Graphics*, char, bool, short, short = 50);
+
+	Block(LPCWSTR, Graphics*, char, bool, short, short = 0, short = 50);
 	void Render(short x, short y);
 
 	short GetSeed();
 	short GetMaxGenerationHeight();
-	char GetSymbol();
-	bool IsCollisionEnabled();
+	char  GetSymbol();
+	bool  IsCollisionEnabled();
+	Graphics* gfx;
 	
 
-	Graphics* gfx;
-	enum blockIndexes {
+	static enum blockIndexes {
 		air = 0,
 		stone = 1,
 		grass = 2,
-		dirt = 3,
+		cave = 3,
+		dirt = 4,
+		diamond = 5,
 	};
 
 
@@ -34,12 +38,9 @@ private:
 	short maxGeneratingHeight;
 	short seed;
 	short index;
-	
-
-
 	SpriteSheet* sprites;
 
-	static const inline  short spriteWidth = 32;
-	static const inline  short spriteHeight = 32;
+	static const inline short spriteWidth = 32;
+	static const inline short spriteHeight = 32;
 
 };

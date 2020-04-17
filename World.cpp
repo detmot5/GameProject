@@ -1,21 +1,21 @@
 #include "World.h"
-#include <iostream>
+
+
 vector<string> World::worldTemplate;
 vector<Block*> World::blockType;
 vector<short> World::randomArray = {
-	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0
+	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 
 };
 
-void (*World::RandomStructGenerator[])(string&, short, int*) {
-		airGenerator,
-		terrainGenerator,
+void (*World::RandomStructGenerator[])(string&, short, UINT8*) {
 		caveGenerator,
+		terrainGenerator,
 };
 
 
 Block* GetBlockBySymbol(char symbol) {
-	for (int i = 0; i < World::blockType.size(); i++) {
+	for (UINT8 i = 0; i < World::blockType.size(); i++) {
 		if (World::blockType[i]->symbol == symbol) {
 			return World::blockType[i];
 		}
@@ -25,7 +25,7 @@ Block* GetBlockBySymbol(char symbol) {
 }
 
 Block* GetBlockByIndex(short index) {
-	for (short i = 0; i < World::blockType.size(); i++) {
+	for (UINT8 i = 0; i < World::blockType.size(); i++) {
 		if (World::blockType[i]->index == index) {
 			return World::blockType[i];
 		}
@@ -35,10 +35,15 @@ Block* GetBlockByIndex(short index) {
 
 
 
+
+
 void World::Init(Graphics* gfx) {
 
-	blockType.push_back(new Block(L"../source/Graphicss/block.png", gfx, '_', false, Block::air));
-	blockType.push_back(new Block(L"../source/Graphicss/block.png", gfx, '#', true, Block::stone));
+	blockType.push_back(new Block(imgSrc, gfx, '_', false, Block::air));
+	blockType.push_back(new Block(imgSrc, gfx, '#', true,  Block::stone));
+	blockType.push_back(new Block(imgSrc, gfx, '-', true,  Block::grass));
+	blockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave));
+	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 2));
 
 	randomArrayInitialize();
 	worldTemplateInitialize();
@@ -47,8 +52,8 @@ void World::Init(Graphics* gfx) {
 
 
 void World::Render() {
-	for (int i = 0; i < worldTemplate.size(); i++) {
-		for (int j = 0; j < worldTemplate[i].length(); j++) {
+	for (UINT8 i = 0; i < worldTemplate.size(); i++) {
+		for (UINT8 j = 0; j < worldTemplate[i].length(); j++) {
 			GetBlockBySymbol(worldTemplate[i].at(j))->Render(j, i);
 		}
 	}
@@ -82,21 +87,23 @@ void World::worldTemplateInitialize(void) {
 	srand((unsigned int)time(nullptr));
 
 
-	for (int i = 0; i < blocksCountY; i++) {
+	for (UINT8 i = 0; i < blocksCountY; i++) {
 		worldTemplate.push_back("");
-		for (int j = 0; j < blocksCountX; j++) {
+		for (UINT8 j = 0; j < blocksCountX; j++) {
 			if (i > floorLevel) {
-				//worldTemplate[i] += "#";
 				RandomStructGenerator[randomArray[rand() % randomArray.size()]](worldTemplate[i], i, &j);
 			}
-			else if (i <= floorLevel) {
-				//worldTemplate[i] += "_";
-				RandomStructGenerator[0](worldTemplate[i], 0, nullptr);
+			else if (i < floorLevel) {
+				worldTemplate[i] += GetBlockByIndex(Block::air)->GetSymbol();
+
+			}
+			else if(i == floorLevel) {
+				worldTemplate[i] += GetBlockByIndex(Block::grass)->GetSymbol();
 			}
 
 		}
 	}
-	cout << "done" << endl;
+	
 }
 
 
@@ -104,39 +111,42 @@ void World::worldTemplateInitialize(void) {
 
 
 
-void World::airGenerator(string& target, short deepness, int* iterator) {
-	target += "_";
+void World::airGenerator(string& target, short deepness, UINT8* iterator) {
+	target += GetBlockByIndex(Block::air)->GetSymbol();
 }
 
-void World::terrainGenerator(string& target, short deepness, int* iterator) {
+void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
 
 
-	target += "#";
+	//target += GetBlockByIndex(Block::stone)->GetSymbol();
 
 	//enum TerrainTypes { dirt = 0, stone = 1, diamond = 2 };
-	//vector <int> randArr;
-	//for (int i = 0; i < 50; i++) {
-	//	randArr.push_back(dirt);
-	//	randArr.push_back(stone);
-	//}
-	//randArr.push_back(diamond);
+	vector <int> randArr;
+	for (int i = 0; i < GetBlockByIndex(Block::stone)->GetSeed(); i++) {
+		randArr.push_back(Block::stone);
+	}
+	randArr.push_back(Block::diamond);
 
-	//int pick = randArr[rand() % randArr.size()];
+	int pick = randArr[rand() % randArr.size()];
 
 
-	//switch (pick) {
-	////case diamond: if (deepness >= blocksCountY - 2)  target += "_"; else target += "#"; break;
-	//case stone: target += '#'; break;
+	switch (pick) {
+	case Block::diamond: 
+		if (deepness >= blocksCountY - 2) {
+			target += GetBlockByIndex(Block::diamond)->GetSymbol();
+		}
+		else target += "#"; break;
+	case Block::stone: target += '#'; break;
 	////case dirt: target += '@'; break;
-	//}
-
+	}
+	
 
 }
 
-void World::caveGenerator(string& target, short deepness, int* iterator) {
+void World::caveGenerator(string& target, short deepness, UINT8* iterator) {
 	if (!iterator) return;
-	for (int i = 0; i < (rand() % 8) && *iterator < blocksCountX; i++) {
-		target += GetBlockByIndex(Block::air)->GetSymbol();
+	for (UINT8 i = 0; i < i < (rand() % 6) && *iterator < blocksCountX; i++) {
+		target += GetBlockByIndex(Block::cave)->GetSymbol();
 		(*iterator)++;
 	}
 	(*iterator)--;

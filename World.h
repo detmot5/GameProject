@@ -16,7 +16,7 @@ public:
 	static void Render();
 	static void Update();
 	static vector<Block*> blockType;
-
+	static inline const LPCWSTR imgSrc = L"../source/Graphicss/block.png";
 
 private:
 
@@ -24,22 +24,21 @@ private:
 	static vector<string> worldTemplate;
 
 
+	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
+	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
+	static inline UINT16 floorLevel = blocksCountY / 2;
+	static inline UINT16 skyLevel = blocksCountY / 5;
 
-
-	static inline unsigned short blocksCountX = SCREEN_WIDTH/32;	
-	static inline unsigned short blocksCountY = SCREEN_HEIGHT/32;
-	static inline unsigned short floorLevel = blocksCountY / 2;
-
-	static void (*RandomStructGenerator[])(string&, short, int*);
+	static void (*RandomStructGenerator[])(string&, short, UINT8*);
 
 
 
 	static void randomArrayInitialize();
 	static void worldTemplateInitialize();
 
-	static void airGenerator(string& target, short deepness, int* iterator);
-	static void terrainGenerator(string& target, short deepness, int* iterator);
-	static void caveGenerator(string& target, short deepness, int* iterator);
+	static void airGenerator(string& target, short deepness, UINT8* iterator);
+	static void terrainGenerator(string& target, short deepness, UINT8* iterator);
+	static void caveGenerator(string& target, short deepness, UINT8* iterator);
 
 
 };

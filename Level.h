@@ -15,9 +15,6 @@ public:
 	void Update() override;
 
 private:
-	int frame;
-	float y;
-	float ySpeed;
 	Block* block;
 	SpriteSheet* sprites;
 

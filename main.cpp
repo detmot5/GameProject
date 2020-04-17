@@ -120,7 +120,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
    RECT rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
    AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
-   hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,szWindowClass, szTitle,WS_OVERLAPPEDWINDOW,
+   hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szWindowClass, L"The Better Terraria", WS_OVERLAPPEDWINDOW,
       100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
 
     

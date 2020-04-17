@@ -5,11 +5,13 @@
 
 
 
-Block::Block(LPCWSTR bitmapPath, Graphics *gfx, char symbol, bool collisionEnabled, short index, short seed) {
+Block::Block(LPCWSTR bitmapPath, Graphics *gfx, char symbol, 
+				bool collisionEnabled, short index, short maxGeneratingHeight, short seed) {
 	this->symbol = symbol;
 	this->collisionEnabled = collisionEnabled;
 	this->gfx = gfx;
 	this->index = index;
+	this->maxGeneratingHeight = maxGeneratingHeight;
 	this->seed = seed;
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
 }
