@@ -115,6 +115,7 @@ void World::worldTemplateInit(void) {
 
 
 
+<<<<<<< HEAD
 void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 	int pick = randomStructArray[Utils::randint(0,randomStructArray.size())];
 
@@ -122,6 +123,17 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 	if (deepness == floorLevel) {
 		LoadBlock(target, Block::grass);
 		return;
+=======
+void World::airGenerator(string& target, short deepness, UINT8* iterator) {
+	target += GetBlockByIndex(Block::air)->GetSymbol();
+}
+
+void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
+
+	vector <int> randArr;
+	for (int i = 0; i < GetBlockByIndex(Block::stone)->GetSeed(); i++) {
+		randArr.push_back(Block::stone);
+>>>>>>> Trying to fix starting bug
 	}
 
 	switch (pick) {
@@ -141,6 +153,7 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 		if (deepness >= floorLevel && deepness < floorLevel + 2) {
 			LoadBlock(target, Block::dirt);
 		}
+<<<<<<< HEAD
 		else {
 			LoadBlock(target, Block::stone);
 		}
@@ -149,6 +162,12 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 	case Block::cave:
 		GenerateCave(target, 0, iterator);
 		break;
+=======
+		else target += "#"; break;
+	case Block::stone: target += '#'; break;
+	}
+	
+>>>>>>> Trying to fix starting bug
 
 	}
 }
