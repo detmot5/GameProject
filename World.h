@@ -16,11 +16,8 @@ public:
 	static void Render();
 	static void Update();
 	static vector<Block*> blockType;
-<<<<<<< HEAD
+
 	static inline const LPCWSTR imgSrc = L"C:/mySoft/GameProject/Workspace/GameProject/source/Graphicss/block.png";
-=======
-	static inline const LPCWSTR imgSrc = L"../GameProject/Graphicss/block.png";
->>>>>>> added character
 
 private:
 
