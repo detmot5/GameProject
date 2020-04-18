@@ -117,10 +117,6 @@ void World::airGenerator(string& target, short deepness, UINT8* iterator) {
 
 void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
 
-
-	//target += GetBlockByIndex(Block::stone)->GetSymbol();
-
-	//enum TerrainTypes { dirt = 0, stone = 1, diamond = 2 };
 	vector <int> randArr;
 	for (int i = 0; i < GetBlockByIndex(Block::stone)->GetSeed(); i++) {
 		randArr.push_back(Block::stone);
@@ -137,7 +133,6 @@ void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
 		}
 		else target += "#"; break;
 	case Block::stone: target += '#'; break;
-	////case dirt: target += '@'; break;
 	}
 	
 
