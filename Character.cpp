@@ -1,6 +1,7 @@
 #include "GameController.h"
 #include "Character.h"
 
+
 Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed,
 	float ySpeed, float jumpHeight, float gravity)
 	: Animation(bitmapPath, graphics, false)

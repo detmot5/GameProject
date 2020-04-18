@@ -42,10 +42,10 @@ public:
 	
 
 	static vector<Block*> blockType;
+
 	static inline const LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 
 	
-
 private:
 
 	static vector<short> randomStructArray;
