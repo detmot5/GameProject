@@ -45,8 +45,11 @@ public:
 
 	static inline const LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 
+
 	
 private:
+
+
 
 	static vector<short> randomStructArray;
 	static vector<string> worldTemplate;
