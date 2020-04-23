@@ -12,6 +12,7 @@
 
 void Level::Load(){
     World::Init(gfx);
+    
 }
 
 void Level::Unload() {

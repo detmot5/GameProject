@@ -4,6 +4,7 @@
 #include "SpriteSheet.h"
 using namespace std;
 
+
 class Block {
 
 public:
@@ -16,16 +17,17 @@ public:
 
 	short GetSeed();
 	short GetMaxGenerationHeight();
+	short GetIndex();
 	char  GetSymbol();
 	bool  IsCollisionEnabled();
 	Graphics* gfx;
 	
 
-	static enum blockIndexes {
-		air = 0,
-		stone = 1,
-		grass = 2,
-		cave = 3,
+	enum blockIndexes {
+		stone = 0,
+		cave = 1,
+		air = 2,
+		grass = 3,
 		dirt = 4,
 		diamond = 5,
 	};

@@ -14,6 +14,8 @@
 #include <memory.h>
 #include <tchar.h>
 #include <iostream>
+
 #define SCREEN_WIDTH        800
 #define SCREEN_HEIGHT       640
+#define DEBUG_MODE true
 

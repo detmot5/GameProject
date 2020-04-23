@@ -32,6 +32,9 @@ short Block::GetSeed() {
 short Block::GetMaxGenerationHeight() {
 	return maxGeneratingHeight;
 }
+short Block::GetIndex() {
+	return index;
+}
 char Block::GetSymbol() {
 	return symbol;
 }
