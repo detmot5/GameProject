@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "Block.h"
 #include "Graphics.h"
+#include "Utils.h"
+
 using namespace std;
 
 class World {
@@ -19,9 +21,10 @@ public:
 
 	static inline const LPCWSTR imgSrc = L"C:/mySoft/GameProject/Workspace/GameProject/source/Graphicss/block.png";
 
+
 private:
 
-	static vector<short> randomArray;
+	static vector<short> randomStructArray;
 	static vector<string> worldTemplate;
 
 
@@ -37,9 +40,10 @@ private:
 	static void randomArrayInitialize();
 	static void worldTemplateInitialize();
 
-	static void airGenerator(string& target, short deepness, UINT8* iterator);
-	static void terrainGenerator(string& target, short deepness, UINT8* iterator);
+	static void TerrainGenerator(string& target, short deepness, UINT8* iterator);
 	static void caveGenerator(string& target, short deepness, UINT8* iterator);
+	
 
+	
 
 };
