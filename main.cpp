@@ -1,7 +1,6 @@
 // DirectxLesson.cpp : Defines the entry point for the application.
 //
 #include <ctime>
-
 #include "framework.h"
 #include "main.h"
 #include "Graphics.h" 
@@ -42,6 +41,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
+#if DEBUG_MODE
+    //Open debug console
+    AllocConsole();
+    FILE* fp;
+
+    freopen_s(&fp, "CONIN$", "r", stdin);
+    freopen_s(&fp, "CONOUT$", "w", stdout);
+    freopen_s(&fp, "CONOUT$", "w", stderr);
+    cout << "GameProject v1.0 Debug Console" << endl;
+#endif
+
     // Perform application initialization:
     if (!InitInstance (hInstance, nCmdShow))
     {
@@ -49,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
-   
+    
     GameLevel::InitGraphics(graphics);          //THIS FIRST
     GameController::LoadInitialLevel(new Level());
     MSG msg;
