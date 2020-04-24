@@ -35,12 +35,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
    
     // TODO: Place code here.
-    srand(time(NULL));
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
-
+    srand(time(nullptr));
 #if DEBUG_MODE
     //Open debug console
     AllocConsole();
@@ -51,6 +46,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     freopen_s(&fp, "CONOUT$", "w", stderr);
     cout << "GameProject v1.0 Debug Console" << endl;
 #endif
+
+    // Initialize global strings
+    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
+    MyRegisterClass(hInstance);
+
 
     // Perform application initialization:
     if (!InitInstance (hInstance, nCmdShow))
