@@ -27,6 +27,10 @@ Block* GetBlockByIndex(short index) {
 	return nullptr;
 }
 
+void LoadBlock(string& target, short index) {
+	target += GetBlockByIndex(index)->GetSymbol();
+}
+
 
 
 void LoadBlock(string& target, short index) {
@@ -73,6 +77,7 @@ void World::Render() {
 	isDisplayed = true;
 #endif
 }
+#endif
 
 void World::Update() {
 
