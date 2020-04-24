@@ -13,6 +13,8 @@ public:
 	friend Block* GetBlockByIndex(short index);
 
 	Block(LPCWSTR, Graphics*, char, bool, short, short = 0, short = 50);
+	~Block();
+
 	void Render(short x, short y);
 
 	short GetSeed();

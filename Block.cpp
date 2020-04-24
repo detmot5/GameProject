@@ -16,6 +16,10 @@ Block::Block(LPCWSTR bitmapPath, Graphics *gfx, char symbol,
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
 }
 
+Block::~Block() {
+	delete sprites;
+}
+
 
 
 void Block::Render(short x, short y){
