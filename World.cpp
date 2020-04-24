@@ -6,10 +6,6 @@ vector<Block*> World::blockType;
 
 vector<short> World::randomStructArray;
 
-void (*World::RandomStructGenerator[])(string&, short, UINT8*) {
-		TerrainGenerator,
-		caveGenerator,
-};
 
 
 Block* GetBlockBySymbol(char symbol) {
@@ -31,6 +27,10 @@ Block* GetBlockByIndex(short index) {
 	return nullptr;
 }
 
+void LoadBlock(string& target, short index) {
+	target += GetBlockByIndex(index)->GetSymbol();
+}
+
 
 
 void World::Init(Graphics* gfx) {
@@ -40,25 +40,31 @@ void World::Init(Graphics* gfx) {
 	blockType.push_back(new Block(imgSrc, gfx, '-', true,  Block::grass));
 	blockType.push_back(new Block(imgSrc, gfx, '%', true, Block::dirt));
 	blockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
-	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 2));
-	randomArrayInitialize();
+	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 5));
+
+	randomArrayInit();
+#if DEBUG_MODE
 	printVector(randomStructArray);
-	worldTemplateInitialize();
+#endif
+	worldTemplateInit();
 }
 
 
 
 void World::Render() {
 	static bool isDisplayed = false;
+
 	for (UINT8 i = 0; i < worldTemplate.size(); i++) {
 		for (UINT8 j = 0; j < worldTemplate[i].length(); j++) {
 			GetBlockBySymbol(worldTemplate[i].at(j))->Render(j, i);
 		}
-		if(!isDisplayed)
-			cout << worldTemplate[i]<<endl;
 	}
+#if DEBUG_MODE
+	if (!isDisplayed)
+		printVector(worldTemplate,"\n");
 	isDisplayed = true;
 }
+#endif
 
 void World::Update() {
 
@@ -66,18 +72,12 @@ void World::Update() {
 
 
 
+void World::randomArrayInit() {
 
-
-
-
-
-
-void World::randomArrayInitialize() {
-
-	for (int i = 0; i < blockType.size(); i++) {
+	for (UINT8 i = 0; i < blockType.size(); i++) {
 		if (blockType[i]->GetIndex() == Block::air) continue;
 		if (blockType[i]->GetIndex() == Block::grass) continue;
-		for (int j = 0; j < blockType[i]->GetSeed(); j++) {
+		for (UINT16 j = 0; j < blockType[i]->GetSeed(); j++) {
 			randomStructArray.push_back(blockType[i]->GetIndex());
 		}
 	}
@@ -86,8 +86,7 @@ void World::randomArrayInitialize() {
 
 
 
-void World::worldTemplateInitialize(void) {
-	srand(static_cast<unsigned int>(time(nullptr)));
+void World::worldTemplateInit(void) {
 
 	for (UINT8 i = 0; i < blocksCountY; i++) {
 		worldTemplate.push_back("");
@@ -96,10 +95,8 @@ void World::worldTemplateInitialize(void) {
 				TerrainGenerator(worldTemplate[i], i, &j);
 			}
 			else if (i < floorLevel) {
-				worldTemplate[i] += GetBlockByIndex(Block::air)->GetSymbol();
-
+				LoadBlock(worldTemplate[i], Block::air);
 			}
-
 		}
 	}
 	
@@ -111,40 +108,38 @@ void World::worldTemplateInitialize(void) {
 
 
 void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
-	int pick = randomStructArray[Utils::randint(1,randomStructArray.size())];
+	int pick = randomStructArray[Utils::randint(0,randomStructArray.size())];
 
 
 	if (deepness == floorLevel) {
-		target += GetBlockByIndex(Block::grass)->GetSymbol();
+		LoadBlock(target, Block::grass);
 		return;
 	}
 
 	switch (pick) {
+
 	case Block::diamond: 
-		if (deepness >= blocksCountY - 2) {
-			target += GetBlockByIndex(Block::diamond)->GetSymbol();
-		}
-		else target += GetBlockByIndex(Block::stone)->GetSymbol(); 
+		if (deepness >= blocksCountY - 2)
+			LoadBlock(target, Block::diamond);
+		else 
+			LoadBlock(target, Block::stone);
 		break;
 
 	case Block::stone: 
-		target += GetBlockByIndex(Block::stone)->GetSymbol();
+		LoadBlock(target, Block::stone);
 		break;
 
 	case Block::dirt:
-		if (0) {
-			target += GetBlockByIndex(Block::dirt)->GetSymbol();
+		if (deepness >= floorLevel && deepness < floorLevel + 2) {
+			LoadBlock(target, Block::dirt);
 		}
 		else {
-			target += GetBlockByIndex(Block::stone)->GetSymbol();
+			LoadBlock(target, Block::stone);
 		}
 		break;
 
 	case Block::cave:
-		caveGenerator(target, 0, iterator);
-#if DEBUG_MODE
-		cout << "Cave gen start" << endl;
-#endif
+		GenerateCave(target, 0, iterator);
 		break;
 
 	}
@@ -153,10 +148,10 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 
 
 
-void World::caveGenerator(string& target, short deepness, UINT8* iterator) {
+void World::GenerateCave(string& target, short deepness, UINT8* iterator) {
 	if (!iterator) return;
-	for (UINT8 i = 0; i < i < (rand() % 6) && *iterator < blocksCountX; i++) {
-		target += GetBlockByIndex(Block::cave)->GetSymbol();
+	for (UINT8 i = 0; i < randint(3,8) && *iterator < blocksCountX; i++) {
+		LoadBlock(target, Block::cave);
 		(*iterator)++;
 	}
 	(*iterator)--;
