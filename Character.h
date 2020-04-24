@@ -5,7 +5,7 @@
 class Character
 {
 public:
-	Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float xSpeed = 4.0, float ySpeed = 4);
+	Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float x = SCREEN_WIDTH * 0.5, float y = (int)(SCREEN_HEIGHT * 0.47), float xSpeed = 4.0, float ySpeed = 4);
 
 	void Update();
 	void Render();
@@ -24,21 +24,15 @@ private:
 
 	enum indicator
 	{
-		raise = 2,
-		down = 1
+		On = 1,
+		Off = 0
 	};
+	
+	float x;
+	float y;
 
-	struct Vector
-	{
-		float x;
-		float y;
-	}vector;
-
-	struct Point
-	{
-		float x;
-		float y;
-	}point;
+	float xSpeed;
+	float ySpeed;
 
 	SpriteSheet* sprites;
 	static inline Graphics* graphics;

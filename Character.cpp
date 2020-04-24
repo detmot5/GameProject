@@ -3,17 +3,18 @@
 
 #include "GlobalPath.h"
 
-short flag = NULL;
+short RaiseIndicator;
+short DescentIndicator;
 
-Character::Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float xSpeed, float ySpeed)
+Character::Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float x, float y, float xSpeed, float ySpeed)
 {
 	this->graphics = graphics;
-	point.x = SCREEN_WIDTH * 0.5;
-	point.y = (int)(SCREEN_HEIGHT * 0.47);
-	vector.x = xSpeed;
-	vector.y = ySpeed;
+	this->x = x;
+	this->y = y;
+	this->xSpeed = xSpeed;
+	this->ySpeed = ySpeed;
 	/*bitmapPath = _bitmapPath;*/
-	sprites = new SpriteSheet(Path.Character, this->graphics, 32, 32);
+	sprites = new SpriteSheet(CharacterPath, this->graphics, 32, 32);
 }
 
 void Character::Update()
@@ -26,7 +27,7 @@ void Character::Update()
 	{
 		Left_Move();
 	}
-	if (GetKeyState(Up) & 0x8000 || flag == down || flag == raise)
+	if (GetKeyState(Up) & 0x8000 || RaiseIndicator == On || DescentIndicator == On)
 	{
 		Jump();
 	}
@@ -34,46 +35,48 @@ void Character::Update()
 
 void Character::Right_Move()
 {
-	point.x += vector.x;
+	x += xSpeed;
 
-	if (point.x >= SCREEN_WIDTH)
+	if (x >= SCREEN_WIDTH)
 	{
-		point.x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
+		x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
 	}
 }
 
 void Character::Left_Move()
 {
-	point.x -= vector.x;
+	x -= xSpeed;
 
-	if (point.x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
+	if (x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
 	{
-		point.x = SCREEN_WIDTH;
+		x = SCREEN_WIDTH;
 	}
 }
 
 void Character::Jump()
 {
-	if ((point.y != (int)(SCREEN_HEIGHT * 0.27) && flag == NULL) || flag == raise)
+	if ((y != (int)(SCREEN_HEIGHT * 0.27) && DescentIndicator == Off) || RaiseIndicator == On)
 	{
-		point.y -= vector.y;
-		flag = raise;
+		y -= ySpeed;
+		RaiseIndicator = On;
 	}
-	if (point.y == (int)(SCREEN_HEIGHT * 0.27) || flag == down)
+	if (y == (int)(SCREEN_HEIGHT * 0.27) || DescentIndicator == On)
 	{
-		flag = down;
-		if ((point.y != (int)(SCREEN_HEIGHT * 0.47)) && flag == down)
+		RaiseIndicator = Off;
+		DescentIndicator = On;
+
+		if ((y != (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
 		{
-			point.y += vector.y;
+			y += ySpeed;
 		}
 	}
-	if ((point.y == (int)(SCREEN_HEIGHT *0.47)) && flag == down)
+	if ((y == (int)(SCREEN_HEIGHT *0.47)) && DescentIndicator == On)
 	{
-		flag = NULL;
+		DescentIndicator = Off;
 	}
 }
 
 void Character::Render()
 {
-	sprites->Draw((1 / 10) % 1, point.x, point.y);
+	sprites->Draw((1 / 10) % 1, x, y);
 }

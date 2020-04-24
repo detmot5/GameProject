@@ -40,7 +40,7 @@ public:
 	static void Update();
 	static vector<Block*> blockType;
 
-	static inline const LPCWSTR imgSrc = Path.World;
+	static inline const LPCWSTR imgSrc = WorldPath;
 
 
 private:
