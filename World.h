@@ -1,7 +1,26 @@
+/*
+	2D Random Game World Generator with DirectX2D
+
+	The program first randomly fills out the string vector
+	Each character is each block symbol. For example for air is '_' and for diamond is '&'.
+
+	Then it reads this vector and draws bitmaps assigned to each block on given coordinates.
+
+
+	To create new block, add it to blockType vector in World::Init() function
+	and add generating conditions to TerrainGenerator() Functions
+	You can also add block index name into enum it Block.h 
+
+
+	World.h
+	Created on: 11.04.2020
+	Author: Norbert Bielak
+
+*/ 
 #pragma once
 
 #include <vector>
-#include <ctime>
+
 #include "framework.h"
 #include "Block.h"
 #include "Graphics.h"
@@ -33,17 +52,11 @@ private:
 	static inline UINT16 floorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 
-	static void (*RandomStructGenerator[])(string&, short, UINT8*);
-
-
-
-	static void randomArrayInitialize();
-	static void worldTemplateInitialize();
+	static void randomArrayInit();
+	static void worldTemplateInit();
 
 	static void TerrainGenerator(string& target, short deepness, UINT8* iterator);
-	static void caveGenerator(string& target, short deepness, UINT8* iterator);
-	
 
-	
+	static void GenerateCave(string& target, short deepness, UINT8* iterator);
 
 };
