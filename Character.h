@@ -1,13 +1,27 @@
 #pragma once
+
 #include "Graphics.h"
+
 
 class Character
 {
 public:
-	static int temp;
-	void static Jump(Graphics* graphics);
-	void static SinJump_L(Graphics* graphics);
-	void static SinJump_R(Graphics* graphics);
-	void static Right(Graphics* graphics);
-	void static Left(Graphics* graphics);
+	void static Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x = 0, float y = 268, float xSpeed = 2.0, float ySpeed = 0);
+	void static move();
+	void static Render();
+	static struct Vector
+	{
+		float x;
+		float y;
+	};
+
+	static struct Point
+	{
+		float x;
+		float y;
+	};
+private:
+	static SpriteSheet* sprites;
+	static Graphics* graphics;
+	/*static LPCWSTR bitmapPath;*/
 };

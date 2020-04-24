@@ -1,108 +1,70 @@
 #include "GameController.h"
 #include "Character.h"
-#include "Level1.h"
+#include "Buttons.h"
 
-int Character::temp = 10;
+Graphics* Character::graphics;
+SpriteSheet* Character::sprites;
+short inline flaga = 0;
 
-void Character::Jump(Graphics* graphics)
+struct Character::Vector vector;
+struct Character::Point point;
+
+void Character::Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x, float y, float xSpeed, float ySpeed)
 {
-	while (Level1::y != 150)
+	graphics = _graphics;
+	point.x = x;
+	point.y = y;
+	vector.x = xSpeed;
+	vector.y = ySpeed;
+	/*bitmapPath = _bitmapPath;*/
+	sprites = new SpriteSheet(L"Graphicss/test.png", graphics, 64, 64);
+}
+
+void Character::move()
+{
+	if (GetKeyState(Right) & 0x8000)
 	{
-		Level1::y -= 10;
+		point.x += vector.x;
 
-		graphics->BeginDraw();
-
-		GameController::Render();
-
-		graphics->EndDraw();
-
-	}
-	if (Level1::y == 150)
-	{
-		while (Level1::y != 300)
+		if (point.x >= 800)
 		{
-			Level1::y += 10;
+			point.x = 0;
+		}
+	}
+	if (GetKeyState(Left) & 0x8000)
+	{
+		point.x -= vector.x;
 
-			graphics->BeginDraw();
+		if (point.x <= 0)
+		{
+			point.x = 750;
+		}
+	}
+	if (GetKeyState(Up) & 0x800 || flaga == 1 || flaga == 2)
+	{
 
-			GameController::Render();
-
-			graphics->EndDraw();
+		if ((point.y != 156 && flaga == 0) || flaga == 2)
+		{
+			point.y -= 4;
+			flaga = 2;
+		}
+		if (point.y == 156 || flaga == 1)
+		{
+			flaga = 1;
+			if (point.y != 268 && flaga == 1)
+			{
+				point.y += 4;
+			}
+		}
+		if (point.y == 268 && flaga == 1)
+		{
+			flaga = 0;
 		}
 	}
 }
 
-void Character::Right(Graphics* graphics)
+
+void Character::Render()
 {
-	Level1::change(1);
-	GameController::Update();
-
-	graphics->BeginDraw();
-
-	GameController::Render();
-
-	graphics->EndDraw();
-}
-
-void Character::Left(Graphics* graphics)
-{
-	Level1::change(2);
-
-	GameController::Update();
-
-	graphics->BeginDraw();
-
-	GameController::Render();
-
-	graphics->EndDraw();
-}
-
-void Character::SinJump_L(Graphics* graphics)
-{
-	while ((Level1::x < (Level1::x + temp)) && Level1::y != 150)
-	{
-		Level1::y -= 10;
-		Level1::x -= 5, 5;
-		graphics->BeginDraw();
-
-		GameController::Render();
-
-		graphics->EndDraw();
-	}
-
-	while (Level1::x < (Level1::x + temp) && Level1::y != 300)
-	{
-		Level1::y += 10;
-		Level1::x -= 5, 5;
-		graphics->BeginDraw();
-
-		GameController::Render();
-
-		graphics->EndDraw();
-	}
-}
-
-void Character::SinJump_R(Graphics* graphics)
-{
-	while ((Level1::x < (Level1::x + temp)) && Level1::y != 150)
-	{
-		Level1::y -= 10;
-		Level1::x += 5, 5;
-		graphics->BeginDraw();
-
-		GameController::Render();
-
-		graphics->EndDraw();
-	}
-
-	while (Level1::x < (Level1::x + temp) && Level1::y != 300)
-	{
-		Level1::y += 10;
-		Level1::x += 5, 5;
-		graphics->BeginDraw();
-
-		GameController::Render();
-
-		graphics->EndDraw();
-	}
+	sprites->Draw((1 / 10) % 1, point.x, point.y);
 }
