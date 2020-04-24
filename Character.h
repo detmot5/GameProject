@@ -2,26 +2,45 @@
 
 #include "Graphics.h"
 
-
 class Character
 {
 public:
-	void static Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x = 0, float y = 268, float xSpeed = 2.0, float ySpeed = 0);
-	void static move();
-	void static Render();
-	static struct Vector
+	Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float xSpeed = 4.0, float ySpeed = 4);
+
+	void Update();
+	void Render();
+
+private:
+	void Right_Move();
+	void Left_Move();
+	void Jump();
+
+	enum Direction
 	{
-		float x;
-		float y;
+		Right = 'D',
+		Left = 'A',
+		Up = 0x20
 	};
 
-	static struct Point
+	enum indicator
+	{
+		raise = 2,
+		down = 1
+	};
+
+	struct Vector
 	{
 		float x;
 		float y;
-	};
-private:
-	static SpriteSheet* sprites;
-	static Graphics* graphics;
+	}vector;
+
+	struct Point
+	{
+		float x;
+		float y;
+	}point;
+
+	SpriteSheet* sprites;
+	static inline Graphics* graphics;
 	/*static LPCWSTR bitmapPath;*/
 };

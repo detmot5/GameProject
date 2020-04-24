@@ -1,68 +1,77 @@
 #include "GameController.h"
 #include "Character.h"
-#include "Buttons.h"
 
-Graphics* Character::graphics;
-SpriteSheet* Character::sprites;
-short inline flaga = 0;
+#include "GlobalPath.h"
 
-struct Character::Vector vector;
-struct Character::Point point;
+short flag = NULL;
 
-void Character::Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x, float y, float xSpeed, float ySpeed)
+Character::Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float xSpeed, float ySpeed)
 {
-	graphics = _graphics;
-	point.x = x;
-	point.y = y;
+	this->graphics = graphics;
+	point.x = SCREEN_WIDTH * 0.5;
+	point.y = (int)(SCREEN_HEIGHT * 0.47);
 	vector.x = xSpeed;
 	vector.y = ySpeed;
 	/*bitmapPath = _bitmapPath;*/
-	sprites = new SpriteSheet(L"Graphicss/test.png", graphics, 64, 64);
+	sprites = new SpriteSheet(Path.Character, this->graphics, 32, 32);
 }
 
-void Character::move()
+void Character::Update()
 {
 	if (GetKeyState(Right) & 0x8000)
 	{
-		point.x += vector.x;
-
-		if (point.x >= 800)
-		{
-			point.x = 0;
-		}
+		Right_Move();
 	}
 	if (GetKeyState(Left) & 0x8000)
 	{
-		point.x -= vector.x;
-
-		if (point.x <= 0)
-		{
-			point.x = 750;
-		}
+		Left_Move();
 	}
-	if (GetKeyState(Up) & 0x800 || flaga == 1 || flaga == 2)
+	if (GetKeyState(Up) & 0x8000 || flag == down || flag == raise)
 	{
-
-		if ((point.y != 156 && flaga == 0) || flaga == 2)
-		{
-			point.y -= 4;
-			flaga = 2;
-		}
-		if (point.y == 156 || flaga == 1)
-		{
-			flaga = 1;
-			if (point.y != 268 && flaga == 1)
-			{
-				point.y += 4;
-			}
-		}
-		if (point.y == 268 && flaga == 1)
-		{
-			flaga = 0;
-		}
+		Jump();
 	}
 }
 
+void Character::Right_Move()
+{
+	point.x += vector.x;
+
+	if (point.x >= SCREEN_WIDTH)
+	{
+		point.x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
+	}
+}
+
+void Character::Left_Move()
+{
+	point.x -= vector.x;
+
+	if (point.x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
+	{
+		point.x = SCREEN_WIDTH;
+	}
+}
+
+void Character::Jump()
+{
+	if ((point.y != (int)(SCREEN_HEIGHT * 0.27) && flag == NULL) || flag == raise)
+	{
+		point.y -= vector.y;
+		flag = raise;
+	}
+	if (point.y == (int)(SCREEN_HEIGHT * 0.27) || flag == down)
+	{
+		flag = down;
+		if ((point.y != (int)(SCREEN_HEIGHT * 0.47)) && flag == down)
+		{
+			point.y += vector.y;
+		}
+	}
+	if ((point.y == (int)(SCREEN_HEIGHT *0.47)) && flag == down)
+	{
+		flag = NULL;
+	}
+}
 
 void Character::Render()
 {

@@ -26,6 +26,8 @@
 #include "Graphics.h"
 #include "Utils.h"
 
+#include "GlobalPath.h";
+
 using namespace std;
 
 class World {
@@ -38,7 +40,7 @@ public:
 	static void Update();
 	static vector<Block*> blockType;
 
-	static inline const LPCWSTR imgSrc = L"Graphicss/block.png";
+	static inline const LPCWSTR imgSrc = Path.World;
 
 
 private:

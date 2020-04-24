@@ -2,7 +2,7 @@
 #include "GameController.h"
 #include "Character.h"
 
-
+Character* Steve;
 
 // example level class
 
@@ -13,8 +13,7 @@
 
 void Level::Load(){
     World::Init(gfx);
-    Character::Init(gfx);
-    
+    Steve = new Character(gfx);
 }
 
 void Level::Unload() {
@@ -23,7 +22,7 @@ void Level::Unload() {
 
 
 void Level::Update() {
-    Character::move();
+    Steve->Update();
 }
 
 
@@ -31,7 +30,7 @@ void Level::Render() {
     gfx->ClearScreen(0,0,0);
     World::Render();
 
-    Character::Render();
+    Steve->Render();
 }
 
 
