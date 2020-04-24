@@ -14,9 +14,5 @@ public:
 	void Render() override;
 	void Update() override;
 
-private:
-	Block* block;
-	SpriteSheet* sprites;
-
 };
 
