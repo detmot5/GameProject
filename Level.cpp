@@ -13,7 +13,7 @@
 
 void Level::Load(){
     World::Init(gfx);
-    Character::Init(gfx);
+ //   Character::Init(gfx);
     
 }
 
@@ -31,7 +31,7 @@ void Level::Render() {
     gfx->ClearScreen(0,0,0);
     World::Render();
 
-    Character::Render();
+  //  Character::Render();
 }
 
 

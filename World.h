@@ -38,7 +38,7 @@ public:
 	static void Update();
 	static vector<Block*> blockType;
 
-	static inline const LPCWSTR imgSrc = L"Graphicss/block.png";
+	static inline const LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 
 
 private:
