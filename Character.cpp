@@ -17,7 +17,7 @@ void Character::Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x, floa
 	vector.x = xSpeed;
 	vector.y = ySpeed;
 	/*bitmapPath = _bitmapPath;*/
-	sprites = new SpriteSheet(L"Graphicss/test.png", graphics, 64, 64);
+	sprites = new SpriteSheet(L"GameProject/Graphicss/Graphicss/test.png", graphics, 64, 64);
 }
 
 void Character::move()
