@@ -19,60 +19,62 @@ Character::Character(/*LPCWSTR _bitmapPath,*/ Graphics* graphics, float x, float
 
 void Character::Update()
 {
-	if (GetKeyState(Right) & 0x8000)
-	{
-		Right_Move();
-	}
-	if (GetKeyState(Left) & 0x8000)
-	{
-		Left_Move();
-	}
-	if (GetKeyState(Up) & 0x8000 || RaiseIndicator == On || DescentIndicator == On)
-	{
-		Jump();
-	}
+	Right_Move();
+	
+	Left_Move();
+
+	Jump();
 }
 
 void Character::Right_Move()
 {
-	x += xSpeed;
-
-	if (x >= SCREEN_WIDTH)
+	if (GetKeyState(Right) & 0x8000)
 	{
-		x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
+		x += xSpeed;
+
+		if (x >= SCREEN_WIDTH)
+		{
+			x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
+		}
 	}
 }
 
 void Character::Left_Move()
 {
-	x -= xSpeed;
-
-	if (x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
+	if (GetKeyState(Left) & 0x8000)
 	{
-		x = SCREEN_WIDTH;
+		x -= xSpeed;
+
+		if (x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
+		{
+			x = SCREEN_WIDTH;
+		}
 	}
 }
 
 void Character::Jump()
 {
-	if ((y != (int)(SCREEN_HEIGHT * 0.27) && DescentIndicator == Off) || RaiseIndicator == On)
+	if (GetKeyState(Up) & 0x8000 || RaiseIndicator == On || DescentIndicator == On)
 	{
-		y -= ySpeed;
-		RaiseIndicator = On;
-	}
-	if (y == (int)(SCREEN_HEIGHT * 0.27) || DescentIndicator == On)
-	{
-		RaiseIndicator = Off;
-		DescentIndicator = On;
-
-		if ((y != (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+		if ((y != (int)(SCREEN_HEIGHT * 0.27) && DescentIndicator == Off) || RaiseIndicator == On)
 		{
-			y += ySpeed;
+			y -= ySpeed;
+			RaiseIndicator = On;
 		}
-	}
-	if ((y == (int)(SCREEN_HEIGHT *0.47)) && DescentIndicator == On)
-	{
-		DescentIndicator = Off;
+		if (y == (int)(SCREEN_HEIGHT * 0.27) || DescentIndicator == On)
+		{
+			RaiseIndicator = Off;
+			DescentIndicator = On;
+
+			if ((y != (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+			{
+				y += ySpeed;
+			}
+		}
+		if ((y == (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+		{
+			DescentIndicator = Off;
+		}
 	}
 }
 
