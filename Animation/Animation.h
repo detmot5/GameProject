@@ -7,7 +7,7 @@
 class Animation
 {
 public:
-	Animation(LPCTSTR, Graphics*);
+	Animation(LPCTSTR, Graphics*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
 	~Animation();
 
 	virtual void Update();
@@ -23,6 +23,8 @@ public:
 protected:
 	float x, y;
 	float xSpeed, ySpeed;
+	short index;
+	bool blockPrecision;
 	UINT16 spriteWidth, spriteHeight;
 	SpriteSheet* sprites;
 	Graphics* gfx;
