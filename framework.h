@@ -17,5 +17,7 @@
 
 #define SCREEN_WIDTH        800
 #define SCREEN_HEIGHT       640
+#define DEFAULT_BLOCK_SIZE  32
+
 #define DEBUG_MODE true
 
