@@ -27,11 +27,19 @@ Block* GetBlockByIndex(short index) {
 	return nullptr;
 }
 
+
+
 void LoadBlock(string& target, short index) {
 	target += GetBlockByIndex(index)->GetSymbol();
 }
 
 
+UINT16 World::GetFloorLever() {
+	return floorLevel;
+}
+UINT16 World::GetSkyLevel() {
+	return skyLevel;
+}
 
 void World::Init(Graphics* gfx) {
 
@@ -63,8 +71,8 @@ void World::Render() {
 	if (!isDisplayed)
 		printVector(worldTemplate,"\n");
 	isDisplayed = true;
-}
 #endif
+}
 
 void World::Update() {
 
