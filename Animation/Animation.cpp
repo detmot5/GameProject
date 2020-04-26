@@ -7,7 +7,7 @@ Animation::Animation(LPCTSTR bitmapPath, Graphics* gfx) {
 	y = 0.0;
 	xSpeed = 0.0;
 	ySpeed = 0.0;
-	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
+	sprites = new SpriteSheet(bitmapPath, gfx, 32, 32);
 }
 
 Animation::~Animation() {
