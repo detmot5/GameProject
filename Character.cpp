@@ -1,11 +1,12 @@
 #include "GameController.h"
 #include "Character.h"
+#include "World.h"
 
 short RaiseIndicator;
 short DescentIndicator;
 
 Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed, float ySpeed)
-	: Animation(bitmapPath, graphics)
+	: Animation(bitmapPath, graphics, false)
 {
 	//this->graphics = graphics;
 	this->x = x;
@@ -65,13 +66,15 @@ void Character::MoveUp()
 			RaiseIndicator = Off;
 			DescentIndicator = On;
 
-			if ((y != (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+			if ((y >= World::GetFloorLever()) && DescentIndicator == On)
 			{
 				y += ySpeed;
 			}
+			
 		}
 		if ((y == (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
 		{
+			//ySpeed = 0;
 			DescentIndicator = Off;
 		}
 	}
