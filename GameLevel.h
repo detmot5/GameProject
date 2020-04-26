@@ -1,6 +1,8 @@
 #pragma once
+#include <vector>
 #include "Graphics.h"
 #include "SpriteSheet.h"
+#include "Animation/Animation.h"
 
 class GameLevel {
 public:
@@ -16,4 +18,5 @@ public:
 
 protected:
 	static inline Graphics* gfx;
+	std::vector<Animation*> Animations;
 };
