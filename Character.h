@@ -30,11 +30,11 @@ private:
 		Off = 0
 	};
 
-	float x;
+	/*float x;
 	float y;
 
 	float xSpeed;
-	float ySpeed;
+	float ySpeed;*/
 
 	/*SpriteSheet* sprites;*/
 	/*static inline Graphics* graphics;*/
