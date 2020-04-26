@@ -1,13 +1,4 @@
 #include "Level.h"
-#include "GameController.h"
-#include "Character.h"
-
-
-#include "Animation/Animation.h"
-#include "Clouds.h"
-
-Animation* Hero;
-Animation* Cloud;
 
 
 // example level class
@@ -19,14 +10,10 @@ Animation* Cloud;
 
 void Level::Load(){
     World::Init(gfx);
+    Animations.push_back(new Character(L"GameProject/Graphicss/slime_sprite.png", gfx));
+    Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
 
 
-    Hero = new Character(L"../GameProject/Graphicss/slime_sprite.png", gfx);
-    Cloud = new Clouds(L"../GameProject/Graphicss/Cloud.png", gfx);
-
-
- //   Character::Init(gfx);
-    
 }
 
 void Level::Unload() {
@@ -35,11 +22,9 @@ void Level::Unload() {
 
 
 void Level::Update() {
-   /* Character::move();*/
-
-
-    Hero->Update();
-    Cloud->Update();
+    for (UINT8 i = 0; i < Animations.size(); i++) {
+        Animations[i]->Update();
+    }
 }
 
 
@@ -47,8 +32,9 @@ void Level::Render() {
     gfx->ClearScreen(0,0,0);
     World::Render();
 
-    Hero->Render();
-    Cloud->Render();
+    for (UINT8 i = 0; i < Animations.size(); i++) {
+        Animations[i]->Render();
+    }
 
 
   //  Character::Render();
