@@ -36,10 +36,15 @@ public:
 	static void Init(Graphics *gfx);
 	static void Render();
 	static void Update();
-	static vector<Block*> blockType;
 
+	static UINT16 GetFloorLever();
+	static UINT16 GetSkyLevel();
+	
+
+	static vector<Block*> blockType;
 	static inline const LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 
+	
 
 private:
 
