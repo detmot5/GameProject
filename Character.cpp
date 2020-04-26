@@ -1,70 +1,88 @@
 #include "GameController.h"
 #include "Character.h"
-#include "Buttons.h"
 
-Graphics* Character::graphics;
-SpriteSheet* Character::sprites;
-short inline flaga = 0;
+short RaiseIndicator;
+short DescentIndicator;
 
-struct Character::Vector vector;
-struct Character::Point point;
-
-void Character::Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x, float y, float xSpeed, float ySpeed)
+Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed, float ySpeed)
+	: Animation(bitmapPath, graphics)
 {
-	graphics = _graphics;
-	point.x = x;
-	point.y = y;
-	vector.x = xSpeed;
-	vector.y = ySpeed;
+	//this->graphics = graphics;
+	this->x = x;
+	this->y = y;
+	this->xSpeed = xSpeed;
+	this->ySpeed = ySpeed;
 	/*bitmapPath = _bitmapPath;*/
-	sprites = new SpriteSheet(L"GameProject/Graphicss/Graphicss/test.png", graphics, 64, 64);
+	/*sprites = new SpriteSheet(L"../GameProject/Graphicss/slime_sprite.png", this->graphics, 32, 32);*/
 }
 
-void Character::move()
+void Character::Update()
+{
+	MoveRight();
+
+	MoveLeft();
+
+	MoveUp();
+}
+
+void Character::MoveRight()
 {
 	if (GetKeyState(Right) & 0x8000)
 	{
-		point.x += vector.x;
+		x += xSpeed;
 
-		if (point.x >= 800)
+		if (x >= SCREEN_WIDTH)
 		{
-			point.x = 0;
-		}
-	}
-	if (GetKeyState(Left) & 0x8000)
-	{
-		point.x -= vector.x;
-
-		if (point.x <= 0)
-		{
-			point.x = 750;
-		}
-	}
-	if (GetKeyState(Up) & 0x800 || flaga == 1 || flaga == 2)
-	{
-
-		if ((point.y != 156 && flaga == 0) || flaga == 2)
-		{
-			point.y -= 4;
-			flaga = 2;
-		}
-		if (point.y == 156 || flaga == 1)
-		{
-			flaga = 1;
-			if (point.y != 268 && flaga == 1)
-			{
-				point.y += 4;
-			}
-		}
-		if (point.y == 268 && flaga == 1)
-		{
-			flaga = 0;
+			x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
 		}
 	}
 }
 
+void Character::MoveLeft()
+{
+	if (GetKeyState(Left) & 0x8000)
+	{
+		x -= xSpeed;
+
+		if (x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
+		{
+			x = SCREEN_WIDTH;
+		}
+	}
+}
+
+void Character::MoveUp()
+{
+	if (GetKeyState(Up) & 0x8000 || RaiseIndicator == On || DescentIndicator == On)
+	{
+		if ((y != (int)(SCREEN_HEIGHT * 0.27) && DescentIndicator == Off) || RaiseIndicator == On)
+		{
+			y -= ySpeed;
+			RaiseIndicator = On;
+		}
+		if (y == (int)(SCREEN_HEIGHT * 0.27) || DescentIndicator == On)
+		{
+			RaiseIndicator = Off;
+			DescentIndicator = On;
+
+			if ((y != (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+			{
+				y += ySpeed;
+			}
+		}
+		if ((y == (int)(SCREEN_HEIGHT * 0.47)) && DescentIndicator == On)
+		{
+			DescentIndicator = Off;
+		}
+	}
+}
+
+void Character::MoveDown()
+{
+	
+}
 
 void Character::Render()
 {
-	sprites->Draw((1 / 10) % 1, point.x, point.y);
+	sprites->Draw((1 / 10) % 1, x, y);
 }

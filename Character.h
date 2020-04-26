@@ -1,27 +1,42 @@
 #pragma once
 
 #include "Graphics.h"
+#include "Animation/Animation.h"
 
-
-class Character
+class Character : public Animation
 {
 public:
-	void static Init(/*LPCWSTR _bitmapPath,*/ Graphics* _graphics, float x = 0, float y = 268, float xSpeed = 2.0, float ySpeed = 0);
-	void static move();
-	void static Render();
-	static struct Vector
+	Character(LPCTSTR bitmapPath, Graphics* graphics, float x = SCREEN_WIDTH * 0.5, float y = (int)(SCREEN_HEIGHT * 0.47), float xSpeed = 4.0, float ySpeed = 4);
+
+	void Update() override;
+	void Render() override;
+
+private:
+	void MoveRight() override;
+	void MoveLeft() override;
+	void MoveUp() override;
+	void MoveDown() override;
+
+	enum Direction
 	{
-		float x;
-		float y;
+		Right = 'D',
+		Left = 'A',
+		Up = 0x20
 	};
 
-	static struct Point
+	enum indicator
 	{
-		float x;
-		float y;
+		On = 1,
+		Off = 0
 	};
-private:
-	static SpriteSheet* sprites;
-	static Graphics* graphics;
+
+	float x;
+	float y;
+
+	float xSpeed;
+	float ySpeed;
+
+	/*SpriteSheet* sprites;*/
+	/*static inline Graphics* graphics;*/
 	/*static LPCWSTR bitmapPath;*/
 };
