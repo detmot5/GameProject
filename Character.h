@@ -13,7 +13,9 @@ public:
 private:
 
 	void Update() override;
-	
+	void MoveRight() override;
+
+
 	enum Direction
 	{
 		Right = 'D',
