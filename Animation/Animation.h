@@ -10,7 +10,7 @@ public:
 	Animation(LPCTSTR, Graphics*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
 	~Animation();
 
-	virtual void Update();
+	virtual void Update() = 0;
 	virtual void Render();
 
 
@@ -19,10 +19,13 @@ public:
 	virtual void MoveUp();
 	virtual void MoveDown();
 
+	virtual void ChangeSprite();
 
 protected:
 	float x, y;
 	float xSpeed, ySpeed;
+	float height;
+	float gravity;
 	short index;
 	bool blockPrecision;
 	UINT16 spriteWidth, spriteHeight;

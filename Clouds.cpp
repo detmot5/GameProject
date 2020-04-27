@@ -12,18 +12,3 @@ void Clouds::Update()
 {
 	MoveRight();
 }
-
-void Clouds::MoveRight()
-{
-	x += xSpeed;
-
-	if (x >= SCREEN_WIDTH)
-	{
-		x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
-	}
-}
-
-void Clouds::Render()
-{
-	sprites->Draw((1 / 10) % 1, x, y);
-}
