@@ -6,18 +6,14 @@
 class Character : public Animation
 {
 public:
-	Character(LPCTSTR bitmapPath, Graphics* graphics, float x = SCREEN_WIDTH * 0.5, 
-				float y = (int)(SCREEN_HEIGHT * 0.47), float xSpeed = 4.0, float ySpeed = 4);
 
-	void Update() override;
-	void Render() override;
+	Character(LPCTSTR bitmapPath, Graphics* graphics, float x = SCREEN_WIDTH * 0.5, 
+				float y = (int)(SCREEN_HEIGHT * 0.47), float xSpeed = 4.0, float ySpeed = -0.2, float height = 20.0, float gravity = 4.0);
 
 private:
-	void MoveRight() override;
-	void MoveLeft() override;
-	void MoveUp() override;
-	void MoveDown() override;
 
+	void Update() override;
+	
 	enum Direction
 	{
 		Right = 'D',
