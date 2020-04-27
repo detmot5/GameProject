@@ -34,4 +34,8 @@ void Character::Update()
 	}
 }
 
+void Character::MoveRight() {
+	// Tu te¿ mozesz daæ zmiane sprite'u na ten w prawo
 
+	Animation::MoveRight();
+}
