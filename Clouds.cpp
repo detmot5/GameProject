@@ -8,6 +8,9 @@ Clouds::Clouds(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float x
 	this->xSpeed = xSpeed;
 }
 
+
+
+
 void Clouds::Update()
 {
 	MoveRight();
