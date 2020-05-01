@@ -1,41 +1,75 @@
 #include "GameController.h"
 #include "Character.h"
-#include "World.h"
 
-short RaiseIndicator;
-short DescentIndicator;
-
-Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed, float ySpeed, float height, float gravity)
+Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed,
+	float ySpeed, float jumpHeight, float gravity)
 	: Animation(bitmapPath, graphics, false)
 {
 	this->x = x;
-	this->y = y;
+	this->y = World::GetFloorLever() * 30;
 	this->xSpeed = xSpeed;
 	this->ySpeed = ySpeed;
-	this->height = height;
+	this->jumpHeight = jumpHeight;
 	this->gravity = gravity;
 }
 
+
+
+
 void Character::Update()
 {
-	if (GetKeyState(Right) & 0x8000)
+	if (GetAsyncKeyState(Right) & 0x8000)
 	{
+		
 		MoveRight();
 	}
-
-	if (GetKeyState(Left) & 0x8000)
+	else if (GetAsyncKeyState(Left) & 0x8000)
 	{
+		
 		MoveLeft();
 	}
-
-	if (GetKeyState(Up) & 0x8000 || y < 300)
+	else
+	{
+		index = 0;
+	}
+	if (GetAsyncKeyState(Up) & 0x8000 || y < World::GetFloorLever() * 30)
 	{
 		MoveUp();
+	}	
+}
+
+void Character::Render()
+{
+	Animation::Render();
+}
+
+
+
+
+void Character::MoveUp()
+{
+	y += jumpHeight * ySpeed;
+
+	jumpHeight += gravity * ySpeed;
+
+	if (y >= World::GetFloorLever() * 30)
+	{
+		jumpHeight = World::GetFloorLever() * 1.92;
+
+		y = World::GetFloorLever() * 30;
 	}
 }
 
-void Character::MoveRight() {
-	// Tu te¿ mozesz daæ zmiane sprite'u na ten w prawo
+void Character::MoveRight()
+{
+	index = 1;
 
 	Animation::MoveRight();
+}
+
+void Character::MoveLeft()
+{
+	index = 2;
+
+	Animation::MoveLeft();
 }
