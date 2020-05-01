@@ -6,7 +6,7 @@ Animation::Animation(LPCTSTR bitmapPath, Graphics* gfx, bool blockPrecision, UIN
 	y = 0.0;
 	xSpeed = 0.0;
 	ySpeed = 0.0;
-	height = 0.0;
+	jumpHeight = 0.0;
 	gravity = 0.0;
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
@@ -22,12 +22,13 @@ Animation::~Animation() {
 
 
 
+
 void Animation::Update() {
 
 }
 
 void Animation::Render() {
-	if(blockPrecision) sprites->Draw(index, x*spriteWidth, y*spriteHeight);
+	if (blockPrecision) sprites->Draw(index, x * spriteWidth, y * spriteHeight);
 	else sprites->Draw(index, x, y);
 }
 
@@ -53,22 +54,19 @@ void Animation::MoveLeft() {
 }
 
 void Animation::MoveUp() {
-	y = y + height * ySpeed;
+	y -= ySpeed;
 
-	height = height + gravity * ySpeed;
-
-	if (y >= 300)
+	if (y <= SCREEN_HEIGHT / SCREEN_HEIGHT - 1)
 	{
-		height = 20;
-		y = 300;
+		y = (World::GetFloorLever() * 30);
 	}
 }
 
 void Animation::MoveDown() {
+	y += ySpeed;
 
-}
-
-void Animation::ChangeSprite()
-{
-	
+	if (y >= SCREEN_HEIGHT)
+	{
+		y = (World::GetFloorLever() * 30);
+	}
 }
