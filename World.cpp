@@ -30,7 +30,7 @@ Block* GetBlockByIndex(short index) {
 }
 
 Block* GetBlockByCoords(UINT16 x, UINT16 y) {
-	return GetBlockBySymbol(World::worldTemplate[x][y]);
+	return GetBlockBySymbol(World::worldTemplate[y][x]);
 }
 
 
@@ -66,8 +66,8 @@ void World::Init(Graphics* gfx) {
 	blockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
 	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 5));
 	
-	randomArrayInit();
 	floorLevelInit();
+	randomArrayInit();
 	worldTemplateInit();
 #if DEBUG_MODE
 	printVector(randomStructArray);
@@ -125,7 +125,7 @@ void World::worldTemplateInit(void) {
 
 void World::floorLevelInit() {
 
-	for (UINT16 i = 0; i < blocksCountX; i++) {
+	for (UINT16 i = 0; i <= blocksCountX; i++) {
 		UINT16 actualFloorLevel = randint(averageFloorLevel, averageFloorLevel + 2);
 		floorLevel.insert(pair<UINT16, UINT16>(i,actualFloorLevel));
 	}
@@ -140,8 +140,8 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 
 	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
 
+
 	if (deepness == actualFloorLevel) {
-		floorLevel.insert_or_assign(*iterator, actualFloorLevel);
 		LoadBlock(target, Block::grass);
 		return;
 	}
@@ -164,7 +164,7 @@ void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 		break;
 
 	case Block::dirt:
-		if (deepness > averageFloorLevel && deepness < averageFloorLevel + 2) {
+		if (deepness > actualFloorLevel && deepness < actualFloorLevel + 2) {
 			LoadBlock(target, Block::dirt);
 		}
 	
