@@ -11,6 +11,7 @@ public:
 
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(short index);
+	friend Block* GetBlockByCoords(UINT16 x, UINT16 y);
 
 	Block(LPCWSTR, Graphics*, char, bool, short, short = 0, short = 50);
 	~Block();

@@ -20,8 +20,8 @@ namespace Utils {
 	template<class T>
 	void printVector(vector<T> vec, string separator){
 		cout << endl;
-		for (UINT16 i = 0; i < vec.size(); i++) {
-			cout << vec[i]
+		for (auto i : vec) {
+			cout << i
 				 << separator;
 		}
 		cout << endl;
