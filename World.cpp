@@ -3,6 +3,8 @@ using namespace Utils;
 
 vector<string> World::worldTemplate;
 vector<Block*> World::blockType;
+map<UINT16, UINT16> World::floorLevel;
+
 
 vector<short> World::randomStructArray;
 
@@ -27,8 +29,8 @@ Block* GetBlockByIndex(short index) {
 	return nullptr;
 }
 
-void LoadBlock(string& target, short index) {
-	target += GetBlockByIndex(index)->GetSymbol();
+Block* GetBlockByCoords(UINT16 x, UINT16 y) {
+	return GetBlockBySymbol(World::worldTemplate[x][y]);
 }
 
 
@@ -37,13 +39,23 @@ void LoadBlock(string& target, short index) {
 	target += GetBlockByIndex(index)->GetSymbol();
 }
 
-
-UINT16 World::GetFloorLever() {
-	return floorLevel;
+bool World::isCollisionEnabled(UINT16 x, UINT16 y) {
+	return GetBlockByCoords(x, y)->IsCollisionEnabled();
 }
+
+UINT16 World::GetAverageFloorLevel() {
+	return averageFloorLevel;
+}
+
 UINT16 World::GetSkyLevel() {
 	return skyLevel;
 }
+
+UINT16 World::GetActualFloorLevel(UINT16 x) {
+	auto result = floorLevel.find(x);
+	return result->second;
+}
+
 
 void World::Init(Graphics* gfx) {
 
@@ -53,12 +65,13 @@ void World::Init(Graphics* gfx) {
 	blockType.push_back(new Block(imgSrc, gfx, '%', true, Block::dirt));
 	blockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
 	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 5));
-
+	
 	randomArrayInit();
+	floorLevelInit();
+	worldTemplateInit();
 #if DEBUG_MODE
 	printVector(randomStructArray);
 #endif
-	worldTemplateInit();
 }
 
 
@@ -72,12 +85,12 @@ void World::Render() {
 		}
 	}
 #if DEBUG_MODE
-	if (!isDisplayed)
+	if (!isDisplayed) {
 		printVector(worldTemplate,"\n");
-	isDisplayed = true;
+		isDisplayed = true;
+	}
 #endif
 }
-#endif
 
 void World::Update() {
 
@@ -104,61 +117,57 @@ void World::worldTemplateInit(void) {
 	for (UINT8 i = 0; i < blocksCountY; i++) {
 		worldTemplate.push_back("");
 		for (UINT8 j = 0; j < blocksCountX; j++) {
-			if (i >= floorLevel) {
-				TerrainGenerator(worldTemplate[i], i, &j);
-			}
-			else if (i < floorLevel) {
-				LoadBlock(worldTemplate[i], Block::air);
-			}
+			TerrainGenerator(worldTemplate[i], i, &j);
 		}
 	}
 	
 }
 
+void World::floorLevelInit() {
+
+	for (UINT16 i = 0; i < blocksCountX; i++) {
+		UINT16 actualFloorLevel = randint(averageFloorLevel, averageFloorLevel + 2);
+		floorLevel.insert(pair<UINT16, UINT16>(i,actualFloorLevel));
+	}
+}
 
 
 
 
 
-<<<<<<< HEAD
 void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 	int pick = randomStructArray[Utils::randint(0,randomStructArray.size())];
 
+	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
 
-	if (deepness == floorLevel) {
+	if (deepness == actualFloorLevel) {
+		floorLevel.insert_or_assign(*iterator, actualFloorLevel);
 		LoadBlock(target, Block::grass);
 		return;
-=======
-void World::airGenerator(string& target, short deepness, UINT8* iterator) {
-	target += GetBlockByIndex(Block::air)->GetSymbol();
-}
-
-void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
-
-	vector <int> randArr;
-	for (int i = 0; i < GetBlockByIndex(Block::stone)->GetSeed(); i++) {
-		randArr.push_back(Block::stone);
->>>>>>> Trying to fix starting bug
+	}
+	else if (deepness < actualFloorLevel) {
+		LoadBlock(target, Block::air);
+		return;
 	}
 
 	switch (pick) {
 
-	case Block::diamond: 
+	case Block::diamond:
 		if (deepness >= blocksCountY - 2)
 			LoadBlock(target, Block::diamond);
-		else 
+		else
 			LoadBlock(target, Block::stone);
 		break;
 
-	case Block::stone: 
+	case Block::stone:
 		LoadBlock(target, Block::stone);
 		break;
 
 	case Block::dirt:
-		if (deepness >= floorLevel && deepness < floorLevel + 2) {
+		if (deepness > averageFloorLevel && deepness < averageFloorLevel + 2) {
 			LoadBlock(target, Block::dirt);
 		}
-<<<<<<< HEAD
+	
 		else {
 			LoadBlock(target, Block::stone);
 		}
@@ -167,14 +176,8 @@ void World::terrainGenerator(string& target, short deepness, UINT8* iterator) {
 	case Block::cave:
 		GenerateCave(target, 0, iterator);
 		break;
-=======
-		else target += "#"; break;
-	case Block::stone: target += '#'; break;
 	}
-	
->>>>>>> Trying to fix starting bug
 
-	}
 }
 
 

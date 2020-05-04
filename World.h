@@ -20,6 +20,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "framework.h"
 #include "Block.h"
@@ -32,13 +33,16 @@ class World {
 public:
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(short index);
+	friend Block* GetBlockByCoords(UINT16 x, UINT16 y);
 
 	static void Init(Graphics *gfx);
 	static void Render();
 	static void Update();
 
-	static UINT16 GetFloorLever();
+	static UINT16 GetAverageFloorLevel ();
 	static UINT16 GetSkyLevel();
+	static UINT16 GetActualFloorLevel(UINT16 x);
+	static bool isCollisionEnabled(UINT16 x, UINT16 y);
 	
 
 	static vector<Block*> blockType;
@@ -53,15 +57,16 @@ private:
 
 	static vector<short> randomStructArray;
 	static vector<string> worldTemplate;
-
+	static map<UINT16, UINT16> floorLevel;
 
 	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
 	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
-	static inline UINT16 floorLevel = blocksCountY / 2;
+	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 
 	static void randomArrayInit();
 	static void worldTemplateInit();
+	static void floorLevelInit();
 
 	static void TerrainGenerator(string& target, short deepness, UINT8* iterator);
 
