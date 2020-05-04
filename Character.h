@@ -24,7 +24,7 @@ private:
 	void MoveLeft() override;
 	void MoveUp() override;
 
-
+	int lowestLand;
 	enum Direction
 	{
 		Right = 'D',

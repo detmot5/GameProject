@@ -14,11 +14,18 @@ Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, f
 	this->gravity = gravity;
 }
 
-
+UINT16 FindHighestLand(UINT16 x, UINT16 y) {
+	for (UINT8 i = y/32; i < 20 ; i++) {
+		if (World::isCollisionEnabled(x/32, i)) return i*32;
+	}
+	return 10;
+}
 
 
 void Character::Update()
 {
+	lowestLand = FindHighestLand(x, y);
+
 	if (GetAsyncKeyState(Right) & 0x8000)
 	{
 		MoveRight();
@@ -31,10 +38,12 @@ void Character::Update()
 	{
 		index = 0;
 	}
-	if (GetAsyncKeyState(Up) & 0x8000 || y < World::GetActualFloorLevel(x / 32) * 30)
+	if (GetAsyncKeyState(Up) & 0x8000 || y < lowestLand-DEFAULT_BLOCK_SIZE/2)
 	{
 		MoveUp();
 	}	
+
+	
 }
 
 void Character::Render()
@@ -51,11 +60,10 @@ void Character::MoveUp()
 
 	jumpHeight += gravity * ySpeed;
 
-	if (y >= World::GetActualFloorLevel(x / 32) * 30)
+	if (y > lowestLand - DEFAULT_BLOCK_SIZE/2)
 	{
-		jumpHeight = World::GetActualFloorLevel(x / 32) * 1.92;
-
-		y = World::GetActualFloorLevel(x / 32) * 30;
+        y = lowestLand - DEFAULT_BLOCK_SIZE/2;
+		jumpHeight =  25;
 	}
 }
 
@@ -72,3 +80,5 @@ void Character::MoveLeft()
 
 	Animation::MoveLeft();
 }
+
+
