@@ -8,6 +8,7 @@
 
 void Level::Load(){
     World::Init(gfx);
+
     Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx));
     Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
 

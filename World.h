@@ -43,6 +43,7 @@ public:
 	static UINT16 GetSkyLevel();
 	static UINT16 GetActualFloorLevel(UINT16 x);
 	static bool isCollisionEnabled(UINT16 x, UINT16 y);
+	static UINT16 FindNearestLand(UINT16 x, UINT16 y);
 	
 
 	static vector<Block*> blockType;
