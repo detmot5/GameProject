@@ -56,6 +56,14 @@ UINT16 World::GetActualFloorLevel(UINT16 x) {
 	return result->second;
 }
 
+UINT16 World::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
+	for (UINT8 i = objPosY / 32; i < blocksCountY; i++) {
+		if (World::isCollisionEnabled(objPosX / 32, i)) return i * 32;
+	}
+	return averageFloorLevel;
+}
+
+
 
 void World::Init(Graphics* gfx) {
 
