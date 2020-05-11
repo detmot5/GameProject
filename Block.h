@@ -16,7 +16,7 @@ public:
 	Block(LPCWSTR, Graphics*, char, bool, short, short = 0, short = 50);
 	~Block();
 
-	void Render(short x, short y);
+	void Render(double x, double y, double offset);
 
 	short GetSeed();
 	short GetMaxGenerationHeight();

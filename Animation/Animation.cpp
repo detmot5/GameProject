@@ -58,7 +58,7 @@ void Animation::MoveUp() {
 
 	if (y <= SCREEN_HEIGHT / SCREEN_HEIGHT - 1)
 	{
-		y = (World::GetAverageFloorLevel() * 30);
+//		y = (World::GetAverageFloorLevel() * 30);
 	}
 }
 
@@ -67,6 +67,6 @@ void Animation::MoveDown() {
 
 	if (y >= SCREEN_HEIGHT)
 	{
-		y = (World::GetAverageFloorLevel() * 30);
+	//	y = (World::GetAverageFloorLevel() * 30);
 	}
 }

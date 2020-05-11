@@ -2,6 +2,7 @@
 
 #include "Graphics.h"
 #include "Animation/Animation.h"
+#include "Chunks/Chunk.h"
 #include "World.h"
 
 class Character : public Animation

@@ -22,8 +22,9 @@ void Level::Unload() {
 
 
 void Level::Update() {
-    for (UINT8 i = 0; i < Animations.size(); i++) {
-        Animations[i]->Update();
+    World::Update();
+    for (auto i : Animations) {
+        i->Update();
     }
 }
 
@@ -31,8 +32,8 @@ void Level::Render() {
     gfx->ClearScreen(0,0,0);
     World::Render();
 
-    for (UINT8 i = 0; i < Animations.size(); i++) {
-        Animations[i]->Render();
+    for (auto i : Animations) {
+        i->Render();
     }
 }
 
