@@ -7,7 +7,7 @@ Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, f
 	: Animation(bitmapPath, graphics, false)
 {
 	this->x = x;
-	this->y = static_cast<float>( World::GetActualFloorLevel(static_cast<UINT16>(x) / 32) * 30);
+	this->y = static_cast<float>( World::GetActualFloorLevel(static_cast<UINT16>(x) / 32)) * 30;
 	this->xSpeed = xSpeed;
 	this->ySpeed = ySpeed;
 	this->jumpHeight = jumpHeight;
@@ -65,14 +65,14 @@ void Character::MoveUp()
 void Character::MoveRight()
 {
 	index = 1;
-	Animation::MoveRight();
+	World::offset -= 3;
 	
 }
 
 void Character::MoveLeft()
 {
 	index = 2;
-
-	Animation::MoveLeft();
+	World::offset += 3;
+	//Animation::MoveLeft();
 }
 
