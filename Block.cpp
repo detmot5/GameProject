@@ -2,8 +2,6 @@
 
 
 
-double offset = 0;
-
 
 Block::Block(LPCWSTR bitmapPath, Graphics *gfx, char symbol, 
 				bool collisionEnabled, short index, short maxGeneratingHeight, short seed) {
@@ -23,7 +21,7 @@ Block::~Block() {
 
 
 void Block::Render(double x, double y, double offset){
-	sprites->Draw(index, x*spriteWidth+offset, y*spriteHeight);
+	sprites->Draw(index, x*spriteWidth + offset, y*spriteHeight);
 }
 
 
