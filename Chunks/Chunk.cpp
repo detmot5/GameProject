@@ -34,8 +34,8 @@ Block* GetBlockByCoords(Chunk& chunk, UINT16 x, UINT16 y) {
 	return GetBlockBySymbol(chunk.chunkTemplate[y][x]);
 }
 
-bool Chunk::isCollisionEnabled(Chunk chunk,UINT16 x, UINT16 y) {
-	return GetBlockByCoords(chunk,x, y)->IsCollisionEnabled();
+bool Chunk::isCollisionEnabled(UINT16 x, UINT16 y) {
+	return GetBlockByCoords(*this,x, y)->IsCollisionEnabled();
 }
 
 
@@ -45,9 +45,9 @@ void LoadBlock(string& target, short index) {
 
 
 
-UINT16 Chunk::FindNearestLand(Chunk& chunk, UINT16 objPosX, UINT16 objPosY) {
+UINT16 Chunk::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
 	for (UINT8 i = objPosY / 32; i < blocksCountY; i++) {
-		if (chunk.isCollisionEnabled(chunk,objPosX / 32, i)) return i * 32;
+		if (this->isCollisionEnabled(objPosX / 32, i)) return i * 32;
 	}
 	return averageFloorLevel;
 }
@@ -204,7 +204,7 @@ void Chunk::Render() {
 
 	for (UINT8 i = 0; i < chunkTemplate.size(); i++) {
 		for (UINT8 j = 0; j < chunkTemplate[i].length(); j++) {
-			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(j+StartPoint, i,offset);
+			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(static_cast<float>(j+StartPoint), i,offset);
 		}
 	}
 

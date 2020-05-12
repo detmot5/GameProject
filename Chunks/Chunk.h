@@ -18,8 +18,8 @@ public:
 	~Chunk();
 	static void Init(Graphics* gfx);		//call it before making object
 	UINT16 GetActualFloorLevel(UINT16 x);
-	UINT16 FindNearestLand(Chunk& chunk, UINT16 objPosX, UINT16 objPosY);
-	bool isCollisionEnabled(Chunk chunk, UINT16 x, UINT16 y);
+	UINT16 FindNearestLand(UINT16 objPosX, UINT16 objPosY);
+	bool isCollisionEnabled(UINT16 x, UINT16 y);
 
 	void Update();
 	void Render();
@@ -27,6 +27,7 @@ public:
 
 	inline void SetOffset(double offset) { this->offset = offset; };
 	inline double GetOffset() { return this->offset; };
+	inline UINT16 GetStartPoint() { return this->StartPoint; };
 	vector<string> ReadChunkBack(UINT16);
 	vector<string> ReadChunkFront(UINT16);
 private:
