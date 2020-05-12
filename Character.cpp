@@ -34,7 +34,7 @@ void Character::Update()
 	{
 		index = 0;
 	}
-	if (GetAsyncKeyState(Up) & 0x8000 || y < lowestLand-DEFAULT_BLOCK_SIZE+10)
+	if (GetAsyncKeyState(Up) & 0x8000 || y < lowestLand - DEFAULT_BLOCK_SIZE + 10)
 	{
 		MoveUp();
 	}	
@@ -44,6 +44,7 @@ void Character::Update()
 void Character::Render()
 {
 	Animation::Render();
+
 }
 
 
@@ -65,14 +66,14 @@ void Character::MoveUp()
 void Character::MoveRight()
 {
 	index = 1;
-	World::offset -= 3;
+	World::offset -= 20;
 	
 }
 
 void Character::MoveLeft()
 {
 	index = 2;
-	World::offset += 3;
+	World::offset += 20;
 	//Animation::MoveLeft();
 }
 
