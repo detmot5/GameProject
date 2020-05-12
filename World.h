@@ -21,6 +21,9 @@
 
 #include <vector>
 #include <map>
+#include <list>
+#include <cmath>
+#include <fstream>
 
 #include "framework.h"
 #include "Block.h"
@@ -48,7 +51,7 @@ public:
 
 private:
 
-	static vector<Chunk*> chunks;
+	static list<Chunk*> chunks;
 	static vector<short> randomStructArray;
 
 	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
