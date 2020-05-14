@@ -6,7 +6,11 @@
 #include "Graphics.h" 
 #include "Level.h"
 #include "GameController.h"
+#include "Menu.h"
+#include "UserInput.h"
+#include "WindowsX.h"
 
+HHOOK MouseHook;
 
 using namespace std;
 #define MAX_LOADSTRING 100
@@ -35,6 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
    
     // TODO: Place code here.
+ 
     srand(time(nullptr));
 #if DEBUG_MODE
     //Open debug console
@@ -62,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     
     GameLevel::InitGraphics(graphics);          //THIS FIRST
-    GameController::LoadInitialLevel(new Level());
+    GameController::LoadInitialLevel(new Menu());
     MSG msg;
     msg.message = WM_NULL;
 
@@ -170,6 +175,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    UserInput::crs.x = GET_X_LPARAM(lParam);
+    UserInput::crs.y = GET_Y_LPARAM(lParam);
+    UserInput::butt = wParam;
     switch (message)
     {
     case WM_COMMAND:
