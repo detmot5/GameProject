@@ -5,6 +5,7 @@
 #include "GameLevel.h"
 #include "Block.h"
 #include "World.h"
+#include "Menu.h"
 
 #include "Animation/Animation.h"
 #include "Character.h"
