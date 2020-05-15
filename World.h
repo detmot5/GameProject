@@ -24,6 +24,7 @@
 #include <list>
 #include <cmath>
 #include <fstream>
+#include <thread>
 
 #include "framework.h"
 #include "Block.h"
@@ -38,10 +39,14 @@ public:
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(short index);
 	friend Block* GetBlockByCoords(UINT16 objPosX, UINT16 objPosY);
+	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
+
 
 	static void Init(Graphics *gfx);
+	static void Unload();
 	static void Render();
 	static void Update();
+
 
 	static UINT16 GetActualFloorLevel(UINT16 x);
 	static UINT16 FindNearestLand(UINT16 objPosX, UINT16 objPosY);
@@ -50,6 +55,8 @@ public:
 	static inline double offset = 0;
 
 private:
+
+
 
 	static list<Chunk*> chunks;
 	static vector<short> randomStructArray;

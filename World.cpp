@@ -8,7 +8,12 @@ Chunk* World::actualChunk;
 
 
 
-
+Chunk* GetChunkByStartPoint(UINT16 startPoint) {
+	for (auto i : World::chunks) {
+		if (i->GetStartPoint() == startPoint) return i;
+	}
+	return nullptr;
+}
 
 
 UINT16 World::GetActualFloorLevel(UINT16 x) {
@@ -29,32 +34,44 @@ void World::Init(Graphics* gfx) {
 	Chunk::Init(gfx);
 	chunks.push_back(new Chunk(0));
 	chunks.push_back(new Chunk(25));
+	chunks.push_back(new Chunk(50));
 
 	actualChunk = chunks.front();
+}
+
+void World::Unload() {
+	chunks.clear();
+	delete actualChunk;
 }
 
 
 void World::Update() {
 	UINT16 actualStartPoint;
-	for (auto i : chunks) {
-		actualStartPoint = chunks.back()->GetStartPoint();
-		i->SetOffset(offset);
-	}
-	if (abs(offset / 25) >= actualStartPoint) {
-		actualChunk = chunks.back();
-		chunks.push_back(new Chunk(actualStartPoint + 25));
+	UINT16 nextChunkStartPoint;
+
+	for (auto i : chunks) i->SetOffset(offset);
+
+	
+	if ((int)abs(offset / Chunk::blocksCountX) >= actualChunk->GetStartPoint() && !GetChunkByStartPoint(actualChunk->GetStartPoint()+25)) {
+		chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
 #if DEBUG_MODE 
 		cout << "Generated" << endl; 
-		cout << (offset/25)  << endl;
+		cout << (offset/ Chunk::blocksCountX)  << endl;
 #endif
 	}
-	if (abs(offset / 25) - chunks.front()->GetStartPoint() > 200) {
-		chunks.pop_front();
-#if DEBUG_MODE
-		cout << "Deleted" << endl;
-#endif
+
+	nextChunkStartPoint =  actualChunk->GetStartPoint();
+
+
+	if (abs(offset) / 25 > actualChunk->GetStartPoint() + 25) {
+		actualChunk = GetChunkByStartPoint(actualChunk->GetStartPoint() + 25);
 	}
-	cout << offset/25 << endl;
+	else if (abs(offset) / 25 < actualChunk->GetStartPoint())  {
+		actualChunk = GetChunkByStartPoint(actualChunk->GetStartPoint() - 25);
+	}
+	
+	cout <<"              \r" << offset/25 << " " << actualChunk->GetStartPoint() << " " << chunks.back()->GetStartPoint();
+
 
 }
 
