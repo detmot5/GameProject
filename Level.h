@@ -15,6 +15,8 @@ class Level : public GameLevel
 {
 public:
 
+	~Level();
+
 	void Load() override;
 	void Unload() override;
 	void Render() override;
