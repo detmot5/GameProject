@@ -67,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     
     GameLevel::InitGraphics(graphics);          //THIS FIRST
-    GameController::LoadInitialLevel(new Menu());
+    GameController::LoadInitialLevel(new Level());
     MSG msg;
     msg.message = WM_NULL;
 
@@ -88,7 +88,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
     
-
+    GameController::UnloadActualLevel();
     delete graphics;
     return (int) msg.wParam;
 }
