@@ -8,9 +8,9 @@ Menu::Menu() {
 
 
 void Menu::Load() {
-	bg = new Background(L"BackgroundMenu.png", gfx);
-	bm = new ButtonMenu(L"ButtonPlay.png", gfx, 200, UserInput::PlayOnClick);
-	bm2 = new ButtonMenu(L"ButtonInfo.png", gfx, 110, UserInput::InfoOnClick);
+	bg = new Background(L"GameProject/Graphicss/BackgroundMenu.png", gfx);
+	bm = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, UserInput::PlayOnClick);
+	bm2 = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 110, UserInput::InfoOnClick);
 }
 
 
@@ -20,7 +20,9 @@ void Menu::Unload() {
 
 
 void Menu::Update() {
-	if (UserInput::butt & MK_LBUTTON) bm->OnClickEvent();
+
+	//cout << UserInput::GetCursorPos().x/10 << "\r";
+	//if (UserInput::butt & MK_LBUTTON) bm->OnClickEvent();
 	if (GetAsyncKeyState(VK_SHIFT)) bm2->OnClickEvent();
 
 }

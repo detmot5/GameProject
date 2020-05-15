@@ -11,6 +11,8 @@ public:
 private:
 	Graphics* gfx;
 	SpriteSheet* sprites;
+	short spriteWidth;
+	short spriteHeight;
 	short ButtonOffset;
 	void (*OnClickCallback)();
 };

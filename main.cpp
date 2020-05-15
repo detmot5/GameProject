@@ -175,9 +175,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    UserInput::crs.x = GET_X_LPARAM(lParam);
-    UserInput::crs.y = GET_Y_LPARAM(lParam);
-    UserInput::butt = wParam;
+    UserInput::SetWindowParams(wParam, lParam);
     switch (message)
     {
     case WM_COMMAND:
