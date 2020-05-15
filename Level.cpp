@@ -6,6 +6,7 @@
 
 
 
+
 void Level::Load(){
     World::Init(gfx);
 
@@ -15,8 +16,13 @@ void Level::Load(){
 
 }
 
+
+Level::~Level() {
+}
+
 void Level::Unload() {
- 
+    World::Unload();
+
 }
 
 
