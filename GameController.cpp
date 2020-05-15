@@ -22,7 +22,13 @@ void GameController::SwitchLevel(GameLevel* lev) {
 	currentLevel = lev;
 	currentLevel->Load();
 	Loading = false;
+}
 
+void GameController::UnloadActualLevel() {
+	Loading = true;
+	currentLevel->Unload();
+	delete currentLevel;
+	Loading = false;
 }
 
 void GameController::Render() {
