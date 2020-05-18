@@ -10,8 +10,8 @@ class Character : public Animation
 public:
 
 
-	Character(LPCTSTR bitmapPath, Graphics* graphics, float x = SCREEN_WIDTH * 0.5, float y = World::GetActualFloorLevel(SCREEN_WIDTH/64), float xSpeed = 4.0,
-		float ySpeed = -0.2, float jumpHeight = (SCREEN_HEIGHT * 0.03), float gravity = 4.0);
+	Character(LPCTSTR bitmapPath, Graphics* graphics, int position = 200, int y = World::GetActualFloorLevel(SCREEN_WIDTH/64), float xSpeed = 4.0,
+		float ySpeed = -1, float jumpHeight = 32, float gravity = 6);
 
 
 private:
@@ -25,7 +25,8 @@ private:
 	void MoveLeft() override;
 	void MoveUp() override;
 
-	int lowestLand;
+	int lowestLevel;
+
 	enum Direction
 	{
 		Right = 'D',

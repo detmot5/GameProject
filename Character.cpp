@@ -2,25 +2,30 @@
 #include "Character.h"
 
 
-Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed,
+Character::Character(LPCTSTR bitmapPath, Graphics* graphics, int position, int y, float xSpeed,
 	float ySpeed, float jumpHeight, float gravity)
 	: Animation(bitmapPath, graphics, false)
 {
-	this->x = x;
-	this->y = static_cast<float>( World::GetActualFloorLevel(static_cast<UINT16>(x) / 32)) * 30;
+	this->position = position;
+	this->x = position;
+	this->y = World::FindNearestLandY(x, 0);
 	this->xSpeed = xSpeed;
 	this->ySpeed = ySpeed;
 	this->jumpHeight = jumpHeight;
 	this->gravity = gravity;
-	this->lowestLand = World::FindNearestLand(static_cast<UINT16>(x), static_cast<UINT16>(y));
 }
 
-
+bool flag = false;
 
 
 void Character::Update()
 {
-	lowestLand = World::FindNearestLand(static_cast<UINT16>(x), static_cast<UINT16>(y));
+
+	if (flag != true)
+	{
+		y = World::FindNearestLandY(x, y);
+	}
+	
 
 	if (GetAsyncKeyState(Right) & 0x8000)
 	{
@@ -28,17 +33,16 @@ void Character::Update()
 	}
 	else if (GetAsyncKeyState(Left) & 0x8000)
 	{
-		MoveLeft();
+		/*MoveLeft();*/
 	}
 	else
 	{
 		index = 0;
 	}
-	if (GetAsyncKeyState(Up) & 0x8000 || y < lowestLand - DEFAULT_BLOCK_SIZE + 10)
+	if (GetAsyncKeyState(Up) & 0x8000 || (World::actualChunk->isCollisionEnabled(x /32, y / 32) && flag == true))
 	{
 		MoveUp();
-	}	
-	
+	}
 }
 
 void Character::Render()
@@ -52,28 +56,50 @@ void Character::Render()
 
 void Character::MoveUp()
 {
-	y += jumpHeight * ySpeed;
-
-	jumpHeight += gravity * ySpeed;
-
-	if (y >= lowestLand - DEFAULT_BLOCK_SIZE+10)
+	if (World::actualChunk->isCollisionEnabled(x / 32, (y - 64) / 32))
 	{
-        y = static_cast<float>(lowestLand - DEFAULT_BLOCK_SIZE+10);
-		jumpHeight =  25;
+
+		
+			flag = true;
+			y += jumpHeight * ySpeed;
+
+			jumpHeight += gravity * ySpeed;
+
+			if (y >= World::FindNearestLandY(x, y))
+			{
+				y = World::FindNearestLandY(x, y);
+				jumpHeight = 32;
+
+				flag = false;
+			}
+			
 	}
+	
 }
 
 void Character::MoveRight()
 {
+	if (x >= SCREEN_WIDTH - 40)
+	{
+		x = 0;
+	}
+
 	index = 1;
-	World::offset -= 20;
 	
+	if (World::FindNearestWall(x, y))
+	{
+		x += 3;
+
+		World::offset -= 3;
+	}
 }
 
 void Character::MoveLeft()
 {
 	index = 2;
-	World::offset += 20;
-	//Animation::MoveLeft();
+
+	x -= 3;
+
+	World::offset += 3;
 }
 

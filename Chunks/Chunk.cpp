@@ -2,7 +2,7 @@
 
 
 vector<Block*> Chunk::BlockType;
-vector<short> Chunk::randomStructArray;
+vector<int> Chunk::randomStructArray;
 Graphics* Chunk::gfx;
 
 
@@ -21,7 +21,7 @@ Block* GetBlockBySymbol(char symbol) {
 
 }
 
-Block* GetBlockByIndex(short index) {
+Block* GetBlockByIndex(int index) {
 	for (UINT8 i = 0; i < Chunk::BlockType.size(); i++) {
 		if (Chunk::BlockType[i]->index == index) {
 			return Chunk::BlockType[i];
@@ -39,18 +39,18 @@ bool Chunk::isCollisionEnabled(UINT16 x, UINT16 y) {
 }
 
 
-void LoadBlock(string& target, short index) {
+void LoadBlock(string& target, int index) {
 	target += GetBlockByIndex(index)->GetSymbol();
 }
 
 
 
-UINT16 Chunk::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
-	for (UINT8 i = objPosY / 32; i < blocksCountY; i++) {
-		if (this->isCollisionEnabled(objPosX / 32, i)) return i * 32;
-	}
-	return averageFloorLevel;
-}
+//UINT16 Chunk::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
+//	for (UINT8 i = objPosY / 32; i < blocksCountY; i++) {
+//		if (this->isCollisionEnabled(objPosX / 32, i)) return i * 32;
+//	}
+//	return averageFloorLevel;
+//}
 
 
 //---------------------------------------------------------------------------------------------------
@@ -60,12 +60,12 @@ UINT16 Chunk::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
 void Chunk::Init(Graphics* gfx) {
 	Chunk::gfx = gfx;
 
-	BlockType.push_back(new Block(imgSrc, gfx, '_', false, Block::air));
-	BlockType.push_back(new Block(imgSrc, gfx, '#', true, Block::stone, 0, 20));
-	BlockType.push_back(new Block(imgSrc, gfx, '-', true, Block::grass));
-	BlockType.push_back(new Block(imgSrc, gfx, '%', true, Block::dirt));
-	BlockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
-	BlockType.push_back(new Block(imgSrc, gfx, '&', true, Block::diamond, 2, 5));
+	BlockType.push_back(new Block(imgSrc, gfx, '_', true, Block::air));
+	BlockType.push_back(new Block(imgSrc, gfx, '#', false, Block::stone, 0, 20));
+	BlockType.push_back(new Block(imgSrc, gfx, '-', false, Block::grass));
+	BlockType.push_back(new Block(imgSrc, gfx, '%', false , Block::dirt));
+	BlockType.push_back(new Block(imgSrc, gfx, '*', true, Block::cave, 0, 10));
+	BlockType.push_back(new Block(imgSrc, gfx, '&', false, Block::diamond, 2, 5));
 
 	RandomArrayInit();
 }
@@ -130,7 +130,7 @@ void Chunk::ChunkTemplateInit() {
 }
 
 
-void Chunk::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
+void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
 	int pick = randomStructArray[Utils::randint(0, randomStructArray.size())];
 
 	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
@@ -174,7 +174,7 @@ void Chunk::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
 	}
 }
 
-void Chunk::GenerateCave(string& target, short deepness, UINT8* iterator) {
+void Chunk::GenerateCave(string& target, int deepness, UINT8* iterator) {
 	if (!iterator) return;
 	for (UINT8 i = 0; i < Utils::randint(3, 8) && *iterator < blocksCountX; i++) {
 		LoadBlock(target, Block::cave);
@@ -204,7 +204,7 @@ void Chunk::Render() {
 
 	for (UINT8 i = 0; i < chunkTemplate.size(); i++) {
 		for (UINT8 j = 0; j < chunkTemplate[i].length(); j++) {
-			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(static_cast<float>(j+StartPoint), i,offset);
+			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(static_cast<int>(j+StartPoint), i,offset);
 		}
 	}
 
