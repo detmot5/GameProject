@@ -10,17 +10,17 @@ class Block {
 public:
 
 	friend Block* GetBlockBySymbol(char symbol);
-	friend Block* GetBlockByIndex(short index);
+	friend Block* GetBlockByIndex(int index);
 	friend Block* GetBlockByCoords(UINT16 x, UINT16 y);
 
-	Block(LPCWSTR, Graphics*, char, bool, short, short = 0, short = 50);
+	Block(LPCWSTR, Graphics*, char, bool, int, int = 0, int = 50);
 	~Block();
 
-	void Render(double x, double y, double offset);
+	void Render(int x, int y, int offset);
 
-	short GetSeed();
-	short GetMaxGenerationHeight();
-	short GetIndex();
+	int GetSeed();
+	int GetMaxGenerationHeight();
+	int GetIndex();
 	char  GetSymbol();
 	bool  IsCollisionEnabled();
 	Graphics* gfx;
@@ -40,12 +40,12 @@ private:
 
 	bool collisionEnabled;
 	char symbol;
-	short maxGeneratingHeight;
-	short seed;
-	short index;
+	int maxGeneratingHeight;
+	int seed;
+	int index;
 	SpriteSheet* sprites;
 
-	static const inline short spriteWidth = 32;
-	static const inline short spriteHeight = 32;
+	static const inline int spriteWidth = 32;
+	static const inline int spriteHeight = 32;
 
 };

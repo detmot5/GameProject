@@ -29,7 +29,7 @@ void Animation::Update() {
 
 void Animation::Render() {
 	if (blockPrecision) sprites->Draw(index, x * spriteWidth, y * spriteHeight);
-	else sprites->Draw(index, x, y);
+	else sprites->Draw(index, position, y - 24);
 }
 
 

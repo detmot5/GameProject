@@ -20,11 +20,52 @@ UINT16 World::GetActualFloorLevel(UINT16 x) {
 	return actualChunk->GetActualFloorLevel(x);
 }
 
-UINT16 World::FindNearestLand(UINT16 objPosX, UINT16 objPosY) {
-	for (UINT8 i = objPosY / 32; i < blocksCountY; i++) {
-		if (actualChunk->isCollisionEnabled(objPosX / 32, i)) return i * 32;
+//void World::FindNearestLand(int objPosX, int& objPosY) {
+//
+//	int test_var_x = objPosX / 32;
+//
+//	int test_var_y = objPosY / 32;
+//
+//	if (test_var_y >= 20)
+//	{
+//		objPosY = averageFloorLevel;
+//	}
+//	else if (actualChunk->isCollisionEnabled(test_var_x, test_var_y))
+//	{
+//		++test_var_y;
+//
+//		objPosY = test_var_y * 32;
+//	}
+//}
+
+int World::FindNearestLandY(int objPosX, int objPosY)
+{
+
+	for (UINT16 i = objPosY / 32; i < blocksCountY; i++)
+	{
+		if (!actualChunk->isCollisionEnabled(round(objPosX / 32), i))
+		{
+			return i * 32;
+		}
 	}
 	return averageFloorLevel;
+}
+
+bool World::FindNearestWall(int& objPosX, int objPosY)
+{
+	int test_var_x = objPosX;
+	test_var_x /= 32;
+
+	int test_var_y = (objPosY) / 32;
+
+	if (actualChunk->isCollisionEnabled(test_var_x + 1, test_var_y - 1))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 

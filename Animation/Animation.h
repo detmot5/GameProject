@@ -23,13 +23,15 @@ public:
 
 
 protected:
-	float x, y;
+	int position;
+
+	int x, y;
 	float xSpeed, ySpeed;
 
 	float jumpHeight;
 	float gravity;
 
-	short index;
+	int index;
 	bool blockPrecision;
 
 	UINT16 spriteWidth, spriteHeight;
