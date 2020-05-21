@@ -4,7 +4,7 @@ using namespace Utils;
 
 list<Chunk*> World::chunks;
 Chunk* World::actualChunk;
-
+thread* World::thr;
 
 
 
@@ -19,6 +19,8 @@ Chunk* GetChunkByStartPoint(UINT16 startPoint) {
 UINT16 World::GetActualFloorLevel(UINT16 x) {
 	return actualChunk->GetActualFloorLevel(x);
 }
+
+
 
 //void World::FindNearestLand(int objPosX, int& objPosY) {
 //
@@ -43,7 +45,7 @@ int World::FindNearestLandY(int objPosX, int objPosY)
 
 	for (UINT16 i = objPosY / 32; i < blocksCountY; i++)
 	{
-		if (!actualChunk->isCollisionEnabled(round(objPosX / 32), i))
+		if (!actualChunk->isCollisionEnabled(objPosX / 32, i))
 		{
 			return i * 32;
 		}
@@ -76,43 +78,54 @@ void World::Init(Graphics* gfx) {
 	chunks.push_back(new Chunk(0));
 	chunks.push_back(new Chunk(25));
 	chunks.push_back(new Chunk(50));
-
 	actualChunk = chunks.front();
+
+	thr = new thread(thrHandler);
+
 }
 
 void World::Unload() {
+	thr->detach();
 	chunks.clear();
 	delete actualChunk;
 }
 
 
 void World::Update() {
-	UINT16 actualStartPoint;
-	UINT16 nextChunkStartPoint;
+	UINT16 actualChunkStartPoint = actualChunk->GetStartPoint();
+	UINT16 nextChunkStartPoint = actualChunkStartPoint + Chunk::blocksCountX;
+	UINT16 previousChunkStartPoint = actualChunkStartPoint - Chunk::blocksCountX;
 
 	for (auto i : chunks) i->SetOffset(offset);
 
-	
-	if ((int)abs(offset / Chunk::blocksCountX) >= actualChunk->GetStartPoint() && !GetChunkByStartPoint(actualChunk->GetStartPoint()+25)) {
-		chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
-#if DEBUG_MODE 
-		cout << "Generated" << endl; 
-		cout << (offset/ Chunk::blocksCountX)  << endl;
+
+	if (abs(offset) / DEFAULT_BLOCK_SIZE > nextChunkStartPoint) {
+		actualChunk = GetChunkByStartPoint(nextChunkStartPoint);
+	}
+	else if (abs(offset) / DEFAULT_BLOCK_SIZE < actualChunkStartPoint) {
+		actualChunk = GetChunkByStartPoint(previousChunkStartPoint);
+	}
+
+	if (abs(offset / DEFAULT_BLOCK_SIZE) >= actualChunk->GetStartPoint() - Chunk::blocksCountX &&
+		!GetChunkByStartPoint(actualChunk->GetStartPoint() + Chunk::blocksCountX * 2) &&
+		!AddChunkFlag) {
+
+		AddChunkFlag = true;
+
+		if (((abs(offset) / DEFAULT_BLOCK_SIZE - chunks.front()->GetStartPoint()) >= 100) ){
+			DeleteChunkFlag = true;
+		}
+
+	}
+
+
+#if DEBUG_MODE
+	cout <<"                                  \r" 
+		 << offset/32 << " " 
+		 << offset << " "
+		 << actualChunk->GetStartPoint() << " " 
+		 << chunks.back()->GetStartPoint();
 #endif
-	}
-
-	nextChunkStartPoint =  actualChunk->GetStartPoint();
-
-
-	if (abs(offset) / 25 > actualChunk->GetStartPoint() + 25) {
-		actualChunk = GetChunkByStartPoint(actualChunk->GetStartPoint() + 25);
-	}
-	else if (abs(offset) / 25 < actualChunk->GetStartPoint())  {
-		actualChunk = GetChunkByStartPoint(actualChunk->GetStartPoint() - 25);
-	}
-	
-	cout <<"              \r" << offset/25 << " " << actualChunk->GetStartPoint() << " " << chunks.back()->GetStartPoint();
-
 
 }
 
@@ -121,5 +134,40 @@ void World::Render() {
 }
 
 
+//----------------------------------------------------------------------------------------
+//							   PRIVATE FUNCTIONS
+//----------------------------------------------------------------------------------------
+void World::GenerateNewChunk() {
+	chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
+#if DEBUG_MODE 
+	cout << "Generated" << endl;
+	cout << (offset / Chunk::blocksCountX) << endl;
+#endif
+}
 
+
+void World::DeleteFirstChunk() {
+	chunks.pop_front();
+#if DEBUG_MODE
+	cout << "Deleted" << endl;
+#endif
+}
+
+
+
+
+
+void World::thrHandler() {
+
+	while (true) {
+		if (AddChunkFlag) {
+			GenerateNewChunk();
+			AddChunkFlag = false;
+		}
+		else if (DeleteChunkFlag) {
+			DeleteFirstChunk();
+			DeleteChunkFlag = false;
+		}
+	}
+}
 

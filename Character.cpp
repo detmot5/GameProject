@@ -23,7 +23,7 @@ void Character::Update()
 
 	if (flag != true)
 	{
-		y = World::FindNearestLandY(x, y);
+		//y = World::FindNearestLandY(x, y);
 	}
 	
 
@@ -33,7 +33,7 @@ void Character::Update()
 	}
 	else if (GetAsyncKeyState(Left) & 0x8000)
 	{
-		/*MoveLeft();*/
+		MoveLeft();
 	}
 	else
 	{
@@ -41,7 +41,7 @@ void Character::Update()
 	}
 	if (GetAsyncKeyState(Up) & 0x8000 || (World::actualChunk->isCollisionEnabled(x /32, y / 32) && flag == true))
 	{
-		MoveUp();
+		//MoveUp();
 	}
 }
 
@@ -68,7 +68,7 @@ void Character::MoveUp()
 			if (y >= World::FindNearestLandY(x, y))
 			{
 				y = World::FindNearestLandY(x, y);
-				jumpHeight = 32;
+				jumpHeight = 25;
 
 				flag = false;
 			}
@@ -79,18 +79,12 @@ void Character::MoveUp()
 
 void Character::MoveRight()
 {
-	if (x >= SCREEN_WIDTH - 40)
-	{
-		x = 0;
-	}
-
 	index = 1;
 	
+	World::offset -= 20;
 	if (World::FindNearestWall(x, y))
 	{
-		x += 3;
-
-		World::offset -= 3;
+		//x = abs(World::offset) - World::actualChunk->GetStartPoint()*32;
 	}
 }
 
@@ -98,8 +92,8 @@ void Character::MoveLeft()
 {
 	index = 2;
 
-	x -= 3;
+	//x -= 7;
 
-	World::offset += 3;
+	if(abs(World::offset)/32 > World::chunks.front()->GetStartPoint() ) World::offset += 20;
 }
 

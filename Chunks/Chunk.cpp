@@ -91,6 +91,12 @@ Chunk::Chunk(UINT16 StartPoint){
 	Utils::printVector(chunkTemplate,"\n");
 }
 
+Chunk::Chunk(UINT16 StartPoint, vector<string> chunkTemplate){
+	this->StartPoint = StartPoint;
+	this->chunkTemplate = chunkTemplate;
+}
+
+
 Chunk::~Chunk(){
 
 }
