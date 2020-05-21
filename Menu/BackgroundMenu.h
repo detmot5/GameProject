@@ -1,6 +1,6 @@
 #pragma once
-#include "Graphics.h"
-#include "SpriteSheet.h"
+#include "../Graphics.h"
+#include "../SpriteSheet.h"
 
 class Background {
 public:

@@ -6,8 +6,8 @@
 #include "Graphics.h" 
 #include "Level.h"
 #include "GameController.h"
-#include "Menu.h"
-#include "UserInput.h"
+#include "Menu/Menu.h"
+#include "Menu/UserInput.h"
 #include "WindowsX.h"
 
 HHOOK MouseHook;
@@ -175,7 +175,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    UserInput::SetWindowParams(wParam, lParam);
+    UserInput::SetWindowParams(lParam);
     switch (message)
     {
     case WM_COMMAND:

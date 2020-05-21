@@ -1,14 +1,12 @@
 #include "UserInput.h"
 
 namespace UserInput {
-	WPARAM wp;
 	LPARAM lp;
 
 	
 
 
-	void SetWindowParams(WPARAM w, LPARAM l) {
-		wp = l;
+	void SetWindowParams( LPARAM l) {
 		lp = l;
 	}
 
@@ -28,7 +26,7 @@ namespace UserInput {
 	}
 
 	void InfoOnClick() {
-		cout << "Czes pomyliles sie";
+		GameController::SwitchLevel(new InfoLevel());
 	}
 
 }

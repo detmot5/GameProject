@@ -1,11 +1,9 @@
 #pragma once
-#include "GameLevel.h"
-#include "Graphics.h"
-#include "framework.h"
+#include "../GameLevel.h"
+#include "../framework.h"
 #include "BackgroundMenu.h"
 #include "ButtonMenu.h"
-#include "Level.h"
-#include "UserInput.h"
+#include "../Level.h"
 
 
 class Menu : public GameLevel {
