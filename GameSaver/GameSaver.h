@@ -1,15 +1,14 @@
 #pragma once
 #include "../framework.h"
-#include <vector>
+#include "../Chunks/Chunk.h"
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <list>
 
 
-
-class GameSaver {
-public:
-
-
-private:
+namespace GameSaver {
+	list<Chunk*> buffer;
+	
 
 };
