@@ -5,9 +5,11 @@
 
 class ButtonMenu {
 public:
-	ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, void (*OnClickCallback)());
+	ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, void (*callback)());
+	~ButtonMenu();
 	void Render();
 	void OnClickEvent();
+
 	bool IsCursorOnButton();
 private:
 	Graphics* gfx;
