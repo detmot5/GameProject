@@ -56,5 +56,6 @@ private:
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(int index);
 	friend Block* GetBlockByCoords(Chunk& chunk, UINT16 x, UINT16 y);
+	friend ostream& operator<<(ostream& os, Chunk* chunk);
 };
 Block* GetBlockBySymbol(char symbol);
