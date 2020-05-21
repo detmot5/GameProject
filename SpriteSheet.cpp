@@ -63,8 +63,8 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	if (wicConverter) wicConverter->Release();
 	if (wicFrame) wicFrame->Release();
 	
-	spriteWidth = bmp->GetSize().width;
-	spriteHeight = bmp->GetSize().height;
+	spriteWidth = static_cast<int>(bmp->GetSize().width);
+	spriteHeight = static_cast<int>(bmp->GetSize().height);
 	spritesAccross = 1;
 }
 
@@ -105,8 +105,10 @@ void SpriteSheet::Draw(int index, int x, int y) {
 	);
 		
 	D2D_RECT_F dest = D2D1::RectF(
-		x,y,
-		x + spriteWidth, y + spriteHeight
+		static_cast<float>(x),
+		static_cast<float>(y),
+		static_cast<float>(x + spriteWidth), 
+		static_cast<float>(y + spriteHeight)
 	);
 
 

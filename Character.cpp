@@ -61,7 +61,7 @@ void Character::MoveUp()
 
 		
 			flag = true;
-			y += jumpHeight * ySpeed;
+			y += static_cast<int>(jumpHeight * ySpeed);
 
 			jumpHeight += gravity * ySpeed;
 

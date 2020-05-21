@@ -1,6 +1,6 @@
 #include "Clouds.h"
 
-Clouds::Clouds(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed)
+Clouds::Clouds(LPCTSTR bitmapPath, Graphics* graphics, int x, int y, float xSpeed)
 	: Animation(bitmapPath, graphics,false)
 {
 	this->x = x;

@@ -112,16 +112,7 @@ void Chunk::FloorLevelInit() {
 
 
 UINT16 Chunk::GetActualFloorLevel(UINT16 x) {
-	UINT16 a = 0;
-	try{
-	
-		auto result = FloorLevel.find(x);
-		a = result->second;
-	}
-	catch (const std::invalid_argument& ia) {
-		cout << a << endl;
-	}
-	return a;
+	return FloorLevel.find(x)->second;
 }
 
 

@@ -6,7 +6,6 @@
 #include "Graphics.h" 
 #include "Level.h"
 #include "GameController.h"
-#include "Menu.h"
 #include "UserInput.h"
 #include "WindowsX.h"
 
@@ -40,7 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    
     // TODO: Place code here.
  
-    srand(time(nullptr));
+    srand((unsigned int)time(nullptr));
 #if DEBUG_MODE
     //Open debug console
     AllocConsole();
