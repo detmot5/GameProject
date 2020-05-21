@@ -15,6 +15,7 @@ using namespace std;
 class Chunk {
 public:
 	Chunk(UINT16 StartPoint);
+	Chunk(UINT16 StartPoint, vector<string> chunkTemplate);
 	~Chunk();
 	static void Init(Graphics* gfx);		//call it before making object
 	UINT16 GetActualFloorLevel(UINT16 x);
@@ -25,26 +26,26 @@ public:
 	void Render();
 	
 
-	inline void SetOffset(int offset) { this->offset = offset; };
-	inline int GetOffset() { return this->offset; };
-	inline UINT16 GetStartPoint() { return this->StartPoint; };
+	inline void SetOffset(int offset) { this->offset = offset; }
+	inline int GetOffset() { return this->offset; }
+	inline UINT16 GetStartPoint() { return this->StartPoint; }
 	static const inline UINT16 blocksCountX = SCREEN_WIDTH / 32;
 	static const inline UINT16 blocksCountY = SCREEN_HEIGHT / 32;
 private:
 
-	static const inline  LPCWSTR imgSrc = L"Graphicss/block.png";
+	static const inline  LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 	static vector<Block*> BlockType;
 	static vector<int> randomStructArray;
 	static Graphics* gfx;
-	int offset;
 
 	static void RandomArrayInit();
 
 	vector<string> chunkTemplate;
 	map<UINT16, UINT16> FloorLevel;
 	UINT16 StartPoint;
+	int offset;
 	
 
 

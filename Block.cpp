@@ -21,10 +21,8 @@ Block::~Block() {
 
 
 void Block::Render(int x, int y, int offset){
-	sprites->Draw(index, x*spriteWidth + offset, y*spriteHeight);
+	sprites->Draw(index, x * spriteWidth + offset , y*spriteHeight);
 }
-
-
 
 
 

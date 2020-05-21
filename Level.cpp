@@ -29,18 +29,15 @@ void Level::Unload() {
 
 void Level::Update() {
     World::Update();
-    for (auto i : Animations) {
-        i->Update();
-    }
+    for (auto i : Animations)  i->Update();
+    
 }
 
 void Level::Render() {
     gfx->ClearScreen(0,0,0);
     World::Render();
 
-    for (auto i : Animations) {
-        i->Render();
-    }
+    for (auto i : Animations) i->Render();
 }
 
 

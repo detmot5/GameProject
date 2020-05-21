@@ -49,28 +49,31 @@ public:
 
 
 	static UINT16 GetActualFloorLevel(UINT16 x);
-
 	
 	static int FindNearestLandY(int objPosX, int objPosY);
-
 	static bool FindNearestWall(int& objPosX, int objPosY);
 	
 	static Chunk* actualChunk;
 	static inline int offset = 0;
+	static list<Chunk*> chunks;
 
 private:
 
 
 
-	static list<Chunk*> chunks;
 	static vector<int> randomStructArray;
+	static thread* thr;
+	static inline bool AddChunkFlag = false;
+	static inline bool DeleteChunkFlag = false;
+
 
 	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
 	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 
-	static void LoadChunk(Chunk*);
-	static void UnloadChunk(Chunk*);
+	static void thrHandler();
+	static void GenerateNewChunk();
+	static void DeleteFirstChunk();
 
 };
