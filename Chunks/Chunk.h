@@ -2,7 +2,6 @@
 #include <vector>
 #include <map>
 #include <thread>
-#include <chrono>
 #include "../framework.h"
 #include "../Block.h"
 #include "../SpriteSheet.h"

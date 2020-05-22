@@ -23,7 +23,6 @@
 #include <map>
 #include <list>
 #include <cmath>
-#include <fstream>
 #include <thread>
 
 #include "framework.h"
@@ -62,7 +61,7 @@ private:
 
 
 	static vector<int> randomStructArray;
-	static thread* thr;
+	static thread* ChunkGenerateThread;
 	static inline bool AddChunkFlag = false;
 	static inline bool DeleteChunkFlag = false;
 
@@ -72,7 +71,7 @@ private:
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 
-	static void thrHandler();
+	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();
 	static void DeleteFirstChunk();
 

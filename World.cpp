@@ -4,7 +4,7 @@ using namespace Utils;
 
 list<Chunk*> World::chunks;
 Chunk* World::actualChunk;
-thread* World::thr;
+thread* World::ChunkGenerateThread;
 
 
 
@@ -80,12 +80,12 @@ void World::Init(Graphics* gfx) {
 	chunks.push_back(new Chunk(50));
 	actualChunk = chunks.front();
 
-	thr = new thread(thrHandler);
+	ChunkGenerateThread = new thread(ChunkGenerateHandler);
 
 }
 
 void World::Unload() {
-	thr->detach();
+	ChunkGenerateThread->detach();
 	chunks.clear();
 	delete actualChunk;
 }
@@ -95,25 +95,27 @@ void World::Update() {
 	UINT16 actualChunkStartPoint = actualChunk->GetStartPoint();
 	UINT16 nextChunkStartPoint = actualChunkStartPoint + Chunk::blocksCountX;
 	UINT16 previousChunkStartPoint = actualChunkStartPoint - Chunk::blocksCountX;
+	int actualPosition = offset / DEFAULT_BLOCK_SIZE;
 
 	for (auto i : chunks) i->SetOffset(offset);
 
 
-	if (abs(offset) / DEFAULT_BLOCK_SIZE > nextChunkStartPoint) {
+	if (actualPosition > nextChunkStartPoint) {
 		actualChunk = GetChunkByStartPoint(nextChunkStartPoint);
 	}
-	else if (abs(offset) / DEFAULT_BLOCK_SIZE < actualChunkStartPoint) {
+	else if (actualPosition < actualChunkStartPoint) {
 		actualChunk = GetChunkByStartPoint(previousChunkStartPoint);
 	}
 
-	if (abs(offset / DEFAULT_BLOCK_SIZE) >= actualChunk->GetStartPoint() - Chunk::blocksCountX &&
+	if (actualPosition >= actualChunk->GetStartPoint() - Chunk::blocksCountX &&
 		!GetChunkByStartPoint(actualChunk->GetStartPoint() + Chunk::blocksCountX * 2) &&
 		!AddChunkFlag) {
 
 		AddChunkFlag = true;
 
-		if (((abs(offset) / DEFAULT_BLOCK_SIZE - chunks.front()->GetStartPoint()) >= 100) ){
-			DeleteChunkFlag = true;
+		if ((actualPosition - chunks.front()->GetStartPoint()) >= 100 ){
+			DeleteFirstChunk();
+			
 		}
 
 	}
@@ -131,6 +133,8 @@ void World::Update() {
 
 void World::Render() {
 	for (auto i : chunks) i->Render();
+	
+
 }
 
 
@@ -147,6 +151,7 @@ void World::GenerateNewChunk() {
 
 
 void World::DeleteFirstChunk() {
+	delete chunks.front();
 	chunks.pop_front();
 #if DEBUG_MODE
 	cout << "Deleted" << endl;
@@ -157,17 +162,14 @@ void World::DeleteFirstChunk() {
 
 
 
-void World::thrHandler() {
+void World::ChunkGenerateHandler() {
 
 	while (true) {
 		if (AddChunkFlag) {
 			GenerateNewChunk();
 			AddChunkFlag = false;
 		}
-		else if (DeleteChunkFlag) {
-			DeleteFirstChunk();
-			DeleteChunkFlag = false;
-		}
+
 	}
 }
 
