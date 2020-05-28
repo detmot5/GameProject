@@ -82,6 +82,6 @@ private:
 
 	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();
-	static void DeleteFirstChunk();
+	static void PutFirstChunkIntoBuffer();
 
 };
