@@ -30,7 +30,9 @@
 #include "Graphics.h"
 #include "Utils.h"
 #include "Chunks/Chunk.h"
+#include "GameSaver/GameSaver.h"
 #include "Animation/Animation.h"	
+
 using namespace std;
 
 class World{
@@ -41,7 +43,8 @@ public:
 	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
 
 
-	static void Init(Graphics *gfx);
+	static void Init(Graphics* gfx);
+	static void Load(Graphics* gfx);
 	static void Unload();
 	static void Render();
 	static void Update();
@@ -52,8 +55,8 @@ public:
 	static int FindNearestLandY(int objPosX, int objPosY);
 	static bool FindNearestWall(int& objPosX, int objPosY);
 	
-	static Chunk* actualChunk;
 	static inline int offset = 0;
+	static Chunk* actualChunk;
 	static list<Chunk*> chunks;
 
 private:
@@ -70,6 +73,12 @@ private:
 	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
+
+
+	static inline UINT16 GetActualChunkStartPoint() { return actualChunk->GetStartPoint(); }
+	static inline UINT16 GetNextChunkStartPoint() { return GetActualChunkStartPoint() + Chunk::blocksCountX; }
+	static inline UINT16 GetPreviousChunkStartPoint() { return GetActualChunkStartPoint() - Chunk::blocksCountX; };
+
 
 	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();

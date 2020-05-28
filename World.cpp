@@ -84,6 +84,31 @@ void World::Init(Graphics* gfx) {
 
 }
 
+
+void World::Load(Graphics* gfx) {
+	Chunk::Init(gfx);
+	GameSaver::Read::LoadSave(L"GameProject/Saves/myBigWorld.sav");
+	
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(75));
+
+	actualChunk = chunks.front();
+
+	for (auto i : chunks) {
+		cout << i << endl;
+	}
+
+
+
+
+	ChunkGenerateThread = new thread(ChunkGenerateHandler);
+	
+
+
+}
+
+
 void World::Unload() {
 	ChunkGenerateThread->detach();
 	chunks.clear();
@@ -92,23 +117,21 @@ void World::Unload() {
 
 
 void World::Update() {
-	UINT16 actualChunkStartPoint = actualChunk->GetStartPoint();
-	UINT16 nextChunkStartPoint = actualChunkStartPoint + Chunk::blocksCountX;
-	UINT16 previousChunkStartPoint = actualChunkStartPoint - Chunk::blocksCountX;
+
 	int actualPosition = offset / DEFAULT_BLOCK_SIZE;
 
 	for (auto i : chunks) i->SetOffset(offset);
 
 
-	if (actualPosition > nextChunkStartPoint) {
-		actualChunk = GetChunkByStartPoint(nextChunkStartPoint);
+	if (actualPosition > GetNextChunkStartPoint()) {
+		actualChunk = GetChunkByStartPoint(GetNextChunkStartPoint());
 	}
-	else if (actualPosition < actualChunkStartPoint) {
-		actualChunk = GetChunkByStartPoint(previousChunkStartPoint);
+	else if (actualPosition < GetActualChunkStartPoint()) {
+		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
 	}
 
-	if (actualPosition >= actualChunk->GetStartPoint() - Chunk::blocksCountX &&
-		!GetChunkByStartPoint(actualChunk->GetStartPoint() + Chunk::blocksCountX * 2) &&
+	if (actualPosition >= GetPreviousChunkStartPoint() &&
+		!GetChunkByStartPoint(GetNextChunkStartPoint() * 2) &&
 		!AddChunkFlag) {
 
 		AddChunkFlag = true;
@@ -166,7 +189,7 @@ void World::ChunkGenerateHandler() {
 
 	while (true) {
 		if (AddChunkFlag) {
-			GenerateNewChunk();
+		//	GenerateNewChunk();
 			AddChunkFlag = false;
 		}
 
