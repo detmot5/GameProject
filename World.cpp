@@ -88,10 +88,10 @@ void World::Init(Graphics* gfx) {
 void World::Load(Graphics* gfx) {
 	Chunk::Init(gfx);
 	GameSaver::Read::LoadSave(L"GameProject/Saves/myBigWorld.sav");
-	
+
 	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
 	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
-	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(75));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
 
 	actualChunk = chunks.front();
 
@@ -130,14 +130,14 @@ void World::Update() {
 		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
 	}
 
-	if (actualPosition >= GetPreviousChunkStartPoint() &&
-		!GetChunkByStartPoint(GetNextChunkStartPoint() * 2) &&
+	if (actualPosition >= GetActualChunkStartPoint() &&
+		!GetChunkByStartPoint(GetNextChunkStartPoint() + Chunk::blocksCountX) &&
 		!AddChunkFlag) {
 
 		AddChunkFlag = true;
 
 		if ((actualPosition - chunks.front()->GetStartPoint()) >= 100 ){
-			DeleteFirstChunk();
+			//DeleteFirstChunk();
 			
 		}
 
@@ -173,7 +173,11 @@ void World::GenerateNewChunk() {
 }
 
 
-void World::DeleteFirstChunk() {
+void World::PutFirstChunkIntoBuffer() {
+	
+	
+
+
 	delete chunks.front();
 	chunks.pop_front();
 #if DEBUG_MODE
@@ -189,8 +193,19 @@ void World::ChunkGenerateHandler() {
 
 	while (true) {
 		if (AddChunkFlag) {
-		//	GenerateNewChunk();
+
+			if (chunks.back()->GetStartPoint() <= GameSaver::Read::GetLastChunkStartPoint()) {
+				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
+#if DEBUG_MODE
+				cout << "Loaded" << endl;
+#endif
+			}
+			else {
+				GenerateNewChunk();
+			}
 			AddChunkFlag = false;
+
+			//GenerateNewChunk();
 		}
 
 	}
