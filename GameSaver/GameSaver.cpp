@@ -20,25 +20,37 @@ namespace GameSaver {
 
 	namespace Write {
 		void SaveChunk(Chunk* chunk) {
-		
-			fileStream.open(directoryName + L"\\" + fileName, ios::app);
-			ChunkBuffer.push_back(chunk);
-			fileStream << chunk;
-			fileStream.close();
-		}
-	}
 
+			fileStream.open(L"GameProject/Saves/myBigWorld.sav", ios::app);
+			if (fileStream.fail()) cout << "Error" << endl;
+			ChunkBuffer.push_back(chunk);
+			fileStream << ChunkBuffer.back();
+			fileStream.close();
+			cout << endl << "Zapisano " << chunk->GetStartPoint() << endl;
+		}
+
+		void SaveOnExit() {
+			fileStream.open(L"GameProject/Saves/myBigWorld.sav", ios::out);
+			for (auto chunk : ChunkBuffer) {
+				fileStream << chunk;
+			}
+			fileStream.close();
+		
+		}
+
+	}
+	
 
 
 
 	namespace Read {
 
-		static void ReadFile(wstring path) {
+		static bool ReadFile(wstring path) {
 			if (!filesystem::exists(path)) {
 				#if DEBUG_MODE
 				cout << "File doesn't exist!" << endl;
 				#endif
-				return;
+				return false;
 			}
 			string temp;
 
@@ -51,6 +63,7 @@ namespace GameSaver {
 				temp.clear();
 			}
 			fileStream.close();
+			return true;
 		}
 
 
@@ -60,31 +73,43 @@ namespace GameSaver {
 			string startPointStr = sstr.str();
 			vector<string> temp;
 
+			if (buffer.empty()) return nullptr;
+
 			for (int i = 0; i < buffer.size(); i++) {
 				if (buffer[i] == startPointStr) {
-					for (int j = i; j <= i + Chunk::blocksCountY; j++) {
+					for (int j = i + 1 ; j <= i + Chunk::blocksCountY; j++) {
 						temp.push_back(buffer[j]);
 					}
 					return new Chunk(StartPoint, temp);
 				}
 			}
+
+			cout << endl;
 			return nullptr;
 		}
 
 
 
+		
+		bool LoadSave(wstring path) {
 
-		void LoadSave(wstring path) {
-			ReadFile(path);
+			if (!ReadFile(path)) return false;
+			
+
 			int startPoint = 0;
-			Chunk* ChunkToSave;
+			Chunk* ChunkToSave = ReadChunksFromFileBuffer(startPoint);;
+			cout << "Ostatni: ";
 
-			do {
-				ChunkToSave = ReadChunksFromFileBuffer(startPoint);
+			while (nullptr != ChunkToSave) {
 				ChunkBuffer.push_back(ChunkToSave);
 				startPoint += Chunk::blocksCountX;
-			} while (nullptr != ChunkToSave);
-		
+				ChunkToSave = ReadChunksFromFileBuffer(startPoint);
+			}
+			cout << "xd" << endl;
+			cout << ChunkBuffer.back()->GetStartPoint()<< endl;
+			
+			return true;
+			
 		}
 
 
@@ -96,6 +121,16 @@ namespace GameSaver {
 			}
 			return nullptr;
 		}
+
+		UINT16 GetLastChunkStartPoint() {
+			cout << endl <<ChunkBuffer.front();
+			return ChunkBuffer.back()->GetStartPoint();
+		}
+
+
+		
+
+
 
 	}
 

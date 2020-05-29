@@ -11,13 +11,16 @@ using namespace std;
 
 namespace GameSaver {
 	void InitSave(wstring saveName);
+	
 	namespace Write {
 		void SaveChunk(Chunk* chunk);	
+		void SaveOnExit();
 	}
 
 	namespace Read {
-		void LoadSave(wstring path);
+		bool LoadSave(wstring path);
 		Chunk* GetChunkFromBuffer(UINT16 StartPoint);
+		UINT16 GetLastChunkStartPoint();
 	}
 
 };
