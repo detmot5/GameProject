@@ -3,22 +3,31 @@
 
 
 // example level class
+Level::Level() {
+    load = false;
+}
 
-
-
-
-void Level::Load(){
-    World::Init(gfx);
-
-    Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx));
-    Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
-
-
+Level::Level(wstring path) {
+    this->path = path;
+    load = true;
 }
 
 
 Level::~Level() {
+
 }
+void Level::Load(){
+
+    if (load) World::Load(gfx, path);
+    else World::Init(gfx);
+
+    World::Init(gfx);
+    Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx));
+    Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
+}
+
+
+
 
 void Level::Unload() {
     World::Unload();

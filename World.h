@@ -44,7 +44,7 @@ public:
 
 
 	static void Init(Graphics* gfx);
-	static void Load(Graphics* gfx);
+	static void Load(Graphics* gfx, wstring Path);
 	static void Unload();
 	static void Render();
 	static void Update();

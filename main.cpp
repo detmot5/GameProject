@@ -66,7 +66,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     
     GameLevel::InitGraphics(graphics);          //THIS FIRST
-    GameController::LoadInitialLevel(new Level());
+    GameController::LoadInitialLevel(new Level(L"GameProject/Saves/myBigWorld.sav"));
     MSG msg;
     msg.message = WM_NULL;
 

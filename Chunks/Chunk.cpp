@@ -44,6 +44,7 @@ void LoadBlock(string& target, int index) {
 ostream& operator<<(ostream& os, Chunk* chunk) {
 	os << chunk->StartPoint << endl;
 	for (auto i : chunk->chunkTemplate) os << i << endl;
+	os << endl;
 	return os;
 }
 
@@ -72,6 +73,8 @@ void Chunk::Init(Graphics* gfx) {
 	RandomArrayInit();
 }
 
+
+
 void Chunk::RandomArrayInit() {
 	for (UINT8 i = 0; i < BlockType.size(); i++) {
 		if (BlockType[i]->GetIndex() == Block::air) continue;
@@ -86,14 +89,13 @@ void Chunk::RandomArrayInit() {
 
 
 Chunk::Chunk(UINT16 StartPoint){
-	cout << "Start" << endl;
 	this->StartPoint = StartPoint;
 	this->FloorLevelInit();
 	this->ChunkTemplateInit();
-	Utils::printVector(chunkTemplate,"\n");
 }
 
-Chunk::Chunk(UINT16 StartPoint, vector<string> chunkTemplate){
+Chunk::Chunk(UINT16 StartPoint, vector<string>& chunkTemplate){
+	this->LoadFloorLevel();
 	this->StartPoint = StartPoint;
 	this->chunkTemplate = chunkTemplate;
 }
@@ -114,6 +116,12 @@ void Chunk::FloorLevelInit() {
 	}
 }
 
+void Chunk::LoadFloorLevel() {
+	for (UINT16 i = 0; i <= blocksCountX; i++) {
+		UINT16 actualFloorLevel = averageFloorLevel;
+		FloorLevel.insert(pair<UINT16, UINT16>(i, actualFloorLevel));
+	}
+}
 
 
 UINT16 Chunk::GetActualFloorLevel(UINT16 x) {
@@ -197,7 +205,7 @@ void Chunk::Update() {
 void Chunk::Render() {
 	
 	static bool isDisplayed = false;
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	if (!isDisplayed) {
 		Utils::printVector(chunkTemplate,"\n");
 		isDisplayed = true;
