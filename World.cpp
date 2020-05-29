@@ -1,4 +1,5 @@
 #include "World.h"
+
 using namespace Utils;
 
 
@@ -95,17 +96,8 @@ void World::Load(Graphics* gfx) {
 
 	actualChunk = chunks.front();
 
-	for (auto i : chunks) {
-		cout << i << endl;
-	}
-
-
-
-
 	ChunkGenerateThread = new thread(ChunkGenerateHandler);
 	
-
-
 }
 
 
@@ -128,6 +120,7 @@ void World::Update() {
 	}
 	else if (actualPosition < GetActualChunkStartPoint()) {
 		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
+		//chunks.push_front(GameSaver::Read::GetChunkFromBuffer(chunks.front()->GetStartPoint() - Chunk::blocksCountX));
 	}
 
 	if (actualPosition >= GetActualChunkStartPoint() &&
@@ -137,9 +130,9 @@ void World::Update() {
 		AddChunkFlag = true;
 
 		if ((actualPosition - chunks.front()->GetStartPoint()) >= 100 ){
-			//DeleteFirstChunk();
-			
+			DeleteFirstChunk();
 		}
+		
 
 	}
 
@@ -166,14 +159,16 @@ void World::Render() {
 //----------------------------------------------------------------------------------------
 void World::GenerateNewChunk() {
 	chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
+	GameSaver::Write::SaveChunk(chunks.back());
 #if DEBUG_MODE 
-	cout << "Generated" << endl;
+	cout <<endl<< "Generated" << endl;
 	cout << (offset / Chunk::blocksCountX) << endl;
+	cout << chunks.back()->GetStartPoint()<<endl;
 #endif
 }
 
 
-void World::PutFirstChunkIntoBuffer() {
+void World::DeleteFirstChunk() {
 	
 	
 
@@ -188,13 +183,12 @@ void World::PutFirstChunkIntoBuffer() {
 
 
 
-
 void World::ChunkGenerateHandler() {
-
+	
 	while (true) {
 		if (AddChunkFlag) {
 
-			if (chunks.back()->GetStartPoint() <= GameSaver::Read::GetLastChunkStartPoint()) {
+			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
 				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
 #if DEBUG_MODE
 				cout << "Loaded" << endl;
@@ -204,8 +198,6 @@ void World::ChunkGenerateHandler() {
 				GenerateNewChunk();
 			}
 			AddChunkFlag = false;
-
-			//GenerateNewChunk();
 		}
 
 	}
