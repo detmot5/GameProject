@@ -14,11 +14,10 @@ using namespace std;
 class Chunk {
 public:
 	Chunk(UINT16 StartPoint);
-	Chunk(UINT16 StartPoint, vector<string> chunkTemplate);
+	Chunk(UINT16 StartPoint, vector<string>& chunkTemplate);
 	~Chunk();
 	static void Init(Graphics* gfx);		//call it before making object
 	UINT16 GetActualFloorLevel(UINT16 x);
-	/*UINT16 FindNearestLand(UINT16 objPosX, UINT16 objPosY);*/
 	bool isCollisionEnabled(UINT16 x, UINT16 y);
 
 	void Update();
@@ -32,7 +31,7 @@ public:
 	static const inline UINT16 blocksCountY = SCREEN_HEIGHT / 32;
 private:
 
-	static const inline  LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
+	static const inline LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 	static vector<Block*> BlockType;
@@ -50,6 +49,7 @@ private:
 
 	void ChunkTemplateInit();
 	void FloorLevelInit();
+	void LoadFloorLevel();
 	void TerrainGenerator(string& target, int deepness, UINT8* iterator);
 	void GenerateCave(string& target, int deepness, UINT8* iterator);
 
@@ -58,4 +58,3 @@ private:
 	friend Block* GetBlockByCoords(Chunk& chunk, UINT16 x, UINT16 y);
 	friend ostream& operator<<(ostream& os, Chunk* chunk);
 };
-Block* GetBlockBySymbol(char symbol);

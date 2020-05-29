@@ -13,8 +13,7 @@ namespace GameSaver {
 	void InitSave(wstring saveName);
 	
 	namespace Write {
-		void SaveChunk(Chunk* chunk);	
-		void SaveOnExit();
+		bool SaveChunk(Chunk* chunk);	
 	}
 
 	namespace Read {

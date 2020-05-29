@@ -6,37 +6,37 @@ namespace GameSaver {
 	static vector<string> buffer;
 
 	fstream fileStream;
-	const wstring directoryName = L"GameProject\\Saves";
-	wstring fileName = L"mysave";
+	const wstring directoryPath = L"GameProject/Saves/";
+	wstring saveName = L"mysave";
 
 
-	void InitSave(wstring saveName) {
-		if (!filesystem::exists(directoryName))	filesystem::create_directory(directoryName);
-		
-		fileName = saveName + L".sav";
-		fileStream.open(directoryName + L"\\" + fileName, ios::out);
+	static inline void ParsePath(wstring filePath) {
+		saveName = directoryPath + filePath;
+	}
+
+
+	void InitSave(wstring filePath) {
+		if (!filesystem::exists(directoryPath))	filesystem::create_directory(directoryPath);
+		ParsePath(filePath);
+			//create empty file
+		fileStream.open(saveName, ios::out);
 		fileStream.close();
 	}
 
 	namespace Write {
-		void SaveChunk(Chunk* chunk) {
-
-			fileStream.open(L"GameProject/Saves/myBigWorld.sav", ios::app);
-			if (fileStream.fail()) cout << "Error" << endl;
+		bool SaveChunk(Chunk* chunk) {
+			fileStream.open(saveName, ios::app);
+			if (fileStream.fail()) return false;;
 			ChunkBuffer.push_back(chunk);
 			fileStream << ChunkBuffer.back();
 			fileStream.close();
+
+#if DEBUG_MODE
 			cout << endl << "Zapisano " << chunk->GetStartPoint() << endl;
+#endif
+			return true;
 		}
 
-		void SaveOnExit() {
-			fileStream.open(L"GameProject/Saves/myBigWorld.sav", ios::out);
-			for (auto chunk : ChunkBuffer) {
-				fileStream << chunk;
-			}
-			fileStream.close();
-		
-		}
 
 	}
 	
@@ -55,6 +55,7 @@ namespace GameSaver {
 			string temp;
 
 			fileStream.open(path, ios::in);
+			if (fileStream.fail()) return false;
 
 			while (!fileStream.eof()) {
 				fileStream >> temp;
@@ -93,9 +94,8 @@ namespace GameSaver {
 		
 		bool LoadSave(wstring path) {
 
-			if (!ReadFile(path)) return false;
-			
 
+			if (!ReadFile(path)) return false;
 			int startPoint = 0;
 			Chunk* ChunkToSave = ReadChunksFromFileBuffer(startPoint);;
 			cout << "Ostatni: ";

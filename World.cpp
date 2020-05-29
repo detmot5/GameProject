@@ -86,18 +86,23 @@ void World::Init(Graphics* gfx) {
 }
 
 
-void World::Load(Graphics* gfx) {
-	Chunk::Init(gfx);
-	GameSaver::Read::LoadSave(L"GameProject/Saves/myBigWorld.sav");
+void World::Load(Graphics* gfx, wstring Path) {
+		// if reading error then generate new save
+	if (GameSaver::Read::LoadSave(Path)) {
+		Chunk::Init(gfx);
 
-	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
-	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
-	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
+		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
+		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
+		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
 
-	actualChunk = chunks.front();
+		actualChunk = chunks.front();
 
-	ChunkGenerateThread = new thread(ChunkGenerateHandler);
-	
+		ChunkGenerateThread = new thread(ChunkGenerateHandler);
+	}
+	else {
+		Chunk::Init(gfx);
+	}
+
 }
 
 
@@ -159,7 +164,12 @@ void World::Render() {
 //----------------------------------------------------------------------------------------
 void World::GenerateNewChunk() {
 	chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
-	GameSaver::Write::SaveChunk(chunks.back());
+	if (!GameSaver::Write::SaveChunk(chunks.back())) {
+#if DEBUG_MODE
+		cout << "Error Writing to file!" << endl;
+#endif
+	}
+
 #if DEBUG_MODE 
 	cout <<endl<< "Generated" << endl;
 	cout << (offset / Chunk::blocksCountX) << endl;

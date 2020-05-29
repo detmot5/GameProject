@@ -14,12 +14,18 @@
 class Level : public GameLevel
 {
 public:
-
+	Level();
+	Level(wstring path);
 	~Level();
 
 	void Load() override;
 	void Unload() override;
 	void Render() override;
 	void Update() override;
+
+
+private:
+	bool load;
+	wstring path;
 };
 
