@@ -94,8 +94,11 @@ void World::Init(Graphics* gfx, wstring Path) {
 void World::Load(Graphics* gfx, wstring Path) {
 		// if reading error then generate new save
 	Chunk::Init(gfx);
-	if(GameSaver::Read::LoadSave(Path))
-		cout << "Wczytano"<< endl;  
+	if (GameSaver::Read::LoadSave(Path)) {
+#if DEBUG_MODE && GAME_SAVER_DEBUG
+		cout << "Save Loaded"<< endl;  
+#endif
+	}
 
 	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
 	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
@@ -148,7 +151,7 @@ void World::Update() {
 	}
 
 
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	cout <<"                                  \r" 
 		 << offset/32 << " " 
 		 << offset << " "
@@ -171,12 +174,12 @@ void World::Render() {
 void World::GenerateNewChunk() {
 	chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
 	if (!GameSaver::Write::SaveChunk(chunks.back())) {
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_SAVER_DEBUG
 		cout << "Error Writing to file!" << endl;
 #endif
 	}
 
-#if DEBUG_MODE 
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	cout <<endl<< "Generated" << endl;
 	cout << (offset / Chunk::blocksCountX) << endl;
 	cout << chunks.back()->GetStartPoint()<<endl;
@@ -186,7 +189,7 @@ void World::GenerateNewChunk() {
 
 void World::DeleteFirstChunk() {
 	chunks.pop_front();
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	cout << "Deleted" << endl;
 #endif
 }
@@ -201,7 +204,7 @@ void World::ChunkGenerateHandler() {
 
 			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
 				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
 				cout << "Loaded" << endl;
 #endif
 			}

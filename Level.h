@@ -22,6 +22,10 @@ public:
 	void Render() override;
 	void Update() override;
 
+	enum {
+		NewSave = false,
+		LoadSave = true,
+	};
 
 private:
 	bool load;

@@ -39,7 +39,6 @@ class World{
 public:
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(int index);
-	friend Block* GetBlockByCoords(UINT16 objPosX, UINT16 objPosY);
 	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
 
 
@@ -50,7 +49,6 @@ public:
 	static void Update();
 
 
-	//static UINT16 GetActualFloorLevel(UINT16 x);
 	
 	static int FindNearestLandY(int objPosX, int objPosY);
 	static bool FindNearestWall(int& objPosX, int objPosY);

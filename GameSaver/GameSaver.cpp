@@ -33,7 +33,7 @@ namespace GameSaver {
 			fileStream << ChunkBuffer.back();
 			fileStream.close();
 
-#if DEBUG_MODE
+#if DEBUG_MODE && GAME_SAVER_DEBUG
 			cout << endl << "Saved" << chunk->GetStartPoint() << endl;
 #endif
 			return true;
@@ -48,9 +48,9 @@ namespace GameSaver {
 	namespace Read {
 
 		static bool ReadFile(const wstring path) {
-
-			if (!filesystem::exists(path)) {
-#if DEBUG_MODE
+			ParsePath(path);
+			if (!filesystem::exists(saveName)) {
+#if DEBUG_MODE && GAME_SAVER_DEBUG
 				cout << "File doesn't exist!" << endl;
 #endif
 				return false;
@@ -123,7 +123,9 @@ namespace GameSaver {
 		}
 
 		UINT16 GetLastChunkStartPoint() {
-			cout << endl <<ChunkBuffer.front();
+#if DEBUG_MODE && GAME_SAVER_DEBUG
+			cout << endl << ChunkBuffer.front();
+#endif
 			return ChunkBuffer.back()->GetStartPoint();
 		}
 

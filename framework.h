@@ -23,5 +23,6 @@
 
 #define DEBUG_MODE true
 #define GAME_GENERATOR_DEBUG false
+#define GAME_SAVER_DEBUG true
 
 
