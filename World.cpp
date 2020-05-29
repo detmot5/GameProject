@@ -88,20 +88,19 @@ void World::Init(Graphics* gfx) {
 
 void World::Load(Graphics* gfx, wstring Path) {
 		// if reading error then generate new save
-	if (GameSaver::Read::LoadSave(Path)) {
-		Chunk::Init(gfx);
+	Chunk::Init(gfx);
+	if(GameSaver::Read::LoadSave(Path))
+		cout << "Wczytano"<< endl;  
 
-		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
-		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
-		chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
 
-		actualChunk = chunks.front();
+	actualChunk = chunks.front();
 
-		ChunkGenerateThread = new thread(ChunkGenerateHandler);
-	}
-	else {
-		Chunk::Init(gfx);
-	}
+	ChunkGenerateThread = new thread(ChunkGenerateHandler);
+	
+
 
 }
 
@@ -125,7 +124,6 @@ void World::Update() {
 	}
 	else if (actualPosition < GetActualChunkStartPoint()) {
 		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
-		//chunks.push_front(GameSaver::Read::GetChunkFromBuffer(chunks.front()->GetStartPoint() - Chunk::blocksCountX));
 	}
 
 	if (actualPosition >= GetActualChunkStartPoint() &&

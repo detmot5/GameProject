@@ -98,15 +98,13 @@ namespace GameSaver {
 			if (!ReadFile(path)) return false;
 			int startPoint = 0;
 			Chunk* ChunkToSave = ReadChunksFromFileBuffer(startPoint);;
-			cout << "Ostatni: ";
+		
 
 			while (nullptr != ChunkToSave) {
 				ChunkBuffer.push_back(ChunkToSave);
 				startPoint += Chunk::blocksCountX;
 				ChunkToSave = ReadChunksFromFileBuffer(startPoint);
 			}
-			cout << "xd" << endl;
-			cout << ChunkBuffer.back()->GetStartPoint()<< endl;
 			
 			return true;
 			
