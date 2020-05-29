@@ -90,12 +90,11 @@ void Chunk::RandomArrayInit() {
 
 Chunk::Chunk(UINT16 StartPoint){
 	this->StartPoint = StartPoint;
-	this->FloorLevelInit();
+	FloorLevelInit();
 	this->ChunkTemplateInit();
 }
 
 Chunk::Chunk(UINT16 StartPoint, vector<string>& chunkTemplate){
-	this->LoadFloorLevel();
 	this->StartPoint = StartPoint;
 	this->chunkTemplate = chunkTemplate;
 }
@@ -116,13 +115,6 @@ void Chunk::FloorLevelInit() {
 	}
 }
 
-void Chunk::LoadFloorLevel() {
-	for (UINT16 i = 0; i <= blocksCountX; i++) {
-		UINT16 actualFloorLevel = averageFloorLevel;
-		FloorLevel.insert(pair<UINT16, UINT16>(i, actualFloorLevel));
-	}
-}
-
 
 UINT16 Chunk::GetActualFloorLevel(UINT16 x) {
 	return FloorLevel.find(x)->second;
@@ -137,6 +129,7 @@ void Chunk::ChunkTemplateInit() {
 			TerrainGenerator(chunkTemplate[i], i, &j);
 		}
 	}
+	FloorLevel.clear();
 }
 
 

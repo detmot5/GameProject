@@ -43,14 +43,14 @@ public:
 	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
 
 
-	static void Init(Graphics* gfx);
+	static void Init(Graphics* gfx, wstring Path);
 	static void Load(Graphics* gfx, wstring Path);
 	static void Unload();
 	static void Render();
 	static void Update();
 
 
-	static UINT16 GetActualFloorLevel(UINT16 x);
+	//static UINT16 GetActualFloorLevel(UINT16 x);
 	
 	static int FindNearestLandY(int objPosX, int objPosY);
 	static bool FindNearestWall(int& objPosX, int objPosY);

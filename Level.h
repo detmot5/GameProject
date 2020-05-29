@@ -14,8 +14,7 @@
 class Level : public GameLevel
 {
 public:
-	Level();
-	Level(wstring path);
+	Level(wstring path, bool load);
 	~Level();
 
 	void Load() override;

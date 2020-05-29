@@ -81,7 +81,7 @@ void Character::MoveRight()
 {
 	index = 1;
 	
-	 World::offset += 40;
+	 World::offset += 30;
 	if (World::FindNearestWall(x, y))
 	{
 		//x = abs(World::offset) - World::actualChunk->GetStartPoint()*32;

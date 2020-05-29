@@ -10,7 +10,7 @@ class Character : public Animation
 public:
 
 
-	Character(LPCTSTR bitmapPath, Graphics* graphics, int position = SCREEN_WIDTH/2 + 10, int y = World::GetActualFloorLevel(SCREEN_WIDTH/64), float xSpeed = 4.0,
+	Character(LPCTSTR bitmapPath, Graphics* graphics, int position = SCREEN_WIDTH/2 + 10, int y = SCREEN_WIDTH/64 + 64, float xSpeed = 4.0,
 		float ySpeed = -0.2, float jumpHeight = 25, float gravity = 6.0);
 
 

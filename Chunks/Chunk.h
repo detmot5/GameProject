@@ -49,7 +49,6 @@ private:
 
 	void ChunkTemplateInit();
 	void FloorLevelInit();
-	void LoadFloorLevel();
 	void TerrainGenerator(string& target, int deepness, UINT8* iterator);
 	void GenerateCave(string& target, int deepness, UINT8* iterator);
 

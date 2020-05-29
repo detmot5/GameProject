@@ -17,9 +17,9 @@ Chunk* GetChunkByStartPoint(UINT16 startPoint) {
 }
 
 
-UINT16 World::GetActualFloorLevel(UINT16 x) {
-	return actualChunk->GetActualFloorLevel(x);
-}
+//UINT16 World::GetActualFloorLevel(UINT16 x) {
+//	return actualChunk->GetActualFloorLevel(x);
+//}
 
 
 
@@ -74,11 +74,16 @@ bool World::FindNearestWall(int& objPosX, int objPosY)
 
 
 
-void World::Init(Graphics* gfx) {
+void World::Init(Graphics* gfx, wstring Path) {
 	Chunk::Init(gfx);
+	GameSaver::InitSave(Path);
 	chunks.push_back(new Chunk(0));
 	chunks.push_back(new Chunk(25));
 	chunks.push_back(new Chunk(50));
+
+	for (auto i : chunks) {
+		GameSaver::Write::SaveChunk(i);
+	}
 	actualChunk = chunks.front();
 
 	ChunkGenerateThread = new thread(ChunkGenerateHandler);
@@ -109,6 +114,9 @@ void World::Unload() {
 	ChunkGenerateThread->detach();
 	chunks.clear();
 	delete actualChunk;
+	delete ChunkGenerateThread;
+	actualChunk = nullptr;
+	ChunkGenerateThread = nullptr;
 }
 
 
@@ -136,7 +144,7 @@ void World::Update() {
 			DeleteFirstChunk();
 		}
 		
-
+		
 	}
 
 
@@ -177,11 +185,6 @@ void World::GenerateNewChunk() {
 
 
 void World::DeleteFirstChunk() {
-	
-	
-
-
-	delete chunks.front();
 	chunks.pop_front();
 #if DEBUG_MODE
 	cout << "Deleted" << endl;
