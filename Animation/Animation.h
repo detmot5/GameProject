@@ -4,15 +4,16 @@
 #include "../SpriteSheet.h"
 #include "../Graphics.h"
 #include "../World.h"
+#include "GameVector.h"
 
 class Animation
 {
 public:
-	Animation(LPCTSTR, Graphics*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
+	Animation(LPCTSTR, Graphics*, GamePoint*, GameVector*, GameVector*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
 	~Animation();
 
 
-	virtual void Update() = 0;
+	virtual void Update(double timeDelta);
 	virtual void Render();
 
 
@@ -20,16 +21,21 @@ public:
 	virtual void MoveLeft();
 	virtual void MoveUp();
 	virtual void MoveDown();
+	
+	void GravityEvent();
 
 
 protected:
 	int position;
 
-	int x, y;
-	float xSpeed, ySpeed;
 
-	float jumpHeight;
-	float gravity;
+
+	GamePoint* position;
+	GameVector* velocity;
+	GameVector* gravity;
+	double deltaTime;
+
+
 
 	int index;
 	bool blockPrecision;

@@ -32,9 +32,9 @@ void Level::Unload() {
 
 
 
-void Level::Update() {
+void Level::Update(double timeTotal, double timeDelta) {
     World::Update();
-    for (auto i : Animations)  i->Update();
+    for (auto i : Animations)  i->Update(timeDelta);
     
 }
 

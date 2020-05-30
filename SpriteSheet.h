@@ -11,7 +11,7 @@ public:
 	~SpriteSheet();
 		//draw bitmap to the render target
 	void Draw();
-	void Draw(int index, int x, int y);
+	void Draw(int index, float x, float y);
 private:
 	
 	Graphics* gfx;

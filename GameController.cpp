@@ -1,12 +1,14 @@
 
 #include "GameController.h"
 
-bool GameController::Loading;
+
 
 
 void GameController::Init() {
 	Loading = true;
 	currentLevel = 0;
+	hpTimer = new HPTimer();
+	
 }
 
 void GameController::LoadInitialLevel(GameLevel* lev) {
@@ -33,10 +35,12 @@ void GameController::UnloadActualLevel() {
 void GameController::Render() {
 	if (Loading) return;
 	currentLevel->Render();
+	hpTimer->Update();
 }
 
 void GameController::Update() {
 	if (Loading) return;
-	currentLevel->Update();
+	hpTimer->Update();
+	currentLevel->Update(hpTimer->GetTimeTotal(), hpTimer->GetTimeDelta());
 }
 

@@ -1,74 +1,64 @@
 #include "Animation.h"
 
 
-Animation::Animation(LPCTSTR bitmapPath, Graphics* gfx, bool blockPrecision, UINT16 spriteWidth, UINT16 spriteHeight) {
-	x = 0;
-	y = 0;
-	xSpeed = 0;
-	ySpeed = 0;
-	jumpHeight = 0.0;
-	gravity = 0.0;
-	index = 0;
-	position = 0;
+Animation::Animation(LPCTSTR bitmapPath, 
+					 Graphics* gfx, 
+					 GamePoint* position,
+					 GameVector* velocity,
+					 GameVector* gravity,
+					 bool blockPrecision, 
+					 UINT16 spriteWidth, 
+					 UINT16 spriteHeight ) 
+{
+
+	this->position = position;
+	this->velocity = velocity;
+	this->gravity = gravity;
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
 	this->blockPrecision = blockPrecision;
 	this->gfx = gfx;
+	deltaTime = 0.0;
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
 }
 
 Animation::~Animation() {
+
+	delete position;
+	delete velocity;
+	delete gravity;
 	delete sprites;
-	delete gfx;
 }
 
 
 
 
-void Animation::Update() {
-
+void Animation::Update(double timeDelta) {
+	this->deltaTime = deltaTime;
 }
 
 void Animation::Render() {
-	if (blockPrecision) sprites->Draw(index, x * spriteWidth, y * spriteHeight);
-	else sprites->Draw(index, position, y - 24);
+	if (blockPrecision) sprites->Draw(index, position->x * spriteWidth, position->y * spriteHeight);
+	else sprites->Draw(index, position->x, position->y);
 }
-
-
 
 
 void Animation::MoveRight() {
-	x += static_cast<int>(xSpeed);
-
-	if (x >= SCREEN_WIDTH)
-	{
-		x = SCREEN_WIDTH / SCREEN_WIDTH - 1;
-	}
+	position->x += velocity->x;
 }
 
 void Animation::MoveLeft() {
-	x -= static_cast<int>(xSpeed);
-
-	if (x <= SCREEN_WIDTH / SCREEN_WIDTH - 1)
-	{
-		x = SCREEN_WIDTH;
-	}
+	position->x -= velocity->x;
 }
 
 void Animation::MoveUp() {
-	y -= static_cast<int>(ySpeed);
-
-	if (y <= SCREEN_HEIGHT / SCREEN_HEIGHT - 1)
-	{
-//		y = (World::GetAverageFloorLevel() * 30);
-	}
+	position->y -= velocity->y;
 }
 
 void Animation::MoveDown() {
-	y += static_cast<int>(ySpeed);
+	position->y += velocity->y;
+}
 
-	if (y >= SCREEN_HEIGHT)
-	{
-	//	y = (World::GetAverageFloorLevel() * 30);
-	}
+void Animation::GravityEvent() {
+
 }

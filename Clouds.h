@@ -14,5 +14,5 @@ public:
 private:
 
 
-	void Update() override;
+	void Update(double timeDelta) override;
 };

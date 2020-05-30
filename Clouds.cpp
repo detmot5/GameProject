@@ -1,17 +1,15 @@
 #include "Clouds.h"
 
 Clouds::Clouds(LPCTSTR bitmapPath, Graphics* graphics, int x, int y, float xSpeed)
-	: Animation(bitmapPath, graphics,false)
+	: Animation(bitmapPath, graphics, new GamePoint(x, y), new GameVector(xSpeed, 0), new GameVector(0, 0), false)
 {
-	this->x = x;
-	this->y = y;
-	this->xSpeed = xSpeed;
+
 }
 
 
 
-
-void Clouds::Update()
+void Clouds::Update(double timeDelta)
 {
+	Animation::Update(timeDelta);
 	MoveRight();
 }
