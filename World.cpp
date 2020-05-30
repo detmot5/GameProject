@@ -127,6 +127,7 @@ void World::Update() {
 
 	int actualPosition = offset / DEFAULT_BLOCK_SIZE;
 
+
 	for (auto i : chunks) i->SetOffset(offset);
 
 
@@ -137,26 +138,36 @@ void World::Update() {
 		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
 	}
 
-	if (actualPosition >= GetActualChunkStartPoint() &&
+	if (actualPosition > GetActualChunkStartPoint() &&
 		!GetChunkByStartPoint(GetNextChunkStartPoint() + Chunk::blocksCountX) &&
-		!AddChunkFlag) {
+		!AddChunkOnBackFlag) {
 
-		AddChunkFlag = true;
+		AddChunkOnBackFlag = true;
+		if ((actualPosition - chunks.front()->GetStartPoint()) >= 100)	DeleteFirstChunk();
+	}
+	else if (actualPosition <= GetActualChunkStartPoint() && actualPosition > 0) {
+		if (!GetChunkByStartPoint(GetPreviousChunkStartPoint()) &&
+			!AddChunkOnFrontFlag) {
 
-		if ((actualPosition - chunks.front()->GetStartPoint()) >= 100 ){
-			DeleteFirstChunk();
+			AddChunkOnFrontFlag = true;
+			if ((chunks.back()->GetStartPoint()) - actualPosition >= 100)	DeleteLastChunk();
 		}
-		
-		
 	}
 
 
+
+
+
+
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
-	cout <<"                                  \r" 
-		 << offset/32 << " " 
-		 << offset << " "
-		 << actualChunk->GetStartPoint() << " " 
-		 << chunks.back()->GetStartPoint();
+	cout << "                                            \r"
+		<< offset / 32 << " "
+		<< offset << " "
+		<< actualChunk->GetStartPoint() << " "
+		<< chunks.back()->GetStartPoint() << " "
+		<< chunks.front()->GetStartPoint() << " "
+		<< chunks.size();
+		 
 #endif
 
 }
@@ -190,28 +201,42 @@ void World::GenerateNewChunk() {
 void World::DeleteFirstChunk() {
 	chunks.pop_front();
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
-	cout << "Deleted" << endl;
+	cout << "Deleted front" << endl;
 #endif
 }
 
+void World::DeleteLastChunk() {
+	chunks.pop_back();
+
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+	cout << "Deleted back" << endl;
+#endif
+}
 
 
 
 void World::ChunkGenerateHandler() {
 	
 	while (true) {
-		if (AddChunkFlag) {
+		if (AddChunkOnBackFlag && GetActualChunkStartPoint() > 0) {
 
 			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
 				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
-				cout << "Loaded" << endl;
+				cout << endl << "Loaded Back" << endl;
 #endif
 			}
 			else {
 				GenerateNewChunk();
 			}
-			AddChunkFlag = false;
+			AddChunkOnBackFlag = false;
+		}
+		else if (AddChunkOnFrontFlag && GetActualChunkStartPoint() > 0) {
+			chunks.push_front(GameSaver::Read::GetChunkFromBuffer(chunks.front()->GetStartPoint() - Chunk::blocksCountX));
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+			cout << endl << "Loaded Front" << endl;
+#endif
+			AddChunkOnFrontFlag = false;
 		}
 
 	}

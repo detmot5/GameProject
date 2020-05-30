@@ -63,8 +63,8 @@ private:
 
 	static vector<int> randomStructArray;
 	static thread* ChunkGenerateThread;
-	static inline bool AddChunkFlag = false;
-	static inline bool DeleteChunkFlag = false;
+	static inline bool AddChunkOnBackFlag = false;
+	static inline bool AddChunkOnFrontFlag = false;
 
 
 	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
@@ -81,5 +81,6 @@ private:
 	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();
 	static void DeleteFirstChunk();
+	static void DeleteLastChunk();
 
 };

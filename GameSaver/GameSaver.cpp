@@ -123,9 +123,6 @@ namespace GameSaver {
 		}
 
 		UINT16 GetLastChunkStartPoint() {
-#if DEBUG_MODE && GAME_SAVER_DEBUG
-			cout << endl << ChunkBuffer.front();
-#endif
 			return ChunkBuffer.back()->GetStartPoint();
 		}
 
