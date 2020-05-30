@@ -81,7 +81,7 @@ void Character::MoveRight()
 {
 	index = 1;
 	
-	 World::offset += 30;
+	if(World::offset < WORLD_BORDER) World::offset += static_cast<int>(xSpeed);
 	if (World::FindNearestWall(x, y))
 	{
 		//x = abs(World::offset) - World::actualChunk->GetStartPoint()*32;
@@ -91,7 +91,7 @@ void Character::MoveRight()
 void Character::MoveLeft()
 {
 	index = 2;
-	if (World::offset / 32 > World::chunks.front()->GetStartPoint()) World::offset -= 40;
+	if (World::offset / 32 > World::chunks.front()->GetStartPoint()) World::offset -= static_cast<int>(xSpeed);
 
 	//x -= 7;
 }

@@ -71,12 +71,18 @@ private:
 	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
+	
 
+	static inline int GetActualPosition() { return  offset / DEFAULT_BLOCK_SIZE; }
 
 	static inline UINT16 GetActualChunkStartPoint() { return actualChunk->GetStartPoint(); }
 	static inline UINT16 GetNextChunkStartPoint() { return GetActualChunkStartPoint() + Chunk::blocksCountX; }
 	static inline UINT16 GetPreviousChunkStartPoint() { return GetActualChunkStartPoint() - Chunk::blocksCountX; };
+	static inline UINT16 GetLastChunkStartPoint() { return chunks.back()->GetStartPoint(); }
+	static inline UINT16 GetFirstChunkStartPoint() { return chunks.front()->GetStartPoint(); }
 
+	static bool GenerateBackDeleteFrontChunkFlag();
+	static bool GenerateFrontDeleteBackChunkFlag();
 
 	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();

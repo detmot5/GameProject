@@ -18,7 +18,7 @@ void Level::Load(){
 
     if (load) World::Load(gfx, path);
     else World::Init(gfx,path);
-    Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx));
+    Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx, SCREEN_WIDTH / 2, SCREEN_WIDTH / 64 + 64, 80));
     Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
 }
 
