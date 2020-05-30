@@ -7,7 +7,7 @@ InfoLevel::InfoLevel() {
 }
 
 void InfoLevel::Load() {
-	continfo = new ContentInfo(L"GameProject/Graphicss/BackgroundMenu.png", gfx);
+	continfo = new ContentInfo(L"GameProject/Graphicss/BackGroundInfoButton.png", gfx);
 }
 
 void InfoLevel::Unload() {

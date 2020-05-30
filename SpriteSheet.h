@@ -15,7 +15,7 @@ public:
 private:
 	
 	Graphics* gfx;
-	ID2D1Bitmap* bmp;		//Bitmap loaded file and converted to Direct2D format
+	ID2D1Bitmap* buttonPlayp;		//Bitmap loaded file and converted to Direct2D format
 	int spriteWidth, spriteHeight;
 	int spritesAccross;
 };

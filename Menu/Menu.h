@@ -15,7 +15,11 @@ public:
 	void Render() override;
 
 private:
-	Background* bg;
-	ButtonMenu* bm;
-	ButtonMenu* bm2;
+	Background* backGroundMenu;
+	ButtonMenu* buttonPlay;
+	ButtonMenu* buttonPlayDark;
+	ButtonMenu* buttonInfo;
+	ButtonMenu* buttonInfoDark;
+	ButtonMenu* buttonLoad;
+	ButtonMenu* buttonLoadDark;
 };

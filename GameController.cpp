@@ -19,7 +19,6 @@ void GameController::SwitchLevel(GameLevel* lev) {
 	Loading = true;
 	currentLevel->Unload();
 	lev->Load();
-	delete currentLevel;
 	currentLevel = lev;
 	Loading = false;
 

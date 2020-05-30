@@ -5,7 +5,7 @@
 
 SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	this->gfx = gfx;
-	bmp = NULL;
+	buttonPlayp = NULL;
 	HRESULT hr;
 //------------------------------------------------------------------------------------------------
 // WIC factory make. It can be used to load images from files. Call CoCreateInstance to create it
@@ -54,7 +54,7 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	hr = gfx->GetRenderTarget()->CreateBitmapFromWicBitmap(
 		wicConverter,
 		NULL,
-		&bmp
+		&buttonPlayp
 	);
 
 	// now we don't need this WIC objects
@@ -63,32 +63,32 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	if (wicConverter) wicConverter->Release();
 	if (wicFrame) wicFrame->Release();
 	
-	spriteWidth = bmp->GetSize().width;
-	spriteHeight = bmp->GetSize().height;
+	spriteWidth = buttonPlayp->GetSize().width;
+	spriteHeight = buttonPlayp->GetSize().height;
 	spritesAccross = 1;
 }
 
 SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, int spriteWidth, int spriteHeight) : SpriteSheet(filename,gfx){
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
-	this->spritesAccross = static_cast<int>(bmp->GetSize().width) / spriteWidth;
+	this->spritesAccross = static_cast<int>(buttonPlayp->GetSize().width) / spriteWidth;
 }
 
 
 
 SpriteSheet::~SpriteSheet() {
-	if (bmp) bmp->Release();
+	if (buttonPlayp) buttonPlayp->Release();
 }
 //draw bitmap to the render target
 void SpriteSheet::Draw() {
 	gfx->GetRenderTarget()->DrawBitmap(
-		bmp,
+		buttonPlayp,
 		D2D1::RectF(0.0f, 0.0f, 
-			bmp->GetSize().width, bmp->GetSize().height),
+			buttonPlayp->GetSize().width, buttonPlayp->GetSize().height),
 		1.0f,
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 		D2D1::RectF(0.0f, 0.0f,
-			bmp->GetSize().width,bmp->GetSize().height)
+			buttonPlayp->GetSize().width,buttonPlayp->GetSize().height)
 			
 		);
 
@@ -111,7 +111,7 @@ void SpriteSheet::Draw(int index, int x, int y) {
 
 
 	gfx->GetRenderTarget()->DrawBitmap(
-		bmp,
+		buttonPlayp,
 		dest,				//destination rectangle
 		1.0f,
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,

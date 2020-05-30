@@ -4,37 +4,73 @@
 
 Menu::Menu() {
 	this->gfx = gfx;
-	bg = 0;
-	bm = 0;
-	bm2 = 0;
+	backGroundMenu = 0;
+	buttonPlay = 0;
+	buttonPlayDark = 0;
+	buttonInfo = 0;
+	buttonPlayDark = 0;
+	buttonLoad = 0;
+	buttonLoadDark = 0;
 }
 
 
 void Menu::Load() {
-	bg = new Background(L"GameProject/Graphicss/BackgroundMenu.png", gfx);
-	bm = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, UserInput::PlayOnClick);
-	bm2 = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png",gfx, 110, UserInput::InfoOnClick);
+	backGroundMenu = new Background(L"GameProject/Graphicss/BackgroundMenuTree.png", gfx);
+
+	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200);
+	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200);
+
+	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110);
+	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110);
+
+	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20);
+	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20);
+
+	buttonPlay->RegisterOnClickCallback(UserInput::PlayOnClick);
+	buttonInfo->RegisterOnClickCallback(UserInput::InfoOnClick);
 }
 
 
-void Menu::Unload() {
-
+void Menu::Unload() 
+{
+	delete backGroundMenu;
+	delete buttonPlay;
+	delete buttonInfo;
 }
 
 
-void Menu::Update() {
-
-	bm->OnClickEvent();
-	//bm2->OnClickEvent();
-
+void Menu::Update() 
+{
+	buttonPlay->OnClickEvent();
+	buttonInfo->OnClickEvent();
 }
 
 
 void Menu::Render() {
 	gfx->ClearScreen(0, 0, 0);
-	bg->Render();
-	bm->Render();
-	bm2->Render();
+	backGroundMenu->Render();
+
+	buttonPlay->Render();
+
+
+	buttonInfo->Render();
+
+
+	buttonLoad->Render();
+
+	if (ButtonMenu::flag == 1)
+	{
+		buttonPlayDark->Render();
+	}
+	else if (ButtonMenu::flag == 2) 
+	{
+		buttonLoadDark->Render();
+	}
+	else if (ButtonMenu::flag == 3)
+	{
+		buttonInfoDark->Render();
+	}
+
 	
 }
 
