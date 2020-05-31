@@ -4,13 +4,16 @@
 
 Graphics::Graphics(void) {
 	factory = NULL;
+	writeFactory = NULL;
 	renderTarget = NULL;
+	
 }
 
 Graphics::~Graphics(void) {
 	// Te wskazniki s¹ do jakichs komponentow karty graficznej
 	// One nie s¹ optymalizowane pamieciowo wiec musimy je rêcznie zwalniaæ
 	if (factory) factory->Release();
+	if (writeFactory) writeFactory->Release();
 	if (renderTarget) renderTarget->Release();
 }
 
@@ -25,6 +28,26 @@ bool Graphics::Init(HWND windowHandler) {
 		&renderTarget
 	);
 	if (hres != S_OK) return false;
+
+
+
+	hres = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown**>(&writeFactory));
+
+	if (hres != S_OK) return false;
+
+	hres = writeFactory->CreateTextFormat(
+		L"Gabriola",
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		12,
+		L"en-us",
+		&textFormat
+	);
+	if (hres != S_OK) return false;
+
+
 	return true;
 }
 
@@ -40,35 +63,39 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 	brush->Release();
 }
 
-D2D_RECT_F rect;
 
 
-
-void Graphics::Draw(std::string str, D2D_RECT_F& rect)
+bool Graphics::Print(const WCHAR* str, D2D_RECT_F& rect, UINT8 fontSize, const WCHAR* fontStyle)
 {
-	rect = { 1, 2, 4, 5 };
 
-	HRESULT CreateTextFormat(
-		WCHAR const* fontFamilyName,
-		IDWriteFontCollection * fontCollection,
-		DWRITE_FONT_WEIGHT    fontWeight,
-		DWRITE_FONT_STYLE     fontStyle,
-		DWRITE_FONT_STRETCH   fontStretch,
-		FLOAT                 fontSize,
-		WCHAR const* localeName,
-		IDWriteTextFormat * *textFormat
-	);
 
-	factory->CreateTextFormat(
-		L"Gabriola",
+	ID2D1SolidColorBrush* brush;
+	HRESULT hres;
+
+
+	hres = writeFactory->CreateTextFormat(
+		fontStyle,
 		NULL,
 		DWRITE_FONT_WEIGHT_REGULAR,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		72.0f,
+		fontSize,
 		L"en-us",
-		&pTextFormat_
+		&textFormat
 	);
-			
 
+	if (hres != S_OK) return false;
+
+	
+	renderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), &brush);
+
+	renderTarget->DrawTextW(
+		str,
+		wcslen(str),
+		textFormat,
+		rect,
+		brush
+		);
+			
+	return true;
 }

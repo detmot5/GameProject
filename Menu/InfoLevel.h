@@ -1,8 +1,8 @@
 #pragma once
 #include "../GameLevel.h"
 #include "../framework.h"
-#include "ContentInfo.h"
 #include "../Level.h"
+#include "BackgroundMenu.h"
 
 class InfoLevel : public GameLevel {
 public:
@@ -13,8 +13,8 @@ public:
 	void Render() override;
 
 private:
-	ContentInfo* continfo;
-
+	Background* background;
+	D2D_RECT_F rect;
 
 
 };

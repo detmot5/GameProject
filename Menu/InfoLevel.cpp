@@ -3,11 +3,15 @@
 
 InfoLevel::InfoLevel() {
 	this->gfx = gfx;
-	continfo = 0;
+	background = 0;
+	rect.top = 300;
+	rect.bottom = 400;
+	rect.left = 200;
+	rect.right = 300;
 }
 
 void InfoLevel::Load() {
-	continfo = new ContentInfo(L"GameProject/Graphicss/BackGroundInfoButton.png", gfx);
+	background = new Background(L"GameProject/Graphicss/BackGroundInfoButton.png", gfx);
 }
 
 void InfoLevel::Unload() {
@@ -20,8 +24,8 @@ void InfoLevel::Update(){
 
 void InfoLevel::Render() {
 	gfx->ClearScreen(0, 0, 0);
-	continfo->Render();
+	background->Render();
+	gfx->Print(L"Siema", rect, 25, L"Gabriola");
 
 }
-
 
