@@ -139,7 +139,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szWindowClass, L"The Better Terraria", WS_OVERLAPPEDWINDOW,
       100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
 
-    
+   
 
    graphics = new Graphics();
    if (!graphics->Init(hWnd)) {

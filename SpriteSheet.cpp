@@ -63,12 +63,12 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	if (wicConverter) wicConverter->Release();
 	if (wicFrame) wicFrame->Release();
 	
-	spriteWidth = static_cast<int>(bmp->GetSize().width);
-	spriteHeight = static_cast<int>(bmp->GetSize().height);
+	spriteWidth = bmp->GetSize().width;
+	spriteHeight = bmp->GetSize().height;
 	spritesAccross = 1;
 }
 
-SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, int spriteWidth, int spriteHeight) : SpriteSheet(filename,gfx){
+SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, float spriteWidth, float spriteHeight) : SpriteSheet(filename,gfx){
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
 	this->spritesAccross = static_cast<int>(bmp->GetSize().width) / spriteWidth;

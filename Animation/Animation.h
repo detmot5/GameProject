@@ -26,9 +26,8 @@ public:
 
 
 protected:
-	int position;
 
-
+	 
 
 	GamePoint* position;
 	GameVector* velocity;

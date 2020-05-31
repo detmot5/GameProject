@@ -10,7 +10,7 @@ class Character : public Animation
 public:
 
 
-	Character(LPCTSTR bitmapPath, Graphics* graphics, float x , float y = SCREEN_WIDTH/64 + 64, float xSpeed = 8,
+	Character(LPCTSTR bitmapPath, Graphics* graphics, float x , float y = 320, float xSpeed = 8,
 		float ySpeed = 0.2, float jumpHeight = 25, float gravity = 6.0);
 
 
