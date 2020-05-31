@@ -5,15 +5,13 @@
 
 class ButtonMenu {
 public:
-	ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset);
+	ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, void (*callback)());
+	~ButtonMenu();
 	void Render();
 	void OnClickEvent();
+
 	bool IsCursorOnButton();
-	void RegisterOnClickCallback(void (*callback)());
-
-
 	static inline int flag = 0;
-
 private:
 	Graphics* gfx;
 	SpriteSheet* sprites;

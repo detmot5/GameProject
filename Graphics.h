@@ -14,11 +14,25 @@ public:
 	void ClearScreen(float r, float g, float b);
 	void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
 
+	//---------------------------------------------------------
+	typedef struct D2D_RECT_F {
+		FLOAT left;
+		FLOAT top;
+		FLOAT right;
+		FLOAT bottom;
+	};
+
+	void Draw(std::string str, D2D_RECT_F& rect);
+	//----------------------------------------------------------
+
 	ID2D1RenderTarget* GetRenderTarget() { return renderTarget; };
 
-
 private:
+	
 	ID2D1Factory* factory;
 	ID2D1HwndRenderTarget* renderTarget;
+
+
+
 	
 };

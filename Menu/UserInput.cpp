@@ -30,8 +30,8 @@ namespace UserInput {
 		GameController::SwitchLevel(new InfoLevel());
 	}
 
-	void loadOnClick() {
-		//cos
+	void LoadOnClick() {
+		cout << "cos";
 	}
 
 }

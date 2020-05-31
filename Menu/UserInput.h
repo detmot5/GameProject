@@ -13,4 +13,5 @@ namespace UserInput {
 	POINT GetCursorPos();
 	void PlayOnClick();
 	void InfoOnClick();
+	void LoadOnClick();
 };

@@ -4,7 +4,7 @@
 #include "BackgroundMenu.h"
 #include "ButtonMenu.h"
 #include "../Level.h"
-
+#include <thread>
 
 class Menu : public GameLevel {
 public:
@@ -22,4 +22,5 @@ private:
 	ButtonMenu* buttonInfoDark;
 	ButtonMenu* buttonLoad;
 	ButtonMenu* buttonLoadDark;
+
 };

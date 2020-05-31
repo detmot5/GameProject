@@ -24,6 +24,9 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 Graphics* graphics;
 HWND hWnd;
+
+HDC kon;
+PAINTSTRUCT ps;
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -71,6 +74,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     msg.message = WM_NULL;
 
+ 
+
     while (msg.message != WM_QUIT) {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             DispatchMessage(&msg);
@@ -85,6 +90,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             GameController::Render();
             graphics->endDraw();
 
+            TranslateMessage(&msg);
         }
     }
     
@@ -119,6 +125,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
+
+    
 }
 
 //
@@ -139,7 +147,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szWindowClass, L"The Better Terraria", WS_OVERLAPPEDWINDOW,
       100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
 
-    
+   
 
    graphics = new Graphics();
    if (!graphics->Init(hWnd)) {
@@ -199,9 +207,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_PAINT:
+        kon = BeginPaint(hWnd, &ps);
+
+        TextOut(kon, 50, 50, L"Jakis tekst", 11);
+
+        EndPaint(hWnd, &ps);
+        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
+    
     return 0;
 }
 

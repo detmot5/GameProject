@@ -21,6 +21,7 @@ void InfoLevel::Update(){
 void InfoLevel::Render() {
 	gfx->ClearScreen(0, 0, 0);
 	continfo->Render();
+
 }
 
 

@@ -17,17 +17,15 @@ Menu::Menu() {
 void Menu::Load() {
 	backGroundMenu = new Background(L"GameProject/Graphicss/BackgroundMenuTree.png", gfx);
 
-	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200);
-	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200);
+	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, UserInput::PlayOnClick);
+	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200, UserInput::PlayOnClick);
 
-	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110);
-	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110);
+	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110, UserInput::LoadOnClick);
+	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110, UserInput::LoadOnClick);
 
-	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20);
-	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20);
+	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20, UserInput::InfoOnClick);
+	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20, UserInput::InfoOnClick);
 
-	buttonPlay->RegisterOnClickCallback(UserInput::PlayOnClick);
-	buttonInfo->RegisterOnClickCallback(UserInput::InfoOnClick);
 }
 
 
@@ -36,6 +34,7 @@ void Menu::Unload()
 	delete backGroundMenu;
 	delete buttonPlay;
 	delete buttonInfo;
+
 }
 
 
@@ -43,6 +42,7 @@ void Menu::Update()
 {
 	buttonPlay->OnClickEvent();
 	buttonInfo->OnClickEvent();
+	buttonLoad->OnClickEvent();
 }
 
 
