@@ -13,14 +13,35 @@ float GameVector::Length() const {
 	return length;
 }
 
-//GameVector operator-(Point a, Point b) {
-//	GameVector v;
-//
-//	v.x = a.x - b.x;
-//	v.y = a.y - b.y;
-//	return v;
-//}
-//
+GameVector GameVector::operator*(float s) const{
+	GameVector scaled;
+	scaled.x = x * s;
+	scaled.y = y * s;
+	return scaled;
+}
+
+GameVector GameVector::operator/(float s) const {
+	GameVector scaled;
+	scaled.x = x / s;
+	scaled.y = y / s;
+	return scaled;
+}
+
+GameVector operator-(GameVector a, GameVector b) {
+	GameVector v;
+	v.x = a.x - b.x;
+	v.y = a.y - b.y;
+	return v;
+}
+
+GameVector operator+(GameVector a, GameVector b) {
+	GameVector v;
+	v.x = a.x + b.x;
+	v.y = a.y + b.y;
+	return v;
+}
+
+
 
 
 

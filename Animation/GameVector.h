@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../framework.h"
-#include "Point.h"
+
 using namespace std;
 
 
@@ -13,8 +13,11 @@ public:
 	float Length() const;
 	float x, y;
 
+    GameVector operator*(float s) const;
+	GameVector operator/(float s) const;
 
-//	friend GameVector operator-(Point a, Point b);
+	friend GameVector operator-(GameVector a, GameVector b);
+	friend GameVector operator+(GameVector a, GameVector b);
 };
 
 

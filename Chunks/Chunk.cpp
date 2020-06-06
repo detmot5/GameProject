@@ -30,8 +30,8 @@ Block* GetBlockByIndex(int index) {
 	return nullptr;
 }
 
-Block* GetBlockByCoords(Chunk& chunk, UINT16 x, UINT16 y) {
-	return GetBlockBySymbol(chunk.chunkTemplate[y][x]);
+Block* Chunk::GetBlockByCoords(UINT16 x, UINT16 y) {
+	return GetBlockBySymbol(this->chunkTemplate[y][x]);
 }
 
 
@@ -63,12 +63,12 @@ ostream& operator<<(ostream& os, Chunk* chunk) {
 void Chunk::Init(Graphics* gfx) {
 	Chunk::gfx = gfx;
 
-	BlockType.push_back(new Block(imgSrc, gfx, '_', true, Block::air));
-	BlockType.push_back(new Block(imgSrc, gfx, '#', false, Block::stone, 0, 20));
-	BlockType.push_back(new Block(imgSrc, gfx, '-', false, Block::grass));
-	BlockType.push_back(new Block(imgSrc, gfx, '%', false , Block::dirt));
-	BlockType.push_back(new Block(imgSrc, gfx, '*', true, Block::cave, 0, 10));
-	BlockType.push_back(new Block(imgSrc, gfx, '&', false, Block::diamond, 2, 5));
+	BlockType.push_back(new Block(imgSrc, gfx, '_', false, Block::air));
+	BlockType.push_back(new Block(imgSrc, gfx, '#', true, Block::stone, 0, 20));
+	BlockType.push_back(new Block(imgSrc, gfx, '-', true, Block::grass));
+	BlockType.push_back(new Block(imgSrc, gfx, '%', true , Block::dirt));
+	BlockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
+	BlockType.push_back(new Block(imgSrc, gfx, '&', true, Block::diamond, 2, 5));
 
 	RandomArrayInit();
 }
@@ -105,7 +105,7 @@ Chunk::~Chunk(){
 }
 
 bool Chunk::isCollisionEnabled(UINT16 x, UINT16 y) {
-	return GetBlockByCoords(*this,x, y)->IsCollisionEnabled();
+	return GetBlockByCoords(x, y)->IsCollisionEnabled();
 }
 
 void Chunk::FloorLevelInit() {

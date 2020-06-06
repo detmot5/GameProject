@@ -3,7 +3,7 @@
 
 Animation::Animation(LPCTSTR bitmapPath, 
 					 Graphics* gfx, 
-					 GamePoint* position,
+					 GameVector* position,
 					 GameVector* velocity,
 					 GameVector* gravity,
 					 bool blockPrecision, 
@@ -18,7 +18,8 @@ Animation::Animation(LPCTSTR bitmapPath,
 	this->spriteHeight = spriteHeight;
 	this->blockPrecision = blockPrecision;
 	this->gfx = gfx;
-	deltaTime = 0.0;
+	this->index = 0;
+	this->timeDelta = 0.0;
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
 }
 
@@ -33,8 +34,8 @@ Animation::~Animation() {
 
 
 
-void Animation::Update(double timeDelta) {
-	this->deltaTime = deltaTime;
+void Animation::Update() {
+	this->timeDelta = timeDelta;
 }
 
 void Animation::Render() {
@@ -60,5 +61,6 @@ void Animation::MoveDown() {
 }
 
 void Animation::GravityEvent() {
-
+	position->y = position->y + velocity->y * 0.008;
+	velocity->y = velocity->y + gravity->y;
 }

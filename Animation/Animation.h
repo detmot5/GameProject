@@ -9,11 +9,11 @@
 class Animation
 {
 public:
-	Animation(LPCTSTR, Graphics*, GamePoint*, GameVector*, GameVector*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
+	Animation(LPCTSTR, Graphics*, GameVector*, GameVector*, GameVector*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
 	~Animation();
 
 
-	virtual void Update(double timeDelta);
+	virtual void Update();
 	virtual void Render();
 
 
@@ -29,10 +29,10 @@ protected:
 
 	 
 
-	GamePoint* position;
+	GameVector* position;
 	GameVector* velocity;
 	GameVector* gravity;
-	double deltaTime;
+	double timeDelta;
 
 
 

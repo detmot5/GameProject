@@ -50,7 +50,7 @@ public:
 
 
 	
-	static int FindNearestLandY(int objPosX, int objPosY);
+	static int FindNearestLand(int objPosX, int objPosY);
 	static bool FindNearestWall(int& objPosX, int objPosY);
 	
 	static inline int offset = 0;
@@ -65,7 +65,6 @@ private:
 	static thread* ChunkGenerateThread;
 	static inline bool AddChunkOnBackFlag = false;
 	static inline bool AddChunkOnFrontFlag = false;
-
 
 	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
 	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;

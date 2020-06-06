@@ -52,8 +52,8 @@ private:
 	void TerrainGenerator(string& target, int deepness, UINT8* iterator);
 	void GenerateCave(string& target, int deepness, UINT8* iterator);
 
+	Block* GetBlockByCoords(UINT16 x, UINT16 y);
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(int index);
-	friend Block* GetBlockByCoords(Chunk& chunk, UINT16 x, UINT16 y);
 	friend ostream& operator<<(ostream& os, Chunk* chunk);
 };

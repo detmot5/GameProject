@@ -20,7 +20,7 @@ public:
 	void Load() override;
 	void Unload() override;
 	void Render() override;
-	void Update(double timeTotal, double timeDelta) override;
+	void Update() override;
 
 	enum {
 		NewSave = false,

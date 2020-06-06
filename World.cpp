@@ -40,17 +40,16 @@ Chunk* GetChunkByStartPoint(UINT16 startPoint) {
 //	}
 //}
 
-int World::FindNearestLandY(int objPosX, int objPosY)
+int World::FindNearestLand(int objPosX, int objPosY)
 {
 
-	for (UINT16 i = objPosY / 32; i < blocksCountY; i++)
-	{
-		if (!actualChunk->isCollisionEnabled(objPosX / 32, i))
-		{
+	for (UINT16 i = objPosY / 32; i < blocksCountY; i++){
+		if (actualChunk->isCollisionEnabled(objPosX / 32, i)){
+
 			return i * 32;
 		}
 	}
-	return averageFloorLevel;
+	return 0;
 }
 
 bool World::FindNearestWall(int& objPosX, int objPosY)
@@ -130,10 +129,10 @@ void World::Update() {
 	for (auto i : chunks) i->SetOffset(offset);
 
 
-	if (GetActualPosition() > GetNextChunkStartPoint()) {
+	if (GetActualPosition() + 13 >= GetNextChunkStartPoint()) {
 		actualChunk = GetChunkByStartPoint(GetNextChunkStartPoint());
 	}
-	else if (GetActualPosition() < GetActualChunkStartPoint()) {
+	else if (GetActualPosition() + 13 < GetActualChunkStartPoint()) {
 		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
 	}
 
@@ -233,7 +232,6 @@ void World::ChunkGenerateHandler() {
 	
 	while (true) {
 		if (AddChunkOnBackFlag && GetActualChunkStartPoint() > 0) {
-
 			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
 				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(GetLastChunkStartPoint() + Chunk::blocksCountX));
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
@@ -252,7 +250,7 @@ void World::ChunkGenerateHandler() {
 #endif
 			AddChunkOnFrontFlag = false;
 		}
-
+	
 	}
 }
 

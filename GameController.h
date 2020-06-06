@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameLevel.h"
-#include "HPTimer.h"
+
 
 class GameController {
 public:
@@ -17,5 +17,4 @@ public:
 
 private:
 	static inline GameLevel* currentLevel;
-	static inline HPTimer* hpTimer;
 };

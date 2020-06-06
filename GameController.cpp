@@ -7,7 +7,6 @@
 void GameController::Init() {
 	Loading = true;
 	currentLevel = 0;
-	hpTimer = new HPTimer();
 	
 }
 
@@ -35,12 +34,10 @@ void GameController::UnloadActualLevel() {
 void GameController::Render() {
 	if (Loading) return;
 	currentLevel->Render();
-	hpTimer->Update();
 }
 
 void GameController::Update() {
 	if (Loading) return;
-	hpTimer->Update();
-	currentLevel->Update(hpTimer->GetTimeTotal(), hpTimer->GetTimeDelta());
+	currentLevel->Update();
 }
 
