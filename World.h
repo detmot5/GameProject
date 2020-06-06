@@ -52,6 +52,7 @@ public:
 	
 	static int FindNearestLand(int objPosX, int objPosY);
 	static bool FindNearestWall(int& objPosX, int objPosY);
+	static bool isCollisionEnabled(UINT16 x, UINT16 y);
 	
 	static inline int offset = 0;
 	static Chunk* actualChunk;
@@ -74,6 +75,9 @@ private:
 
 	static inline int GetActualPosition() { return  offset / DEFAULT_BLOCK_SIZE; }
 
+	
+	static Chunk* GetNextChunk();
+	static Chunk* GetPreviousChunk();
 	static inline UINT16 GetActualChunkStartPoint() { return actualChunk->GetStartPoint(); }
 	static inline UINT16 GetNextChunkStartPoint() { return GetActualChunkStartPoint() + Chunk::blocksCountX; }
 	static inline UINT16 GetPreviousChunkStartPoint() { return GetActualChunkStartPoint() - Chunk::blocksCountX; };

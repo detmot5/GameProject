@@ -42,7 +42,7 @@ void Character::Update()
 	
 
 	GravityEvent();
-	
+
 
 	
 	
@@ -57,25 +57,15 @@ void Character::Render()
 
 void Character::Jump() {
 
-	if (position->y >= SCREEN_HEIGHT / 4  && position->y < SCREEN_HEIGHT) {
+	if (position->y >= SCREEN_HEIGHT / 4 && position->y < SCREEN_HEIGHT) {
 		velocity->y = -500.0f;
 	} else jumping = false;
-	
-
-
 	
 }
 
 
 bool Character::isOnLand() {
-	int startPoint = World::actualChunk->GetStartPoint();
-	/*if ((feet->x) / 32 - startPoint - 2 > 25 ) {
-		cout << "ERR" << (feet->x) / 32 - startPoint << endl;
 
-		while (1);
-		co ja kurwa robie ze swoim zyciem
-	}*/
-		cout <<" "<< feet->x/32 << " ";
 	if (World::actualChunk->isCollisionEnabled(feet->x / 32.0, feet->y / 32.0f)) {
 		return true;
 	}
@@ -83,11 +73,13 @@ bool Character::isOnLand() {
 }
 
 
+
+
 Character::Direction Character::isNextToWall() {
-	//if (World::actualChunk->isCollisionEnabled(floor(static_cast<double>((feet->x + 10.0) / 32.0)), feet->y / 32))
-	//	return Direction::Right;
-	//else if (World::actualChunk->isCollisionEnabled(ceil(static_cast<double>((feet->x - 10.0) / 32.0)), feet->y / 32))
-	//	return Direction::Left;
+	if (World::isCollisionEnabled((middle->x + 5) / 32, middle->y / 32))
+		return Direction::Right;
+	else if (World::isCollisionEnabled((middle->x - 5) / 32 , middle->y / 32))
+		return Direction::Left;
 
 	return Direction::null;
 }
@@ -99,7 +91,7 @@ void Character::UpdateCoordinates() {
 	feet->y = position->y + DEFAULT_BLOCK_SIZE;
 
 	head->x = World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2;
-	head->y = position->y;
+	head->y = position->y + DEFAULT_BLOCK_SIZE / 2;
 
 	middle->x = World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2;
 	middle->y = position->y + DEFAULT_BLOCK_SIZE / 2;

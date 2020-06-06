@@ -16,10 +16,20 @@ Chunk* GetChunkByStartPoint(UINT16 startPoint) {
 }
 
 
-//UINT16 World::GetActualFloorLevel(UINT16 x) {
-//	return actualChunk->GetActualFloorLevel(x);
-//}
+bool World::isCollisionEnabled(UINT16 x, UINT16 y) {
+	cout <<endl<< x;
+	if (x >= GetNextChunkStartPoint()) return GetNextChunk()->isCollisionEnabled(x, y);
+	else if (x < GetActualChunkStartPoint()) return GetPreviousChunk()->isCollisionEnabled(x, y);
+	else return actualChunk->isCollisionEnabled(x, y);
+}
 
+
+Chunk* World::GetNextChunk(){
+	 return GetChunkByStartPoint(GetNextChunkStartPoint()); 
+}
+Chunk* World::GetPreviousChunk() {
+	return GetChunkByStartPoint(GetPreviousChunkStartPoint());
+}
 
 
 //void World::FindNearestLand(int objPosX, int& objPosY) {
