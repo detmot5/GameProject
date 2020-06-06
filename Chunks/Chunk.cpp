@@ -105,7 +105,7 @@ Chunk::~Chunk(){
 }
 
 bool Chunk::isCollisionEnabled(UINT16 x, UINT16 y) {
-	return GetBlockByCoords(x, y)->IsCollisionEnabled();
+	return GetBlockByCoords(x - StartPoint, y)->IsCollisionEnabled();
 }
 
 void Chunk::FloorLevelInit() {

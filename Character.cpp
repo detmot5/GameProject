@@ -24,9 +24,9 @@ void Character::Update()
 	UpdateCoordinates();
 
 
-	if (GetAsyncKeyState(static_cast<int>(Direction::Right)) & 0x8000)  MoveRight();
+	if (GetAsyncKeyState(static_cast<int>(Direction::Right)) & 0x8000 && isNextToWall() != Direction::Right)  MoveRight();
 	
-	else if (GetAsyncKeyState(static_cast<int>(Direction::Left)) & 0x8000) MoveLeft();
+	else if (GetAsyncKeyState(static_cast<int>(Direction::Left)) & 0x8000 && isNextToWall() != Direction::Left) MoveLeft();
 
 	else index = 0;
 	
@@ -57,9 +57,10 @@ void Character::Render()
 
 void Character::Jump() {
 
-	if (position->y >= 0 && position->y < SCREEN_HEIGHT) {
-		velocity->y -= 150.0f;
-	}
+	if (position->y >= SCREEN_HEIGHT / 4  && position->y < SCREEN_HEIGHT) {
+		velocity->y = -500.0f;
+	} else jumping = false;
+	
 
 
 	
@@ -75,7 +76,7 @@ bool Character::isOnLand() {
 		co ja kurwa robie ze swoim zyciem
 	}*/
 		cout <<" "<< feet->x/32 << " ";
-	if (World::actualChunk->isCollisionEnabled((feet->x / 32) - World::actualChunk->GetStartPoint(), feet->y / 32)) {
+	if (World::actualChunk->isCollisionEnabled(feet->x / 32.0, feet->y / 32.0f)) {
 		return true;
 	}
 	return false;
@@ -83,10 +84,10 @@ bool Character::isOnLand() {
 
 
 Character::Direction Character::isNextToWall() {
-	if (World::actualChunk->isCollisionEnabled((middle->x + 5) / 32, middle->y / 32))
-		return Direction::Right;
-	else if (World::actualChunk->isCollisionEnabled((middle->x - 5) / 32, middle->y / 32))
-		return Direction::Left;
+	//if (World::actualChunk->isCollisionEnabled(floor(static_cast<double>((feet->x + 10.0) / 32.0)), feet->y / 32))
+	//	return Direction::Right;
+	//else if (World::actualChunk->isCollisionEnabled(ceil(static_cast<double>((feet->x - 10.0) / 32.0)), feet->y / 32))
+	//	return Direction::Left;
 
 	return Direction::null;
 }
