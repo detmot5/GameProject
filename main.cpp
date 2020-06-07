@@ -67,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     
     GameLevel::InitGraphics(graphics);          //THIS FIRST
     GameController::Init();
-    GameController::LoadInitialLevel(new Level(L"myBigWorld.sav", Level::LoadSave));
+    GameController::LoadInitialLevel(new Level(L"myBigWorld.sav", Level::NewSave));
     MSG msg;
     msg.message = WM_NULL;
 

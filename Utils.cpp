@@ -17,7 +17,7 @@ namespace Utils {
     }
 
     UINT16 convertToBlockCoord(float coord) {
-        return static_cast<UINT16>(coord / 32);
+        return static_cast<UINT16>(floor(coord / 32.0));
     }
 
 }

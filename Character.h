@@ -11,7 +11,7 @@ public:
 
 
 	Character(LPCTSTR bitmapPath, Graphics* graphics, float x , float y = 320, float xSpeed = 4,
-		float ySpeed = 0.2, float jumpHeight = 25, float gravity = 16.0);
+		float ySpeed = 0.2, float jumpHeight = 25, float gravity = 16.0, int acceleration = 500);
 
 
 private:
@@ -34,6 +34,7 @@ private:
 	GameVector* feet;
 	GameVector* head;
 	GameVector* middle;
+	int acceleration;
 	void MoveRight() override;
 	void MoveLeft() override;
 	void MoveUp() override;

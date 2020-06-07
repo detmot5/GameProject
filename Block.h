@@ -33,6 +33,7 @@ public:
 		grass = 3,
 		dirt = 4,
 		diamond = 5,
+		gold = 6,
 	};
 
 

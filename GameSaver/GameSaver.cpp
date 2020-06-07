@@ -6,8 +6,8 @@ namespace GameSaver {
 	static vector<string> buffer;
 
 	fstream fileStream;
-	const wstring directoryPath = L"GameProject/Saves/";
-	wstring saveName = directoryPath + L"mysave.sav";
+	const wstring directoryPath = Path::savesDirectory;
+	wstring saveName;
 
 
 	static inline void ParsePath(const wstring& filePath) {

@@ -31,7 +31,6 @@ public:
 	static const inline UINT16 blocksCountY = SCREEN_HEIGHT / 32;
 private:
 
-	static const inline LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 	static vector<Block*> BlockType;

@@ -1,6 +1,5 @@
 #include "Chunk.h"
 
-
 vector<Block*> Chunk::BlockType;
 vector<int> Chunk::randomStructArray;
 Graphics* Chunk::gfx;
@@ -63,12 +62,13 @@ ostream& operator<<(ostream& os, Chunk* chunk) {
 void Chunk::Init(Graphics* gfx) {
 	Chunk::gfx = gfx;
 
-	BlockType.push_back(new Block(imgSrc, gfx, '_', false, Block::air));
-	BlockType.push_back(new Block(imgSrc, gfx, '#', true, Block::stone, 0, 20));
-	BlockType.push_back(new Block(imgSrc, gfx, '-', true, Block::grass));
-	BlockType.push_back(new Block(imgSrc, gfx, '%', true , Block::dirt));
-	BlockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
-	BlockType.push_back(new Block(imgSrc, gfx, '&', true, Block::diamond, 2, 5));
+	BlockType.push_back(new Block(Path::block, gfx, '_', false, Block::air));
+	BlockType.push_back(new Block(Path::block, gfx, '#', true, Block::stone, 0, 20));
+	BlockType.push_back(new Block(Path::block, gfx, '-', true, Block::grass));
+	BlockType.push_back(new Block(Path::block, gfx, '%', true , Block::dirt));
+	BlockType.push_back(new Block(Path::block, gfx, '*', false, Block::cave, 0, 10));
+	BlockType.push_back(new Block(Path::block, gfx, '&', true, Block::diamond, 3, 5));
+	BlockType.push_back(new Block(Path::block, gfx, '^', true, Block::gold, 5, 10));
 
 	RandomArrayInit();
 }
@@ -151,8 +151,14 @@ void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
 	switch (pick) {
 
 	case Block::diamond:
-		if (deepness >= blocksCountY - 2)
+		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
 			LoadBlock(target, Block::diamond);
+		else
+			LoadBlock(target, Block::stone);
+		break;
+	case Block::gold:
+		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
+			LoadBlock(target, Block::gold);
 		else
 			LoadBlock(target, Block::stone);
 		break;

@@ -148,7 +148,7 @@ void World::GenerateNewChunk() {
 void World::DeleteFirstChunk() {
 	chunks.pop_front();
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
-	cout << "Deleted front" << endl;
+	cout << endl << "Deleted front" << endl;
 #endif
 }
 

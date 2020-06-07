@@ -1,7 +1,6 @@
 #include "Level.h"
 
 
-
 // example level class
 
 
@@ -21,11 +20,11 @@ void Level::Load(){
     if (load) World::Load(gfx, path);
     else World::Init(gfx,path);
     
-    Animations.push_back(new Character(L"GameProject/Graphicss/character.png", gfx, SCREEN_WIDTH/2, SCREEN_WIDTH / 64 + 64, 5));
-    Animations.push_back(new Clouds(L"GameProject/Graphicss/Cloud.png", gfx));
+    Animations.push_back(new Character(Path::character, gfx, SCREEN_WIDTH/2, SCREEN_WIDTH / 64 + 64, 6));
+    Animations.push_back(new Clouds(Path::cloud, gfx));
 }
 
-
+ 
 
 
 void Level::Unload() {
