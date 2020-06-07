@@ -15,6 +15,7 @@ public:
 private:
 	Graphics* gfx;
 	SpriteSheet* sprites;
+	//SpriteSheet* clickedSprite;
 	short spriteWidth;
 	short spriteHeight;
 	short ButtonOffset;

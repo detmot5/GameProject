@@ -1,19 +1,13 @@
 #pragma once
-#include <windowsx.h>
 #include "../framework.h"
+#include "InfoLevel.h"
 #include "../GameController.h"
 #include "../Level.h"
-#include "InfoLevel.h"
 
+namespace OnClick {
 
-
-
-namespace UserInput {
-
-	void SetWindowParams(LPARAM l);
-	POINT GetCursorPos();
 	void PlayOnClick();
 	void InfoOnClick();
 	void LoadOnClick();
-	void BackOnClick();
-};
+
+}

@@ -5,6 +5,7 @@
 #include "ButtonMenu.h"
 #include "../Level.h"
 #include <thread>
+#include "ButtonsCallbacks.h"
 
 class Menu : public GameLevel {
 public:
@@ -13,6 +14,7 @@ public:
 	void Unload() override;
 	void Update() override;
 	void Render() override;
+	void GoBackToMenu();
 
 private:
 	Background* backGroundMenu;
@@ -22,5 +24,6 @@ private:
 	ButtonMenu* buttonInfoDark;
 	ButtonMenu* buttonLoad;
 	ButtonMenu* buttonLoadDark;
+
 
 };

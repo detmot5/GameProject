@@ -17,14 +17,14 @@ Menu::Menu() {
 void Menu::Load() {
 	backGroundMenu = new Background(L"GameProject/Graphicss/BackgroundMenuTree.png", gfx);
 
-	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, UserInput::PlayOnClick);
-	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200, UserInput::PlayOnClick);
+	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, OnClick::PlayOnClick);
+	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200, OnClick::PlayOnClick);
 
-	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110, UserInput::LoadOnClick);
-	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110, UserInput::LoadOnClick);
+	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110, OnClick::LoadOnClick);
+	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110, OnClick::LoadOnClick);
 
-	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20, UserInput::InfoOnClick);
-	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20, UserInput::InfoOnClick);
+	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20, OnClick::InfoOnClick);
+	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20, OnClick::InfoOnClick);
 
 }
 
@@ -73,5 +73,6 @@ void Menu::Render() {
 
 	
 }
+
 
 

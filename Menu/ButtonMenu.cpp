@@ -19,7 +19,9 @@ ButtonMenu::~ButtonMenu() {
 
 
 void ButtonMenu::Render() {
+
 	sprites->Draw(0, xCord, yCord);
+
 }
 
 void ButtonMenu::OnClickEvent() {

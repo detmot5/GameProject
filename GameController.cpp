@@ -7,6 +7,7 @@ bool GameController::Loading;
 void GameController::Init() {
 	Loading = true;
 	currentLevel = 0;
+    
 }
 
 void GameController::LoadInitialLevel(GameLevel* lev) {

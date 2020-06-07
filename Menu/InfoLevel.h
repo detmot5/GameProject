@@ -3,6 +3,8 @@
 #include "../framework.h"
 #include "../Level.h"
 #include "BackgroundMenu.h"
+#include "ButtonPaperSheet.h"
+
 
 class InfoLevel : public GameLevel {
 public:
@@ -14,7 +16,11 @@ public:
 
 private:
 	Background* background;
-	D2D_RECT_F rect;
+	
+	ButtonPaperSheet* norbert;
+	ButtonPaperSheet* vitalii;
+	ButtonPaperSheet* pawel;
+	ButtonPaperSheet* severyn;
 
-
+	
 };

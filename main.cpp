@@ -70,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
     
     GameLevel::InitGraphics(graphics);          //THIS FIRST
-    GameController::LoadInitialLevel(new Level(L"GameProject/Saves/myBigWorld.sav"));
+    GameController::LoadInitialLevel(new Menu());
     MSG msg;
     msg.message = WM_NULL;
 
@@ -81,6 +81,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
         else {
+
+            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
+                GameController::SwitchLevel(new Menu());
+            }
+
             //update!
 
             GameController::Update();
