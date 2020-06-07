@@ -61,6 +61,6 @@ void Animation::MoveDown() {
 }
 
 void Animation::GravityEvent() {
-	position->y = position->y + velocity->y * 0.008;
+	position->y = position->y + velocity->y * 0.008f;
 	velocity->y = velocity->y + gravity->y;
 }

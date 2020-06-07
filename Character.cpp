@@ -1,12 +1,12 @@
 #include "GameController.h"
 #include "Character.h"
-
+using namespace Utils;
 
 Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed,
 	float ySpeed, float jumpHeight, float gravity)
 	: Animation(bitmapPath, graphics, new GameVector(x,y), new GameVector(xSpeed,0), new GameVector(8,gravity) , false)
 {
-	position->x = World::offset + SCREEN_WIDTH / 2;
+	position->x = static_cast<float>(World::offset + SCREEN_WIDTH / 2);
 
 	feet = new GameVector(position->x + DEFAULT_BLOCK_SIZE / 2, position->y + DEFAULT_BLOCK_SIZE);
 	head = new GameVector(position->x + DEFAULT_BLOCK_SIZE / 2, position->y);
@@ -31,6 +31,8 @@ void Character::Update()
 	else index = 0;
 	
 
+	if (GetAsyncKeyState(VK_HOME) & 0x8000) position->y = SCREEN_HEIGHT / 4;
+
 	
 	if (isOnLand()) {
 		if(!jumping) velocity->y = 0;
@@ -39,8 +41,10 @@ void Character::Update()
 			jumping = true;
 		} else jumping = false;
 	}
+	else if (World::isCollisionEnabled(convertToBlockCoord(head->x), convertToBlockCoord(head->y - 10))) {
+		velocity->y = 500;
+	}
 	
-
 	GravityEvent();
 
 
@@ -58,7 +62,7 @@ void Character::Render()
 void Character::Jump() {
 
 	if (position->y >= SCREEN_HEIGHT / 4 && position->y < SCREEN_HEIGHT) {
-		velocity->y = -500.0f;
+		velocity->y = -600.0f;
 	} else jumping = false;
 	
 }
@@ -66,9 +70,9 @@ void Character::Jump() {
 
 bool Character::isOnLand() {
 
-	if (World::actualChunk->isCollisionEnabled(feet->x / 32.0, feet->y / 32.0f)) {
+	if (World::isCollisionEnabled(convertToBlockCoord(feet->x), convertToBlockCoord(feet->y))) 
 		return true;
-	}
+
 	return false;
 }
 
@@ -76,9 +80,9 @@ bool Character::isOnLand() {
 
 
 Character::Direction Character::isNextToWall() {
-	if (World::isCollisionEnabled((middle->x + 5) / 32, middle->y / 32))
+	if (World::isCollisionEnabled(convertToBlockCoord(middle->x + 5), convertToBlockCoord(middle->y)))
 		return Direction::Right;
-	else if (World::isCollisionEnabled((middle->x - 5) / 32 , middle->y / 32))
+	else if (World::isCollisionEnabled(convertToBlockCoord(middle->x - 5), convertToBlockCoord(middle->y)))
 		return Direction::Left;
 
 	return Direction::null;
@@ -87,13 +91,13 @@ Character::Direction Character::isNextToWall() {
 
 
 void Character::UpdateCoordinates() {
-	feet->x = World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2;
+	feet->x = static_cast<float>(World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2);
 	feet->y = position->y + DEFAULT_BLOCK_SIZE;
 
-	head->x = World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2;
+	head->x = static_cast<float>(World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2);
 	head->y = position->y + DEFAULT_BLOCK_SIZE / 2;
 
-	middle->x = World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2;
+	middle->x = static_cast<float>(World::offset + SCREEN_WIDTH / 2 + DEFAULT_BLOCK_SIZE / 2);
 	middle->y = position->y + DEFAULT_BLOCK_SIZE / 2;
 
 }
@@ -120,7 +124,7 @@ void Character::MoveRight()
 void Character::MoveLeft()
 {
 	index = 2;
-	if (World::offset / 32 > World::chunks.front()->GetStartPoint()) World::offset -= static_cast<int>(velocity->x);
+	if (convertToBlockCoord(static_cast<float>(World::offset)) > World::chunks.front()->GetStartPoint()) World::offset -= static_cast<int>(velocity->x);
 
 }
 

@@ -71,7 +71,7 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, float spriteWidth, float spriteHeight) : SpriteSheet(filename,gfx){
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
-	this->spritesAccross = static_cast<int>(bmp->GetSize().width) / spriteWidth;
+	this->spritesAccross = static_cast<int>(bmp->GetSize().width / spriteWidth);
 }
 
 

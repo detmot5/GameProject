@@ -134,7 +134,7 @@ void Chunk::ChunkTemplateInit() {
 
 
 void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
-	int pick = randomStructArray[Utils::randint(0, randomStructArray.size())];
+	int pick = randomStructArray[Utils::randint(0, static_cast<int>(randomStructArray.size()))];
 
 	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
 
@@ -172,7 +172,10 @@ void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
 		break;
 
 	case Block::cave:
-		GenerateCave(target, 0, iterator);
+		if (deepness < blocksCountY - 1)
+			GenerateCave(target, 0, iterator);
+		else
+			LoadBlock(target, Block::stone);
 		break;
 	}
 }

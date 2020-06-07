@@ -9,7 +9,7 @@ namespace Utils {
 
 	int randint(int min, int max);
 	template<class T> void printVector(vector<T> vec, string separator = "");
- 
+	UINT16 convertToBlockCoord(float coord);
 
 
 

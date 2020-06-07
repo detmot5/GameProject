@@ -17,7 +17,6 @@ Chunk* GetChunkByStartPoint(UINT16 startPoint) {
 
 
 bool World::isCollisionEnabled(UINT16 x, UINT16 y) {
-	cout <<endl<< x;
 	if (x >= GetNextChunkStartPoint()) return GetNextChunk()->isCollisionEnabled(x, y);
 	else if (x < GetActualChunkStartPoint()) return GetPreviousChunk()->isCollisionEnabled(x, y);
 	else return actualChunk->isCollisionEnabled(x, y);
@@ -30,56 +29,6 @@ Chunk* World::GetNextChunk(){
 Chunk* World::GetPreviousChunk() {
 	return GetChunkByStartPoint(GetPreviousChunkStartPoint());
 }
-
-
-//void World::FindNearestLand(int objPosX, int& objPosY) {
-//
-//	int test_var_x = objPosX / 32;
-//
-//	int test_var_y = objPosY / 32;
-//
-//	if (test_var_y >= 20)
-//	{
-//		objPosY = averageFloorLevel;
-//	}
-//	else if (actualChunk->isCollisionEnabled(test_var_x, test_var_y))
-//	{
-//		++test_var_y;
-//
-//		objPosY = test_var_y * 32;
-//	}
-//}
-
-int World::FindNearestLand(int objPosX, int objPosY)
-{
-
-	for (UINT16 i = objPosY / 32; i < blocksCountY; i++){
-		if (actualChunk->isCollisionEnabled(objPosX / 32, i)){
-
-			return i * 32;
-		}
-	}
-	return 0;
-}
-
-bool World::FindNearestWall(int& objPosX, int objPosY)
-{
-	int test_var_x = objPosX;
-	test_var_x /= 32;
-
-	int test_var_y = (objPosY) / 32;
-
-	if (actualChunk->isCollisionEnabled(test_var_x + 1, test_var_y - 1))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-
 
 
 void World::Init(Graphics* gfx, wstring Path) {
@@ -159,7 +108,7 @@ void World::Update() {
 
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	cout << "                                            \r"
-		<< offset / 32 << " "
+		<< convertToBlockCoord(static_cast<float>(offset)) << " "
 		<< offset << " "
 		<< actualChunk->GetStartPoint() << " "
 		<< chunks.back()->GetStartPoint() << " "

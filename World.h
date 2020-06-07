@@ -50,8 +50,7 @@ public:
 
 
 	
-	static int FindNearestLand(int objPosX, int objPosY);
-	static bool FindNearestWall(int& objPosX, int objPosY);
+	
 	static bool isCollisionEnabled(UINT16 x, UINT16 y);
 	
 	static inline int offset = 0;
@@ -67,8 +66,8 @@ private:
 	static inline bool AddChunkOnBackFlag = false;
 	static inline bool AddChunkOnFrontFlag = false;
 
-	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
-	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
+	static inline UINT16 blocksCountX = SCREEN_WIDTH / DEFAULT_BLOCK_SIZE;	
+	static inline UINT16 blocksCountY = SCREEN_HEIGHT / DEFAULT_BLOCK_SIZE;
 	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 	
