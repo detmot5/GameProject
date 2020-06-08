@@ -12,13 +12,13 @@ InfoLevel::InfoLevel() {
 
 void InfoLevel::Load() {
 	background = new Background(Path::backgroundBoard, gfx);
-	norbert = new ButtonPaperSheet(Path::bigPaperSheet, gfx, L"Norbert", {1,1}, { 142, 320 });
+	norbert = new ButtonPaperSheet(Path::bigPaperSheet, gfx, Text::NorbertTasks, {1,1}, { 142, 320 });
 
-	vitalii = new ButtonPaperSheet(Path::bigPaperSheet, gfx, L"Vitalii", { 2,1 }, { 142,320 });
+	vitalii = new ButtonPaperSheet(Path::bigPaperSheet, gfx, Text::VitTasks, { 2,1 }, { 142,320 });
 
-	pawel = new ButtonPaperSheet(Path::bigPaperSheet, gfx, L"Pawel", { 3,1 }, { 142,320 });
+	pawel = new ButtonPaperSheet(Path::bigPaperSheet, gfx, Text::PawelTasks, { 3,1 }, { 142,320 });
 
-	severyn = new ButtonPaperSheet(Path::bigPaperSheet, gfx, L"Igor", { 4, 1 }, { 142,320 });
+	severyn = new ButtonPaperSheet(Path::bigPaperSheet, gfx, Text::SeverynTasks, { 4, 1 }, { 142,320 });
 }
 
 void InfoLevel::Unload() {

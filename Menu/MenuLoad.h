@@ -29,6 +29,7 @@ private:
 	Background* background;
 	vector<ButtonPaperSheet*> sheets;
 	vector<wstring> saves;
+	bool released;
 	static void LoadLevel(const WCHAR* path);
 
 

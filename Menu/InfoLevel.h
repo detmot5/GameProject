@@ -3,7 +3,7 @@
 #include "../framework.h"
 #include "BackgroundMenu.h"
 #include "ButtonPaperSheet.h"
-
+#include "../Text.h"
 
 class InfoLevel : public GameLevel {
 public:

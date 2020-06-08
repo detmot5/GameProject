@@ -192,7 +192,11 @@ void World::ChunkGenerateHandler() {
 	while (true) {
 		if (AddChunkOnBackFlag && GetActualChunkStartPoint() > 0) {
 			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
-				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(GetLastChunkStartPoint() + Chunk::blocksCountX));
+				Chunk* chunkToAdd = GameSaver::Read::GetChunkFromBuffer(GetLastChunkStartPoint() + Chunk::blocksCountX);
+				if(chunkToAdd)
+					chunks.push_back(GameSaver::Read::GetChunkFromBuffer(GetLastChunkStartPoint() + Chunk::blocksCountX));
+				else
+					GenerateNewChunk();
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
 				cout << endl << "Loaded Back" << endl;
 #endif

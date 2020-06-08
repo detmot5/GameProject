@@ -17,11 +17,13 @@ namespace GameSaver {
 		saveName = directoryPath + filePath;
 	}
 
+
+
 	wstring GenerateSaveName() {
 		static int savesCnt = 1;
 		for (const auto& entry : filesystem::directory_iterator(directoryPath))	savesCnt++;
 		wstringstream sstr;
-		sstr << savesCnt;
+		sstr << savesCnt+1;
 
 		wstring name = L"save" + sstr.str();
 		name += L".sav";
@@ -42,6 +44,9 @@ namespace GameSaver {
 	void InitSave() {
 		if (!filesystem::exists(directoryPath))	filesystem::create_directory(directoryPath);
 		wstring name = GenerateSaveName();
+		buffer.clear();
+		ChunkBuffer.clear();
+		saveName.clear();
 		ParsePath(name);
 
 		// clear file
@@ -55,6 +60,7 @@ namespace GameSaver {
 			if (fileStream.fail()) return false;
 			ChunkBuffer.push_back(chunk);
 			fileStream << ChunkBuffer.back();
+			cout << ChunkBuffer.back();
 			fileStream.close();
 
 #if DEBUG_MODE && GAME_SAVER_DEBUG
@@ -72,7 +78,6 @@ namespace GameSaver {
 	namespace Read {
 
 		static bool ReadFile(const wstring path) {
-			ParsePath(path);
 			if (!filesystem::exists(saveName)) {
 #if DEBUG_MODE && GAME_SAVER_DEBUG
 				cout << "File doesn't exist!" << endl;
@@ -87,6 +92,7 @@ namespace GameSaver {
 			while (!fileStream.eof()) {
 				fileStream >> temp;
 				temp.erase(remove(temp.begin(), temp.end(), '\n'), temp.end());
+			
 				buffer.push_back(temp);
 				temp.clear();
 			}
@@ -120,7 +126,11 @@ namespace GameSaver {
 
 
 		bool LoadSave(wstring path) {
+			ChunkBuffer.clear();
+			buffer.clear();
+			saveName.clear();
 			ParsePath(path);
+
 			if (!ReadFile(path)) return false;
 			int startPoint = 0;
 			Chunk* ChunkToSave = ReadChunksFromFileBuffer(startPoint);;

@@ -2,6 +2,7 @@
 
 MenuLoad::MenuLoad()
 {
+	released = false;
 }
 
 MenuLoad::~MenuLoad()
@@ -35,10 +36,9 @@ void MenuLoad::Unload() {
 }
 
 void MenuLoad::Update() {
-	static bool delay = true;
-	if (delay) chrono::seconds(8);
-	delay = false;
-	for (auto i : sheets) i->OnClickEvent();
+
+	if (!(GetAsyncKeyState(VK_LBUTTON) & 0x8000)) released = true;
+	if(released) for (auto i : sheets) i->OnClickEvent();
 }
 
 void MenuLoad::Render() {

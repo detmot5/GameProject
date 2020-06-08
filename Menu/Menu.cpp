@@ -23,14 +23,12 @@ Menu::~Menu() {
 void Menu::Load() {
 	backGroundMenu = new Background(Path::background, gfx);
 
-	buttonPlay = new ButtonMenu(Path::buttonPlay, Path::buttonPlayClicked, gfx, 200, OnClick::PlayOnClick);
-	//buttonPlayDark = new ButtonMenu(Path::buttonPlayClicked, gfx, 200, OnClick::PlayOnClick);
+	buttonPlay = new ButtonMenu(Path::buttonPlay, Path::buttonPlayClicked, gfx, 230, OnClick::PlayOnClick);
 
-	buttonLoad = new ButtonMenu(Path::buttonLoad, Path::buttonLoadClicked, gfx, 110, OnClick::LoadOnClick);
-	//buttonLoadDark = new ButtonMenu(Path::buttonLoadClicked, gfx, 110, OnClick::LoadOnClick);
+	buttonLoad = new ButtonMenu(Path::buttonLoad, Path::buttonLoadClicked, gfx, 120, OnClick::LoadOnClick);
 
-	buttonInfo = new ButtonMenu(Path::buttonInfo, Path::buttonInfoClicked, gfx, 20, OnClick::InfoOnClick);
-	//buttonInfoDark = new ButtonMenu(Path::buttonInfoClicked, gfx, 20, OnClick::InfoOnClick);
+	buttonInfo = new ButtonMenu(Path::buttonInfo, Path::buttonInfoClicked, gfx, 10, OnClick::InfoOnClick);
+
 
 }
 
