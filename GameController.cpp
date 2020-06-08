@@ -7,7 +7,11 @@
 void GameController::Init() {
 	Loading = true;
 	currentLevel = 0;
+<<<<<<< HEAD
 	
+=======
+    
+>>>>>>> menu
 }
 
 void GameController::LoadInitialLevel(GameLevel* lev) {
@@ -21,6 +25,7 @@ void GameController::SwitchLevel(GameLevel* lev) {
 	currentLevel->Unload();
 	lev->Load();
 	currentLevel = lev;
+	currentLevel->Load();
 	Loading = false;
 }
 

@@ -6,6 +6,7 @@
 #include "../World.h"
 #include "GameVector.h"
 
+
 class Animation
 {
 public:
@@ -13,7 +14,7 @@ public:
 	~Animation();
 
 
-	virtual void Update();
+	virtual void Update() = 0;
 	virtual void Render();
 
 
@@ -21,6 +22,7 @@ public:
 	virtual void MoveLeft();
 	virtual void MoveUp();
 	virtual void MoveDown();
+
 	
 	void GravityEvent();
 
@@ -33,8 +35,6 @@ protected:
 	GameVector* velocity;
 	GameVector* gravity;
 	double timeDelta;
-
-
 
 	int index;
 	bool blockPrecision;

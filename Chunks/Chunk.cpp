@@ -1,5 +1,6 @@
 #include "Chunk.h"
 
+
 vector<Block*> Chunk::BlockType;
 vector<int> Chunk::randomStructArray;
 Graphics* Chunk::gfx;
@@ -31,7 +32,7 @@ Block* GetBlockByIndex(int index) {
 
 Block* Chunk::GetBlockByCoords(UINT16 x, UINT16 y) {
 	return GetBlockBySymbol(this->chunkTemplate[y][x]);
-}
+
 
 
 
@@ -61,7 +62,6 @@ ostream& operator<<(ostream& os, Chunk* chunk) {
 
 void Chunk::Init(Graphics* gfx) {
 	Chunk::gfx = gfx;
-
 	BlockType.push_back(new Block(Path::block, gfx, '_', false, Block::air));
 	BlockType.push_back(new Block(Path::block, gfx, '#', true, Block::stone, 0, 20));
 	BlockType.push_back(new Block(Path::block, gfx, '-', true, Block::grass));
@@ -116,10 +116,16 @@ void Chunk::FloorLevelInit() {
 }
 
 
+void Chunk::LoadFloorLevel() {
+	for (UINT16 i = 0; i <= blocksCountX; i++) {
+		UINT16 actualFloorLevel = averageFloorLevel;
+		FloorLevel.insert(pair<UINT16, UINT16>(i, actualFloorLevel));
+	}
+}
+
 UINT16 Chunk::GetActualFloorLevel(UINT16 x) {
 	return FloorLevel.find(x)->second;
 }
-
 
 
 void Chunk::ChunkTemplateInit() {
@@ -130,10 +136,12 @@ void Chunk::ChunkTemplateInit() {
 		}
 	}
 	FloorLevel.clear();
+
 }
 
 
 void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
+
 	int pick = randomStructArray[Utils::randint(0, static_cast<int>(randomStructArray.size()))];
 
 	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
@@ -151,11 +159,13 @@ void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
 	switch (pick) {
 
 	case Block::diamond:
-		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
+
+		if (deepness >= blocksCountY - GetBlockByIndex(Block::diamond)->GetMaxGenerationHeight())
 			LoadBlock(target, Block::diamond);
 		else
 			LoadBlock(target, Block::stone);
 		break;
+
 	case Block::gold:
 		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
 			LoadBlock(target, Block::gold);

@@ -16,8 +16,12 @@ namespace Utils {
         return max ? (rand() % max + min) : min;
     }
 
+<<<<<<< HEAD
     UINT16 convertToBlockCoord(float coord) {
         return static_cast<UINT16>(floor(coord / 32.0));
     }
+=======
+
+>>>>>>> menu
 
 }

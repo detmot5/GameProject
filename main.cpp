@@ -6,7 +6,12 @@
 #include "Graphics.h" 
 #include "Level.h"
 #include "GameController.h"
+<<<<<<< HEAD
 #include "UserInput.h"
+=======
+#include "Menu/Menu.h"
+#include "Menu/UserInput.h"
+>>>>>>> menu
 #include "WindowsX.h"
 
 HHOOK MouseHook;
@@ -23,6 +28,9 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 Graphics* graphics;
 HWND hWnd;
+
+HDC kon;
+PAINTSTRUCT ps;
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -39,7 +47,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    
     // TODO: Place code here.
  
+<<<<<<< HEAD
     srand((unsigned int)time(nullptr));
+=======
+    srand(time(nullptr));
+>>>>>>> menu
 #if DEBUG_MODE
     //Open debug console
     AllocConsole();
@@ -71,11 +83,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     msg.message = WM_NULL;
 
+ 
+
     while (msg.message != WM_QUIT) {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             DispatchMessage(&msg);
         }
         else {
+
+            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
+                GameController::SwitchLevel(new Menu());
+            }
+
             //update!
 
             GameController::Update();
@@ -85,6 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             GameController::Render();
             graphics->endDraw();
 
+            TranslateMessage(&msg);
         }
     }
     
@@ -119,6 +139,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
+
+    
 }
 
 //
@@ -175,9 +197,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+<<<<<<< HEAD
     UserInput::crs.x = GET_X_LPARAM(lParam);
     UserInput::crs.y = GET_Y_LPARAM(lParam);
     UserInput::butt = wParam;
+=======
+    UserInput::SetWindowParams(lParam);
+>>>>>>> menu
     switch (message)
     {
     case WM_COMMAND:
@@ -201,9 +227,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_PAINT:
+        kon = BeginPaint(hWnd, &ps);
+
+        TextOut(kon, 50, 50, L"Jakis tekst", 11);
+
+        EndPaint(hWnd, &ps);
+        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
+    
     return 0;
 }
 

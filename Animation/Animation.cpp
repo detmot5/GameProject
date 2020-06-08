@@ -14,10 +14,6 @@ Animation::Animation(LPCTSTR bitmapPath,
 	this->position = position;
 	this->velocity = velocity;
 	this->gravity = gravity;
-	this->spriteWidth = spriteWidth;
-	this->spriteHeight = spriteHeight;
-	this->blockPrecision = blockPrecision;
-	this->gfx = gfx;
 	this->index = 0;
 	this->timeDelta = 0.0;
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
@@ -29,6 +25,10 @@ Animation::~Animation() {
 	delete velocity;
 	delete gravity;
 	delete sprites;
+
+	delete sprites;
+	delete gfx;
+
 }
 
 
@@ -63,4 +63,6 @@ void Animation::MoveDown() {
 void Animation::GravityEvent() {
 	position->y = position->y + velocity->y * 0.008f;
 	velocity->y = velocity->y + gravity->y;
+
 }
+

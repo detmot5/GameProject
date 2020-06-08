@@ -19,6 +19,5 @@ public:
 
 protected:
 	static inline Graphics* gfx;
-
 	std::vector<Animation*> Animations;
 };

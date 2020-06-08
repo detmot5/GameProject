@@ -39,16 +39,38 @@ class World{
 public:
 	friend Block* GetBlockBySymbol(char symbol);
 	friend Block* GetBlockByIndex(int index);
+<<<<<<< HEAD
 	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
 
 
 	static void Init(Graphics* gfx, wstring Path);
+=======
+	friend Block* GetBlockByCoords(UINT16 objPosX, UINT16 objPosY);
+	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
+
+
+	static void Init(Graphics* gfx);
+>>>>>>> menu
 	static void Load(Graphics* gfx, wstring Path);
 	static void Unload();
 	static void Render();
 	static void Update();
+<<<<<<< HEAD
+=======
 
 
+	static UINT16 GetActualFloorLevel(UINT16 x);
+	
+	static int FindNearestLandY(int objPosX, int objPosY);
+	static bool FindNearestWall(int& objPosX, int objPosY);
+	
+	static inline int offset = 0;
+	static Chunk* actualChunk;
+	static list<Chunk*> chunks;
+>>>>>>> menu
+
+
+<<<<<<< HEAD
 	
 	
 	static bool isCollisionEnabled(UINT16 x, UINT16 y);
@@ -85,10 +107,33 @@ private:
 
 	static bool GenerateBackDeleteFrontChunkFlag();
 	static bool GenerateFrontDeleteBackChunkFlag();
+=======
+
+
+	static vector<int> randomStructArray;
+	static thread* ChunkGenerateThread;
+	static inline bool AddChunkFlag = false;
+	static inline bool DeleteChunkFlag = false;
+
+
+	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
+	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
+	static inline UINT16 averageFloorLevel = blocksCountY / 2;
+	static inline UINT16 skyLevel = blocksCountY / 5;
+
+
+	static inline UINT16 GetActualChunkStartPoint() { return actualChunk->GetStartPoint(); }
+	static inline UINT16 GetNextChunkStartPoint() { return GetActualChunkStartPoint() + Chunk::blocksCountX; }
+	static inline UINT16 GetPreviousChunkStartPoint() { return GetActualChunkStartPoint() - Chunk::blocksCountX; };
+
+>>>>>>> menu
 
 	static void ChunkGenerateHandler();
 	static void GenerateNewChunk();
 	static void DeleteFirstChunk();
+<<<<<<< HEAD
 	static void DeleteLastChunk();
+=======
+>>>>>>> menu
 
 };

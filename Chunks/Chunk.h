@@ -22,7 +22,7 @@ public:
 
 	void Update();
 	void Render();
-	
+
 
 	inline void SetOffset(int offset) { this->offset = offset; }
 	inline int GetOffset() { return this->offset; }
@@ -43,7 +43,7 @@ private:
 	map<UINT16, UINT16> FloorLevel;
 	UINT16 StartPoint;
 	int offset;
-	
+
 
 
 	void ChunkTemplateInit();

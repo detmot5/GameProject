@@ -14,7 +14,12 @@
 class Level : public GameLevel
 {
 public:
+<<<<<<< HEAD
 	Level(wstring path, bool load);
+=======
+	Level();
+	Level(wstring path);
+>>>>>>> menu
 	~Level();
 
 	void Load() override;
@@ -22,10 +27,13 @@ public:
 	void Render() override;
 	void Update() override;
 
+<<<<<<< HEAD
 	enum {
 		NewSave = false,
 		LoadSave = true,
 	};
+=======
+>>>>>>> menu
 
 private:
 	bool load;

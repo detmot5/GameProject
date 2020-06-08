@@ -1,5 +1,6 @@
 #include "GameController.h"
 #include "Character.h"
+
 using namespace Utils;
 
 Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, float xSpeed,
@@ -14,6 +15,7 @@ Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, f
 	jumping = false;
 	this->acceleration = acceleration;
 }
+
 
 
 
@@ -48,8 +50,6 @@ void Character::Update()
 	GravityEvent();
 
 
-	
-	
 }
 
 void Character::Render()
@@ -57,6 +57,7 @@ void Character::Render()
 	Animation::Render();
 
 }
+
 
 
 void Character::Jump() {
@@ -106,23 +107,14 @@ void Character::UpdateCoordinates() {
 
 
 
-
-void Character::MoveUp()
-{
-
-	
-}
-
 void Character::MoveRight()
 {
 	index = 1;
-	
 	if(World::offset < WORLD_BORDER) World::offset += static_cast<int>(velocity->x);
 
 }
 
-void Character::MoveLeft()
-{
+void Character::MoveLeft(){
 	index = 2;
 	if (convertToBlockCoord(static_cast<float>(World::offset)) > World::chunks.front()->GetStartPoint()) World::offset -= static_cast<int>(velocity->x);
 
