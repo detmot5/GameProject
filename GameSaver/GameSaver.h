@@ -10,8 +10,8 @@
 using namespace std;
 
 namespace GameSaver {
-	void InitSave(wstring saveName);
-	
+	void InitSave();
+	vector<wstring> GetAllSaves();
 	namespace Write {
 		bool SaveChunk(Chunk* chunk);	
 	}

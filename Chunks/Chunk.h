@@ -17,6 +17,7 @@ public:
 	Chunk(UINT16 StartPoint, vector<string>& chunkTemplate);
 	~Chunk();
 	static void Init(Graphics* gfx);		//call it before making object
+	static void Release();
 	UINT16 GetActualFloorLevel(UINT16 x);
 	bool isCollisionEnabled(UINT16 x, UINT16 y);
 

@@ -1,6 +1,6 @@
 #include "ButtonMenu.h"
 
-ButtonMenu::ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, void (*callback)()) {
+ButtonMenu::ButtonMenu(LPCTSTR bitmapPath, LPCTSTR clickedBitmap, Graphics* gfx, short ButtonOffset, void (*callback)()) {
 	this->gfx = gfx;
 	this->ButtonOffset = ButtonOffset;
 	this->spriteWidth = 190;
@@ -11,6 +11,7 @@ ButtonMenu::ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, vo
 
 
 	sprites = new SpriteSheet(bitmapPath, gfx, spriteWidth, spriteHeight);
+	clickedSprite = new SpriteSheet(clickedBitmap, gfx, spriteWidth, spriteHeight);
 }
 ButtonMenu::~ButtonMenu() {
 	OnClickCallback = 0;
@@ -19,29 +20,14 @@ ButtonMenu::~ButtonMenu() {
 
 
 void ButtonMenu::Render() {
-
-	sprites->Draw(0, xCord, yCord);
+	if (IsCursorOnButton())
+		clickedSprite->Draw(0, xCord, yCord);
+	else
+		sprites->Draw(0, xCord, yCord);
 
 }
 
 void ButtonMenu::OnClickEvent() {
-
-
-	if (UserInput::GetCursorPos().x >= xCord && UserInput::GetCursorPos().x <= xCord + spriteWidth)
-	{	
-		if (UserInput::GetCursorPos().y >= yCord && UserInput::GetCursorPos().y <= yCord + spriteHeight)
-		{
-			flag = 1;
-		}
-		if (UserInput::GetCursorPos().y >= 210 && UserInput::GetCursorPos().y <= 210 + spriteHeight)
-			flag = 2;
-		if (UserInput::GetCursorPos().y >= 300 && UserInput::GetCursorPos().y <= 300 + spriteHeight)
-			flag = 3;
-	}
-	else
-	{
-		flag = 0;
-	}
 
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000 && IsCursorOnButton()) {
 		if (OnClickCallback) OnClickCallback();

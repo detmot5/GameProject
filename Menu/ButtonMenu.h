@@ -5,7 +5,7 @@
 
 class ButtonMenu {
 public:
-	ButtonMenu(LPCTSTR bitmapPath, Graphics* gfx, short ButtonOffset, void (*callback)());
+	ButtonMenu(LPCTSTR bitmapPath,LPCTSTR clickedBitmap, Graphics* gfx, short ButtonOffset, void (*callback)());
 	~ButtonMenu();
 	void Render();
 	void OnClickEvent();
@@ -15,7 +15,7 @@ public:
 private:
 	Graphics* gfx;
 	SpriteSheet* sprites;
-	//SpriteSheet* clickedSprite;
+	SpriteSheet* clickedSprite;
 	short spriteWidth;
 	short spriteHeight;
 	short ButtonOffset;

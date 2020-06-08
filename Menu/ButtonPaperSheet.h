@@ -1,20 +1,22 @@
 #pragma once
 #include "../Graphics.h"
 #include "../SpriteSheet.h"
-
+#include "UserInput.h"
 
 class ButtonPaperSheet {
 public:
-	ButtonPaperSheet(LPCTSTR bitmapPath, Graphics* gfx, const WCHAR* str, UINT8 multiplier, short offset = 142);
+	ButtonPaperSheet(LPCTSTR bitmapPath, Graphics* gfx, const WCHAR* str, POINT pos, POINT spriteSize, int font = 18, void (*onClick)(const WCHAR*) = nullptr);
 	~ButtonPaperSheet();
 	void Render();
+	void OnClickEvent();
+
 
 private:
 	Graphics* gfx;
 	SpriteSheet* sprites;
 
-	static inline short spriteWidth = 142;
-	static inline short spriteHeight = 280;
+	short spriteWidth = 142;
+	short spriteHeight = 134;
 
 	short offset;
 
@@ -23,8 +25,12 @@ private:
 	UINT8 multiplier;
 
 	const WCHAR* str;
-
+	int font;
 	short xCord;
 	short yCord;
+	void (*callback)(const WCHAR*);
 
+
+
+	bool IsCursorOnButton();
 };

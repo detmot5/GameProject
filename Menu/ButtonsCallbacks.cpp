@@ -4,7 +4,8 @@ namespace OnClick {
 
 
 	void PlayOnClick() {
-		GameController::SwitchLevel(new Level());
+
+		GameController::SwitchLevel(new Level(Level::NewSave));
 
 	}
 
@@ -13,7 +14,7 @@ namespace OnClick {
 	}
 
 	void LoadOnClick() {
-		cout << "cos";
+		GameController::SwitchLevel(new MenuLoad());
 	}
 
 }

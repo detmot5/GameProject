@@ -7,8 +7,8 @@ Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, f
 	float ySpeed, float jumpHeight, float gravity, int acceleration)
 	: Animation(bitmapPath, graphics, new GameVector(x,y), new GameVector(xSpeed,0), new GameVector(0,gravity) , false)
 {
+	World::offset = 0;
 	position->x = static_cast<float>(World::offset + SCREEN_WIDTH / 2);
-
 	feet = new GameVector(position->x + DEFAULT_BLOCK_SIZE / 2, position->y + DEFAULT_BLOCK_SIZE);
 	head = new GameVector(position->x + DEFAULT_BLOCK_SIZE / 2, position->y);
 	middle = new GameVector(position->x + DEFAULT_BLOCK_SIZE / 2, position->y + DEFAULT_BLOCK_SIZE / 2);
@@ -16,7 +16,13 @@ Character::Character(LPCTSTR bitmapPath, Graphics* graphics, float x, float y, f
 	this->acceleration = acceleration;
 }
 
-
+Character::~Character() {
+	Animation::~Animation();
+	delete position;
+	delete feet;
+	delete head;
+	delete middle;
+}
 
 
 
@@ -33,8 +39,11 @@ void Character::Update()
 	else index = 0;
 	
 		// if character would get stuck
-	if (GetAsyncKeyState(VK_HOME) & 0x8000) position->y = SCREEN_HEIGHT / 4;
+	if (GetAsyncKeyState(VK_HOME) & 0x8000) {
 
+		position->y = SCREEN_HEIGHT / 4;
+		position->x = SCREEN_WIDTH / 2;
+	}
 	
 	if (isOnLand()) {
 		if(!jumping) velocity->y = 0;

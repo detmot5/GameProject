@@ -8,23 +8,29 @@ Menu::Menu() {
 	buttonPlay = 0;
 	buttonPlayDark = 0;
 	buttonInfo = 0;
+	buttonInfoDark = 0;
 	buttonPlayDark = 0;
 	buttonLoad = 0;
 	buttonLoadDark = 0;
 }
 
+Menu::~Menu() {
+	this->Unload();
+	delete this;
+}
+
 
 void Menu::Load() {
-	backGroundMenu = new Background(L"GameProject/Graphicss/BackgroundMenuTree.png", gfx);
+	backGroundMenu = new Background(Path::background, gfx);
 
-	buttonPlay = new ButtonMenu(L"GameProject/Graphicss/ButtonPlay.png", gfx, 200, OnClick::PlayOnClick);
-	buttonPlayDark = new ButtonMenu(L"GameProject/Graphicss/ButtonPlayW.png", gfx, 200, OnClick::PlayOnClick);
+	buttonPlay = new ButtonMenu(Path::buttonPlay, Path::buttonPlayClicked, gfx, 200, OnClick::PlayOnClick);
+	//buttonPlayDark = new ButtonMenu(Path::buttonPlayClicked, gfx, 200, OnClick::PlayOnClick);
 
-	buttonLoad = new ButtonMenu(L"GameProject/Graphicss/ButtonLoad.png", gfx, 110, OnClick::LoadOnClick);
-	buttonLoadDark = new ButtonMenu(L"GameProject/Graphicss/ButtonLoadW.png", gfx, 110, OnClick::LoadOnClick);
+	buttonLoad = new ButtonMenu(Path::buttonLoad, Path::buttonLoadClicked, gfx, 110, OnClick::LoadOnClick);
+	//buttonLoadDark = new ButtonMenu(Path::buttonLoadClicked, gfx, 110, OnClick::LoadOnClick);
 
-	buttonInfo = new ButtonMenu(L"GameProject/Graphicss/ButtonInfo.png", gfx, 20, OnClick::InfoOnClick);
-	buttonInfoDark = new ButtonMenu(L"GameProject/Graphicss/ButtonInfoW.png", gfx, 20, OnClick::InfoOnClick);
+	buttonInfo = new ButtonMenu(Path::buttonInfo, Path::buttonInfoClicked, gfx, 20, OnClick::InfoOnClick);
+	//buttonInfoDark = new ButtonMenu(Path::buttonInfoClicked, gfx, 20, OnClick::InfoOnClick);
 
 }
 
@@ -33,7 +39,10 @@ void Menu::Unload()
 {
 	delete backGroundMenu;
 	delete buttonPlay;
+	delete buttonLoad;
 	delete buttonInfo;
+	
+	
 
 }
 
@@ -57,20 +66,6 @@ void Menu::Render() {
 
 
 	buttonLoad->Render();
-
-	if (ButtonMenu::flag == 1)
-	{
-		buttonPlayDark->Render();
-	}
-	else if (ButtonMenu::flag == 2) 
-	{
-		buttonLoadDark->Render();
-	}
-	else if (ButtonMenu::flag == 3)
-	{
-		buttonInfoDark->Render();
-	}
-
 	
 }
 

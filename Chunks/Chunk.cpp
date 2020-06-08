@@ -1,6 +1,5 @@
 #include "Chunk.h"
 
-
 vector<Block*> Chunk::BlockType;
 vector<int> Chunk::randomStructArray;
 Graphics* Chunk::gfx;
@@ -32,7 +31,7 @@ Block* GetBlockByIndex(int index) {
 
 Block* Chunk::GetBlockByCoords(UINT16 x, UINT16 y) {
 	return GetBlockBySymbol(this->chunkTemplate[y][x]);
-
+}
 
 
 
@@ -62,15 +61,21 @@ ostream& operator<<(ostream& os, Chunk* chunk) {
 
 void Chunk::Init(Graphics* gfx) {
 	Chunk::gfx = gfx;
+
 	BlockType.push_back(new Block(Path::block, gfx, '_', false, Block::air));
 	BlockType.push_back(new Block(Path::block, gfx, '#', true, Block::stone, 0, 20));
 	BlockType.push_back(new Block(Path::block, gfx, '-', true, Block::grass));
-	BlockType.push_back(new Block(Path::block, gfx, '%', true , Block::dirt));
+	BlockType.push_back(new Block(Path::block, gfx, '%', true, Block::dirt));
 	BlockType.push_back(new Block(Path::block, gfx, '*', false, Block::cave, 0, 10));
 	BlockType.push_back(new Block(Path::block, gfx, '&', true, Block::diamond, 3, 5));
 	BlockType.push_back(new Block(Path::block, gfx, '^', true, Block::gold, 5, 10));
 
 	RandomArrayInit();
+}
+
+void Chunk::Release() {
+	BlockType.clear();
+	randomStructArray.clear();
 }
 
 
@@ -88,19 +93,20 @@ void Chunk::RandomArrayInit() {
 //---------------------------------------------------------------------------------------------------
 
 
-Chunk::Chunk(UINT16 StartPoint){
+Chunk::Chunk(UINT16 StartPoint) {
 	this->StartPoint = StartPoint;
 	FloorLevelInit();
 	this->ChunkTemplateInit();
 }
 
-Chunk::Chunk(UINT16 StartPoint, vector<string>& chunkTemplate){
+Chunk::Chunk(UINT16 StartPoint, vector<string>& chunkTemplate) {
 	this->StartPoint = StartPoint;
 	this->chunkTemplate = chunkTemplate;
 }
 
 
-Chunk::~Chunk(){
+Chunk::~Chunk() {
+	chunkTemplate.clear();
 
 }
 
@@ -116,16 +122,10 @@ void Chunk::FloorLevelInit() {
 }
 
 
-void Chunk::LoadFloorLevel() {
-	for (UINT16 i = 0; i <= blocksCountX; i++) {
-		UINT16 actualFloorLevel = averageFloorLevel;
-		FloorLevel.insert(pair<UINT16, UINT16>(i, actualFloorLevel));
-	}
-}
-
 UINT16 Chunk::GetActualFloorLevel(UINT16 x) {
 	return FloorLevel.find(x)->second;
 }
+
 
 
 void Chunk::ChunkTemplateInit() {
@@ -136,12 +136,10 @@ void Chunk::ChunkTemplateInit() {
 		}
 	}
 	FloorLevel.clear();
-
 }
 
 
 void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
-
 	int pick = randomStructArray[Utils::randint(0, static_cast<int>(randomStructArray.size()))];
 
 	UINT16 actualFloorLevel = GetActualFloorLevel(*iterator);
@@ -159,13 +157,11 @@ void Chunk::TerrainGenerator(string& target, int deepness, UINT8* iterator) {
 	switch (pick) {
 
 	case Block::diamond:
-
-		if (deepness >= blocksCountY - GetBlockByIndex(Block::diamond)->GetMaxGenerationHeight())
+		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
 			LoadBlock(target, Block::diamond);
 		else
 			LoadBlock(target, Block::stone);
 		break;
-
 	case Block::gold:
 		if (deepness >= blocksCountY - GetBlockByIndex(Block::gold)->GetMaxGenerationHeight())
 			LoadBlock(target, Block::gold);
@@ -209,26 +205,25 @@ void Chunk::GenerateCave(string& target, int deepness, UINT8* iterator) {
 
 
 void Chunk::Update() {
-	
+
 }
 
 
 
 void Chunk::Render() {
-	
+
 	static bool isDisplayed = false;
 #if DEBUG_MODE && GAME_GENERATOR_DEBUG
 	if (!isDisplayed) {
-		Utils::printVector(chunkTemplate,"\n");
+		Utils::printVector(chunkTemplate, "\n");
 		isDisplayed = true;
 	}
 #endif
 
 	for (UINT8 i = 0; i < chunkTemplate.size(); i++) {
 		for (UINT8 j = 0; j < chunkTemplate[i].length(); j++) {
-			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(static_cast<int>(j+StartPoint), i,offset);
+			GetBlockBySymbol(chunkTemplate[i].at(j))->Render(static_cast<int>(j + StartPoint), i, offset);
 		}
 	}
 
 }
-

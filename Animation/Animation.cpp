@@ -25,10 +25,6 @@ Animation::~Animation() {
 	delete velocity;
 	delete gravity;
 	delete sprites;
-
-	delete sprites;
-	delete gfx;
-
 }
 
 

@@ -1,20 +1,10 @@
-// DirectxLesson.cpp : Defines the entry point for the application.
-//
 #include <ctime>
 #include "framework.h"
 #include "main.h"
 #include "Graphics.h" 
-#include "Level.h"
 #include "GameController.h"
-<<<<<<< HEAD
-#include "UserInput.h"
-=======
 #include "Menu/Menu.h"
 #include "Menu/UserInput.h"
->>>>>>> menu
-#include "WindowsX.h"
-
-HHOOK MouseHook;
 
 using namespace std;
 #define MAX_LOADSTRING 100
@@ -38,20 +28,16 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-   
+
     // TODO: Place code here.
- 
-<<<<<<< HEAD
-    srand((unsigned int)time(nullptr));
-=======
+
     srand(time(nullptr));
->>>>>>> menu
 #if DEBUG_MODE
     //Open debug console
     AllocConsole();
@@ -70,20 +56,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     // Perform application initialization:
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
-    
+
     GameLevel::InitGraphics(graphics);          //THIS FIRST
-    GameController::Init();
-    GameController::LoadInitialLevel(new Level(L"myBigWorld.sav", Level::NewSave));
+    GameController::LoadInitialLevel(new Menu());
     MSG msg;
     msg.message = WM_NULL;
 
- 
+
 
     while (msg.message != WM_QUIT) {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -91,15 +76,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else {
 
-            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
-                GameController::SwitchLevel(new Menu());
-            }
-
             //update!
 
             GameController::Update();
 
-           //render!
+            //render!
             graphics->beginDraw();
             GameController::Render();
             graphics->endDraw();
@@ -107,10 +88,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
         }
     }
-    
-    GameController::UnloadActualLevel();
+
+
     delete graphics;
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -126,21 +107,21 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = 0;
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDC_GAMEPROJECT));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = 0;
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 
-    
+
 }
 
 //
@@ -155,34 +136,34 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
-   RECT rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
-   AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
-   hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szWindowClass, L"The Better Terraria", WS_OVERLAPPEDWINDOW,
-      100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
-
-   
-
-   graphics = new Graphics();
-   if (!graphics->Init(hWnd)) {
-       delete graphics;
-       return false;
-   }
-      
+    hInst = hInstance; // Store instance handle in our global variable
+    RECT rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
+    AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
+    hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szWindowClass, L"The Better Terraria", WS_OVERLAPPEDWINDOW,
+        100, 10, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, hInstance, nullptr);
 
 
-   
+
+    graphics = new Graphics();
+    if (!graphics->Init(hWnd)) {
+        delete graphics;
+        return false;
+    }
 
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
 
-   return TRUE;
+
+
+    if (!hWnd)
+    {
+        return FALSE;
+    }
+
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+    return TRUE;
 }
 
 //
@@ -197,47 +178,34 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-<<<<<<< HEAD
-    UserInput::crs.x = GET_X_LPARAM(lParam);
-    UserInput::crs.y = GET_Y_LPARAM(lParam);
-    UserInput::butt = wParam;
-=======
     UserInput::SetWindowParams(lParam);
->>>>>>> menu
     switch (message)
     {
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        // Parse the menu selections:
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
+    }
+    break;
 
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
-    case WM_PAINT:
-        kon = BeginPaint(hWnd, &ps);
-
-        TextOut(kon, 50, 50, L"Jakis tekst", 11);
-
-        EndPaint(hWnd, &ps);
-        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
-    
+
     return 0;
 }
 
