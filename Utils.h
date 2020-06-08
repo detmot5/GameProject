@@ -9,7 +9,7 @@ namespace Utils {
 
 	int randint(int min, int max);
 	template<class T> void printVector(vector<T> vec, string separator = "");
- 
+	UINT16 convertToBlockCoord(float coord);
 
 
 
@@ -18,11 +18,11 @@ namespace Utils {
 
 	// template functions must be in header file
 	template<class T>
-	void printVector(vector<T> vec, string separator){
+	void printVector(vector<T> vec, string separator) {
 		cout << endl;
-		for (UINT16 i = 0; i < vec.size(); i++) {
-			cout << vec[i]
-				 << separator;
+		for (auto i : vec) {
+			cout << i
+				<< separator;
 		}
 		cout << endl;
 	}

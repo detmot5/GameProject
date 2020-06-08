@@ -3,10 +3,8 @@
 
 
 
-
-
 Block::Block(LPCWSTR bitmapPath, Graphics *gfx, char symbol, 
-				bool collisionEnabled, short index, short maxGeneratingHeight, short seed) {
+				bool collisionEnabled, int index, int maxGeneratingHeight, int seed) {
 	this->symbol = symbol;
 	this->collisionEnabled = collisionEnabled;
 	this->gfx = gfx;
@@ -22,21 +20,19 @@ Block::~Block() {
 
 
 
-void Block::Render(short x, short y){
-	sprites->Draw(index, x*spriteWidth, y*spriteHeight);
+void Block::Render(int x, int y, int offset){
+	sprites->Draw(index, static_cast<float>(x * spriteWidth - offset) , static_cast<float>(y * spriteHeight));
 }
 
 
 
-
-
-short Block::GetSeed() {
+int Block::GetSeed() {
 	return seed;
 }
-short Block::GetMaxGenerationHeight() {
+int Block::GetMaxGenerationHeight() {
 	return maxGeneratingHeight;
 }
-short Block::GetIndex() {
+int Block::GetIndex() {
 	return index;
 }
 char Block::GetSymbol() {

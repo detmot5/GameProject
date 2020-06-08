@@ -1,166 +1,214 @@
 #include "World.h"
+
 using namespace Utils;
 
-vector<string> World::worldTemplate;
-vector<Block*> World::blockType;
-
-vector<short> World::randomStructArray;
-
+list<Chunk*> World::chunks;
+Chunk* World::actualChunk;
+thread* World::ChunkGenerateThread;
 
 
-Block* GetBlockBySymbol(char symbol) {
-	for (UINT8 i = 0; i < World::blockType.size(); i++) {
-		if (World::blockType[i]->symbol == symbol) {
-			return World::blockType[i];
-		}
-	}
-	return nullptr;
 
-}
-
-Block* GetBlockByIndex(short index) {
-	for (UINT8 i = 0; i < World::blockType.size(); i++) {
-		if (World::blockType[i]->index == index) {
-			return World::blockType[i];
-		}
+Chunk* GetChunkByStartPoint(UINT16 startPoint) {
+	for (auto i : World::chunks) {
+		if (i->GetStartPoint() == startPoint) return i;
 	}
 	return nullptr;
 }
 
 
-
-void LoadBlock(string& target, short index) {
-	target += GetBlockByIndex(index)->GetSymbol();
+bool World::isCollisionEnabled(UINT16 x, UINT16 y) {
+	if (x >= GetNextChunkStartPoint()) return GetNextChunk()->isCollisionEnabled(x, y);
+	else if (x < GetActualChunkStartPoint()) return GetPreviousChunk()->isCollisionEnabled(x, y);
+	else return actualChunk->isCollisionEnabled(x, y);
 }
 
 
-UINT16 World::GetFloorLever() {
-	return floorLevel;
+Chunk* World::GetNextChunk() {
+	return GetChunkByStartPoint(GetNextChunkStartPoint());
 }
-UINT16 World::GetSkyLevel() {
-	return skyLevel;
+Chunk* World::GetPreviousChunk() {
+	return GetChunkByStartPoint(GetPreviousChunkStartPoint());
 }
+
 
 void World::Init(Graphics* gfx) {
+	Chunk::Init(gfx);
+	GameSaver::InitSave();
+	chunks.push_back(new Chunk(0));
+	chunks.push_back(new Chunk(25));
+	chunks.push_back(new Chunk(50));
 
-	blockType.push_back(new Block(imgSrc, gfx, '_', false, Block::air));
-	blockType.push_back(new Block(imgSrc, gfx, '#', true,  Block::stone, 0, 20));
-	blockType.push_back(new Block(imgSrc, gfx, '-', true,  Block::grass));
-	blockType.push_back(new Block(imgSrc, gfx, '%', true, Block::dirt));
-	blockType.push_back(new Block(imgSrc, gfx, '*', false, Block::cave, 0, 10));
-	blockType.push_back(new Block(imgSrc, gfx, '&' ,true,  Block::diamond, 2, 5));
-
-	randomArrayInit();
-#if DEBUG_MODE
-	printVector(randomStructArray);
-#endif
-	worldTemplateInit();
-}
-
-
-
-void World::Render() {
-	static bool isDisplayed = false;
-
-	for (UINT8 i = 0; i < worldTemplate.size(); i++) {
-		for (UINT8 j = 0; j < worldTemplate[i].length(); j++) {
-			GetBlockBySymbol(worldTemplate[i].at(j))->Render(j, i);
-		}
+	for (auto i : chunks) {
+		GameSaver::Write::SaveChunk(i);
 	}
-#if DEBUG_MODE
-	if (!isDisplayed)
-		printVector(worldTemplate,"\n");
-	isDisplayed = true;
-#endif
+	actualChunk = chunks.front();
+
+	ChunkGenerateThread = new thread(ChunkGenerateHandler);
+
 }
+
+
+void World::Load(Graphics* gfx, wstring Path) {
+	// if reading error then generate new save
+	Chunk::Init(gfx);
+	if (GameSaver::Read::LoadSave(Path)) {
+#if DEBUG_MODE && GAME_SAVER_DEBUG
+		cout << "Save Loaded" << endl;
+#endif
+	}
+
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(0));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(25));
+	chunks.push_back(GameSaver::Read::GetChunkFromBuffer(50));
+
+	actualChunk = chunks.front();
+
+	ChunkGenerateThread = new thread(ChunkGenerateHandler);
+
+
+
+}
+
+
+void World::Unload() {
+	ChunkGenerateThread->detach();
+	chunks.clear();
+	delete actualChunk;
+	delete ChunkGenerateThread;
+	actualChunk = nullptr;
+	ChunkGenerateThread = nullptr;
+}
+
 
 void World::Update() {
 
-}
 
 
 
-void World::randomArrayInit() {
+	for (auto i : chunks) i->SetOffset(offset);
 
-	for (UINT8 i = 0; i < blockType.size(); i++) {
-		if (blockType[i]->GetIndex() == Block::air) continue;
-		if (blockType[i]->GetIndex() == Block::grass) continue;
-		for (UINT16 j = 0; j < blockType[i]->GetSeed(); j++) {
-			randomStructArray.push_back(blockType[i]->GetIndex());
-		}
+
+	if (GetActualPosition() + 13 >= GetNextChunkStartPoint()) {
+		actualChunk = GetChunkByStartPoint(GetNextChunkStartPoint());
+	}
+	else if (GetActualPosition() + 13 < GetActualChunkStartPoint()) {
+		actualChunk = GetChunkByStartPoint(GetPreviousChunkStartPoint());
 	}
 
+	if (GenerateBackDeleteFrontChunkFlag()) {
+		AddChunkOnBackFlag = true;
+		if ((GetActualPosition() - GetFirstChunkStartPoint()) >= 100) DeleteFirstChunk();
+	}
+
+	else if (GenerateFrontDeleteBackChunkFlag()) {
+		AddChunkOnFrontFlag = true;
+		if (GetLastChunkStartPoint() - GetActualPosition() >= 100) DeleteLastChunk();
+	}
+
+
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+	cout << "                                            \r"
+		<< convertToBlockCoord(static_cast<float>(offset)) << " "
+		<< offset << " "
+		<< actualChunk->GetStartPoint() << " "
+		<< chunks.back()->GetStartPoint() << " "
+		<< chunks.front()->GetStartPoint() << " "
+		<< chunks.size();
+
+#endif
+
+}
+
+void World::Render() {
+	for (auto i : chunks) i->Render();
+
+
 }
 
 
+//----------------------------------------------------------------------------------------
+//								PRIVATE FUNCTIONS
+//----------------------------------------------------------------------------------------
+void World::GenerateNewChunk() {
+	chunks.push_back(new Chunk(chunks.back()->GetStartPoint() + Chunk::blocksCountX));
+	if (!GameSaver::Write::SaveChunk(chunks.back())) {
+#if DEBUG_MODE && GAME_SAVER_DEBUG
+		cout << "Error Writing to file!" << endl;
+#endif
+	}
 
-void World::worldTemplateInit(void) {
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+	cout << endl << "Generated" << endl;
+	cout << (offset / Chunk::blocksCountX) << endl;
+	cout << chunks.back()->GetStartPoint() << endl;
+#endif
+}
 
-	for (UINT8 i = 0; i < blocksCountY; i++) {
-		worldTemplate.push_back("");
-		for (UINT8 j = 0; j < blocksCountX; j++) {
-			if (i >= floorLevel) {
-				TerrainGenerator(worldTemplate[i], i, &j);
+
+void World::DeleteFirstChunk() {
+	chunks.pop_front();
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+	cout << endl << "Deleted front" << endl;
+#endif
+}
+
+void World::DeleteLastChunk() {
+	chunks.pop_back();
+
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+	cout << "Deleted back" << endl;
+#endif
+}
+
+//----------------------------------------------------------------------------------------
+//									CONDITIONS
+//----------------------------------------------------------------------------------------
+
+bool World::GenerateFrontDeleteBackChunkFlag() {
+	if (GetActualPosition() <= GetActualChunkStartPoint() &&
+		GetActualPosition() > 0 &&
+		!GetChunkByStartPoint(GetPreviousChunkStartPoint()) &&  //Check if it is no chunk on the left
+		!AddChunkOnFrontFlag
+		) return true;
+
+	return false;
+}
+
+bool World::GenerateBackDeleteFrontChunkFlag() {
+	if (GetActualPosition() > GetActualChunkStartPoint() &&
+		!GetChunkByStartPoint(GetNextChunkStartPoint() + Chunk::blocksCountX) &&
+		!AddChunkOnBackFlag
+		) return true;
+
+	return false;
+}
+
+//-----------------------------------------------------------------------------------------
+
+
+	//thread function
+void World::ChunkGenerateHandler() {
+
+	while (true) {
+		if (AddChunkOnBackFlag && GetActualChunkStartPoint() > 0) {
+			if (chunks.back()->GetStartPoint() < GameSaver::Read::GetLastChunkStartPoint()) {
+				chunks.push_back(GameSaver::Read::GetChunkFromBuffer(GetLastChunkStartPoint() + Chunk::blocksCountX));
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+				cout << endl << "Loaded Back" << endl;
+#endif
 			}
-			else if (i < floorLevel) {
-				LoadBlock(worldTemplate[i], Block::air);
+			else {
+				GenerateNewChunk();
 			}
+			AddChunkOnBackFlag = false;
 		}
-	}
-	
-}
-
-
-
-
-
-
-void World::TerrainGenerator(string& target, short deepness, UINT8* iterator) {
-	int pick = randomStructArray[Utils::randint(0,randomStructArray.size())];
-
-
-	if (deepness == floorLevel) {
-		LoadBlock(target, Block::grass);
-		return;
-	}
-
-	switch (pick) {
-
-	case Block::diamond: 
-		if (deepness >= blocksCountY - 2)
-			LoadBlock(target, Block::diamond);
-		else 
-			LoadBlock(target, Block::stone);
-		break;
-
-	case Block::stone: 
-		LoadBlock(target, Block::stone);
-		break;
-
-	case Block::dirt:
-		if (deepness >= floorLevel && deepness < floorLevel + 2) {
-			LoadBlock(target, Block::dirt);
+		else if (AddChunkOnFrontFlag && GetActualChunkStartPoint() > 0) {
+			chunks.push_front(GameSaver::Read::GetChunkFromBuffer(GetFirstChunkStartPoint() - Chunk::blocksCountX));
+#if DEBUG_MODE && GAME_GENERATOR_DEBUG
+			cout << endl << "Loaded Front" << endl;
+#endif
+			AddChunkOnFrontFlag = false;
 		}
-		else {
-			LoadBlock(target, Block::stone);
-		}
-		break;
-
-	case Block::cave:
-		GenerateCave(target, 0, iterator);
-		break;
 
 	}
-}
-
-
-
-
-void World::GenerateCave(string& target, short deepness, UINT8* iterator) {
-	if (!iterator) return;
-	for (UINT8 i = 0; i < randint(3,8) && *iterator < blocksCountX; i++) {
-		LoadBlock(target, Block::cave);
-		(*iterator)++;
-	}
-	(*iterator)--;
 }

@@ -6,16 +6,16 @@
 class SpriteSheet {
 public:
 	SpriteSheet(LPCWSTR filename, Graphics* gfx);
-	SpriteSheet(LPCWSTR filename, Graphics* gfx, int spriteWidth, int spriteHeight);
-	
+	SpriteSheet(LPCWSTR filename, Graphics* gfx, float spriteWidth, float spriteHeight);
+
 	~SpriteSheet();
-		//draw bitmap to the render target
+	//draw bitmap to the render target
 	void Draw();
-	void Draw(int index, int x, int y);
+	void Draw(int index, float x, float y);
 private:
-	
+
 	Graphics* gfx;
 	ID2D1Bitmap* bmp;		//Bitmap loaded file and converted to Direct2D format
-	int spriteWidth, spriteHeight;
+	float spriteWidth, spriteHeight;
 	int spritesAccross;
 };

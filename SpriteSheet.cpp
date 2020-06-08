@@ -7,9 +7,9 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	this->gfx = gfx;
 	bmp = NULL;
 	HRESULT hr;
-//------------------------------------------------------------------------------------------------
-// WIC factory make. It can be used to load images from files. Call CoCreateInstance to create it
-//------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------
+	// WIC factory make. It can be used to load images from files. Call CoCreateInstance to create it
+	//------------------------------------------------------------------------------------------------
 
 
 	IWICImagingFactory* wicFactory = NULL;
@@ -23,7 +23,7 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 
 	IWICBitmapDecoder* wicDecoder = NULL;
 
-// Create a decoder
+	// Create a decoder
 	hr = wicFactory->CreateDecoderFromFilename(
 		filename,							// The file name
 		NULL,								// No preferred vendor
@@ -32,7 +32,7 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 		&wicDecoder							// The our decoder we're making
 	);
 
-// pobieramy klatke naszego obrazu - ta liczba przy getframe to numer klatki - jezeli gif
+	// pobieramy klatke naszego obrazu - ta liczba przy getframe to numer klatki - jezeli gif
 	IWICBitmapFrameDecode* wicFrame = nullptr;
 	hr = wicDecoder->GetFrame(0, &wicFrame);
 
@@ -62,16 +62,16 @@ SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx) {
 	if (wicDecoder) wicDecoder->Release();
 	if (wicConverter) wicConverter->Release();
 	if (wicFrame) wicFrame->Release();
-	
+
 	spriteWidth = bmp->GetSize().width;
 	spriteHeight = bmp->GetSize().height;
 	spritesAccross = 1;
 }
 
-SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, int spriteWidth, int spriteHeight) : SpriteSheet(filename,gfx){
+SpriteSheet::SpriteSheet(LPCWSTR filename, Graphics* gfx, float spriteWidth, float spriteHeight) : SpriteSheet(filename, gfx) {
 	this->spriteWidth = spriteWidth;
 	this->spriteHeight = spriteHeight;
-	this->spritesAccross = static_cast<int>(bmp->GetSize().width) / spriteWidth;
+	this->spritesAccross = static_cast<int>(bmp->GetSize().width / spriteWidth);
 }
 
 
@@ -83,31 +83,28 @@ SpriteSheet::~SpriteSheet() {
 void SpriteSheet::Draw() {
 	gfx->GetRenderTarget()->DrawBitmap(
 		bmp,
-		D2D1::RectF(0.0f, 0.0f, 
+		D2D1::RectF(0.0f, 0.0f,
 			bmp->GetSize().width, bmp->GetSize().height),
 		1.0f,
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 		D2D1::RectF(0.0f, 0.0f,
-			bmp->GetSize().width,bmp->GetSize().height)
-			
-		);
+			bmp->GetSize().width, bmp->GetSize().height)
 
-	
+	);
+
+
 }
 
-void SpriteSheet::Draw(int index, int x, int y) {
-		
+void SpriteSheet::Draw(int index, float x, float y) {
+
 	D2D_RECT_F src = D2D1::RectF(
-		static_cast<float>((index % spritesAccross) * spriteWidth),		// claculate position of sprite
-		static_cast<float>((index / spritesAccross) * spriteHeight),
-		static_cast<float>((index % spritesAccross) * spriteHeight) + spriteWidth,	//calculate size of sprite
-		static_cast<float>((index / spritesAccross) * spriteHeight) + spriteHeight
+		(index % spritesAccross) * spriteWidth,		// claculate position of sprite
+		(index / spritesAccross) * spriteHeight,
+		(index % spritesAccross) * spriteHeight + spriteWidth,	//calculate size of sprite
+		(index / spritesAccross) * spriteHeight + spriteHeight
 	);
-		
-	D2D_RECT_F dest = D2D1::RectF(
-		x,y,
-		x + spriteWidth, y + spriteHeight
-	);
+
+	D2D_RECT_F dest = D2D1::RectF(x, y, x + spriteWidth, y + spriteHeight);
 
 
 	gfx->GetRenderTarget()->DrawBitmap(

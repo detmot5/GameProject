@@ -1,40 +1,44 @@
 #include "Level.h"
 
 
+Level::Level(bool load, wstring path) {
+    this->path = path;
+    this->load = load;
+}
 
-// example level class
 
 
-
-void Level::Load(){
-    World::Init(gfx);
-    Animations.push_back(new Character(L"../GameProject/Graphicss/character.png", gfx));
-    Animations.push_back(new Clouds(L"../GameProject/Graphicss/Cloud.png", gfx));
-
+Level::~Level() {
 
 }
 
+void Level::Load() {
+
+    if (load && path != L"") World::Load(gfx, path);
+    else World::Init(gfx);
+
+    Animations.push_back(new Character(Path::character, gfx, SCREEN_WIDTH / 2, SCREEN_WIDTH / 64 + 64, 6));
+}
+
+
+
+
 void Level::Unload() {
- 
+    World::Unload();
+    Animations.clear();
+    cout << "poszlo" << endl;
+    delete this;
 }
 
 
 
 void Level::Update() {
-    for (UINT8 i = 0; i < Animations.size(); i++) {
-        Animations[i]->Update();
-    }
+    World::Update();
+    for (auto i : Animations)  i->Update();
 }
 
 void Level::Render() {
-    gfx->ClearScreen(0,0,0);
+    gfx->ClearScreen(0, 0, 0);
     World::Render();
-
-    for (UINT8 i = 0; i < Animations.size(); i++) {
-        Animations[i]->Render();
-    }
+    for (auto i : Animations) i->Render();
 }
-
-
-
-

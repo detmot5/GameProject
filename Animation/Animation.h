@@ -4,11 +4,13 @@
 #include "../SpriteSheet.h"
 #include "../Graphics.h"
 #include "../World.h"
+#include "GameVector.h"
+
 
 class Animation
 {
 public:
-	Animation(LPCTSTR, Graphics*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
+	Animation(LPCTSTR, Graphics*, GameVector*, GameVector*, GameVector*, bool, UINT16 = DEFAULT_BLOCK_SIZE, UINT16 = DEFAULT_BLOCK_SIZE);
 	~Animation();
 
 
@@ -22,14 +24,19 @@ public:
 	virtual void MoveDown();
 
 
+	void GravityEvent();
+
+
 protected:
-	float x, y;
-	float xSpeed, ySpeed;
 
-	float jumpHeight;
-	float gravity;
 
-	short index;
+
+	GameVector* position;
+	GameVector* velocity;
+	GameVector* gravity;
+	double timeDelta;
+
+	int index;
 	bool blockPrecision;
 
 	UINT16 spriteWidth, spriteHeight;
@@ -37,4 +44,3 @@ protected:
 
 	Graphics* gfx;
 };
-

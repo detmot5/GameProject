@@ -20,48 +20,75 @@
 #pragma once
 
 #include <vector>
+#include <map>
+#include <list>
+#include <cmath>
+#include <thread>
 
 #include "framework.h"
 #include "Block.h"
 #include "Graphics.h"
 #include "Utils.h"
+#include "Chunks/Chunk.h"
+#include "GameSaver/GameSaver.h"
+#include "Animation/Animation.h"	
 
 using namespace std;
 
 class World {
 public:
 	friend Block* GetBlockBySymbol(char symbol);
-	friend Block* GetBlockByIndex(short index);
+	friend Block* GetBlockByIndex(int index);
+	friend Chunk* GetChunkByStartPoint(UINT16 startPoint);
 
-	static void Init(Graphics *gfx);
+
+	static void Init(Graphics* gfx);
+	static void Load(Graphics* gfx, wstring Path);
+	static void Unload();
 	static void Render();
 	static void Update();
 
-	static UINT16 GetFloorLever();
-	static UINT16 GetSkyLevel();
-	
 
-	static vector<Block*> blockType;
-	static inline const LPCWSTR imgSrc = L"GameProject/Graphicss/block.png";
 
-	
+
+	static bool isCollisionEnabled(UINT16 x, UINT16 y);
+
+	static inline int offset = 0;
+	static Chunk* actualChunk;
+	static list<Chunk*> chunks;
 
 private:
 
-	static vector<short> randomStructArray;
-	static vector<string> worldTemplate;
 
 
-	static inline UINT16 blocksCountX = SCREEN_WIDTH/32;	
-	static inline UINT16 blocksCountY = SCREEN_HEIGHT/32;
-	static inline UINT16 floorLevel = blocksCountY / 2;
+	static vector<int> randomStructArray;
+	static thread* ChunkGenerateThread;
+	static inline bool AddChunkOnBackFlag = false;
+	static inline bool AddChunkOnFrontFlag = false;
+
+	static inline UINT16 blocksCountX = SCREEN_WIDTH / DEFAULT_BLOCK_SIZE;
+	static inline UINT16 blocksCountY = SCREEN_HEIGHT / DEFAULT_BLOCK_SIZE;
+	static inline UINT16 averageFloorLevel = blocksCountY / 2;
 	static inline UINT16 skyLevel = blocksCountY / 5;
 
-	static void randomArrayInit();
-	static void worldTemplateInit();
 
-	static void TerrainGenerator(string& target, short deepness, UINT8* iterator);
+	static inline int GetActualPosition() { return  offset / DEFAULT_BLOCK_SIZE; }
 
-	static void GenerateCave(string& target, short deepness, UINT8* iterator);
+
+	static Chunk* GetNextChunk();
+	static Chunk* GetPreviousChunk();
+	static inline UINT16 GetActualChunkStartPoint() { return actualChunk->GetStartPoint(); }
+	static inline UINT16 GetNextChunkStartPoint() { return GetActualChunkStartPoint() + Chunk::blocksCountX; }
+	static inline UINT16 GetPreviousChunkStartPoint() { return GetActualChunkStartPoint() - Chunk::blocksCountX; };
+	static inline UINT16 GetLastChunkStartPoint() { return chunks.back()->GetStartPoint(); }
+	static inline UINT16 GetFirstChunkStartPoint() { return chunks.front()->GetStartPoint(); }
+
+	static bool GenerateBackDeleteFrontChunkFlag();
+	static bool GenerateFrontDeleteBackChunkFlag();
+
+	static void ChunkGenerateHandler();
+	static void GenerateNewChunk();
+	static void DeleteFirstChunk();
+	static void DeleteLastChunk();
 
 };
