@@ -27,7 +27,7 @@ void Level::Unload() {
     World::Unload();
     Animations.clear();
     cout << "poszlo" << endl;
-    delete this;
+   
 }
 
 

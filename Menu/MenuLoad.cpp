@@ -31,7 +31,7 @@ void MenuLoad::Load() {
 void MenuLoad::Unload() {
 	delete background;
 	sheets.clear();
-	delete this;
+
 }
 
 void MenuLoad::Update() {

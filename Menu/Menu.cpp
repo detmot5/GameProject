@@ -16,7 +16,7 @@ Menu::Menu() {
 
 Menu::~Menu() {
 	this->Unload();
-	delete this;
+	
 }
 
 
